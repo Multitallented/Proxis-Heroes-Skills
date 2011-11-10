@@ -1,0 +1,50 @@
+Arrowstorm: shoots a random number of arrows at a random rate of fire
+Basher: passive chance to stun the opponent when you attack
+Cow: summons 1-3 cows at target block
+Creeper: summons 1-3 creepers at target block
+CreepingPain: Takes all damage dealt to the target during the duration and deals it to the target upon expiring
+Cripple: deals damage to the target + extra damage if they move during the duration
+Critical: passive chance to do extra damage when you attack
+Dampen: passive prevents enemies from hurting you if they have below a certain amount of mana
+DeathFromAbove: You deal your fall damage to opponents near you (safefall optional)
+Detect: Detects a block type within range at eye level in a straight line
+Dodge: passive chance to dodge enemy attacks
+Drain: passive drain mana from your opponent when you attack
+Empathy: deal damage to opponent = health you're missing * multiplier
+Escape: blink + invuln + dispel on self (can be used while stunned)
+Firespin: light target block and all blocks around it on fire
+Firewall: create a wall of fire at target block
+Glassshield: create a moving shield of glass and air
+Grace: passive gives you pvp immunity for a duration after you die
+Healbomb: heal yourself or an ally and deal area of effect damage around that person
+Hunt: Teleport to a random block X blocks away from your target (/skill hunt playername)
+IceAura: passive that deals damage to all players around you
+Inversion: deal damage to the target = amount of mana they are missing * multiplier
+Jump: Jump + Safefall, you can change the height of the jump with a multiplier
+Lifesteal: passive gain health when you attack a person (not creature)
+ManaPotion: gives you mana
+Megabolt: instantly strike lightning on everything around you
+Mercy: toggle-able passive that prevents pvp between players too high or too low of a level difference from you (level range is a multiplier of your level)
+MortalWound: prevents the target from being healed for the duration
+Multibolt: strike target block with lightning, in there was a person there, chance to strike that player again, and again, and again
+Multiply: spawn 1-3 more of target creature or player
+Pig: spawn 1-3 pigs at target block
+Reagent: does nothing on it's own
+Reborn: passive that gives you half hp if you were about to die (has a cooldown)
+RegenMana: passive multiplier for mana regen
+Skele: spawns 1-3 skeletons at target block
+Slow: Slow + damage
+Spider: spawns 1-3 spiders at target block
+Spines: passive chance to do Barrage when hit
+Stun: stuns + damage to target
+Tackle: charge + stun + damage
+Tether: root dispel + pulls everyone around you to you if they move too far away (can be used while stunned, but won't dispel the stun :O)
+Timebomb: creates a pit of 1-4 TNT at target block (works best if tnt damage is enabled but block damage is not) the pit erases itself after the duration
+Track: (/skill track playername) reports the target's world, location, health, class, level, and whether you can hurt them or not as well as reports your world and location.
+Tree: spawns a small tree at target block that lasts for 45 seconds
+Unheal: causes any heals on the target during the duration to be converted into damage
+UnholyRitual: UnholyRitual except you can set the amount of mana it gives you
+Unmark: Removes any marks near you (requires SkillMark which is a private skill)
+Void: Gives you pvp immunity and invuln against creatures
+Wrestle: Stuns everyone around you
+Zombie: spawns 1-3 zombies at target block
