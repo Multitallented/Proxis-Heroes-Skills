@@ -34,6 +34,7 @@ Reborn: passive that gives you half hp if you were about to die (has a cooldown)
 RegenMana: passive multiplier for mana regen
 Skele: spawns 1-3 skeletons at target block
 Slow: Slow + damage
+SonicBoom: Damage + Silence in AOE around you
 Spider: spawns 1-3 spiders at target block
 Spines: passive chance to do Barrage when hit
 Stun: stuns + damage to target
