@@ -3,6 +3,7 @@ package com.herocraftonline.dev.heroes.skill.skills;
 import org.bukkit.util.config.ConfigurationNode;
 
 import com.herocraftonline.dev.heroes.Heroes;
+import com.herocraftonline.dev.heroes.api.SkillResult;
 import com.herocraftonline.dev.heroes.hero.Hero;
 import com.herocraftonline.dev.heroes.skill.SkillType;
 import com.herocraftonline.dev.heroes.skill.TargettedSkill;
@@ -29,11 +30,10 @@ public class SkillMultiply extends TargettedSkill {
     }
 
     @Override
-    public boolean use(Hero hero, LivingEntity target, String[] args) {
+    public SkillResult use(Hero hero, LivingEntity target, String[] args) {
         Player player = hero.getPlayer();
         if (target == player) {
-            Messaging.send(player, "You need a target.");
-            return false;
+            return SkillResult.INVALID_TARGET;
         }
         Location targetLocation = target.getLocation();
         double rand = Math.random();
@@ -221,11 +221,11 @@ public class SkillMultiply extends TargettedSkill {
                 count++;
             }
         } else {
-            return false;
+            return SkillResult.INVALID_TARGET;
         }
         broadcastExecuteText(hero, target);
         broadcast(player.getLocation(), "" + count + "x Multiplier!");
-        return true;
+        return SkillResult.NORMAL;
     }
     
 

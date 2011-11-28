@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.config.ConfigurationNode;
 
 import com.herocraftonline.dev.heroes.Heroes;
+import com.herocraftonline.dev.heroes.api.SkillResult;
 import com.herocraftonline.dev.heroes.effects.EffectType;
 import com.herocraftonline.dev.heroes.effects.ExpirableEffect;
 import com.herocraftonline.dev.heroes.hero.Hero;
@@ -50,13 +51,12 @@ public class SkillHunt extends ActiveSkill {
     }
     
     @Override
-    public boolean use(Hero hero, String[] args) {
+    public SkillResult use(Hero hero, String[] args) {
         Player player = hero.getPlayer();
 
         Player target = getPlugin().getServer().getPlayer(args[0]);
         if (target == null) {
-            Messaging.send(player, "Target not found.");
-            return false;
+            return SkillResult.INVALID_TARGET;
         }
 
         Location location = target.getLocation();
@@ -81,7 +81,7 @@ public class SkillHunt extends ActiveSkill {
                 Messaging.send((Player) e, huntText);
             }
         }
-        return true;
+        return SkillResult.NORMAL;
     }
     public class SafefallEffect extends ExpirableEffect {
 

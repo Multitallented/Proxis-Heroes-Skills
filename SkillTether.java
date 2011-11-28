@@ -6,6 +6,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Monster;
 
 import com.herocraftonline.dev.heroes.Heroes;
+import com.herocraftonline.dev.heroes.api.SkillResult;
 import com.herocraftonline.dev.heroes.effects.Effect;
 import com.herocraftonline.dev.heroes.effects.EffectType;
 import com.herocraftonline.dev.heroes.effects.PeriodicExpirableEffect;
@@ -52,7 +53,7 @@ public class SkillTether extends ActiveSkill {
     }
 
     @Override
-    public boolean use(Hero hero, String[] args) {
+    public SkillResult use(Hero hero, String[] args) {
         List<Entity> entities = hero.getPlayer().getNearbyEntities(3, 3, 3);
         Player player = hero.getPlayer();
         for (Entity n : entities) {
@@ -73,7 +74,7 @@ public class SkillTether extends ActiveSkill {
             
         }
         broadcastExecuteText(hero);
-        return true;
+        return SkillResult.NORMAL;
     }
     
     public class CurseEffect extends PeriodicExpirableEffect {

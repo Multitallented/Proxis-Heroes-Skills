@@ -3,6 +3,7 @@ package com.herocraftonline.dev.heroes.skill.skills;
 import org.bukkit.util.config.ConfigurationNode;
 
 import com.herocraftonline.dev.heroes.Heroes;
+import com.herocraftonline.dev.heroes.api.SkillResult;
 import com.herocraftonline.dev.heroes.effects.common.StunEffect;
 import com.herocraftonline.dev.heroes.hero.Hero;
 import com.herocraftonline.dev.heroes.skill.SkillType;
@@ -35,11 +36,10 @@ public class SkillTackle extends TargettedSkill {
     }
     
     @Override
-    public boolean use(Hero hero, LivingEntity target, String args[]) {
+    public SkillResult use(Hero hero, LivingEntity target, String args[]) {
         Player player = hero.getPlayer();
         if (target instanceof Player && ((Player) target).equals(player)) {
-            Messaging.send(player, "Invalid target");
-            return false;
+            return SkillResult.INVALID_TARGET;
         }
         player.teleport(target.getLocation());
         broadcastExecuteText(hero, target);
@@ -65,6 +65,6 @@ public class SkillTackle extends TargettedSkill {
                 }
             }
         }
-        return true;
+        return SkillResult.NORMAL;
     }
 }

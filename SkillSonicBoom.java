@@ -1,9 +1,9 @@
 package com.herocraftonline.dev.heroes.skill.skills;
 
 import org.bukkit.entity.Player;
-import org.bukkit.util.Vector;
 
 import com.herocraftonline.dev.heroes.Heroes;
+import com.herocraftonline.dev.heroes.api.SkillResult;
 import com.herocraftonline.dev.heroes.effects.common.SilenceEffect;
 import com.herocraftonline.dev.heroes.hero.Hero;
 import com.herocraftonline.dev.heroes.skill.ActiveSkill;
@@ -34,7 +34,7 @@ public class SkillSonicBoom extends ActiveSkill {
     }
 
     @Override
-    public boolean use(Hero hero, String[] args) {
+    public SkillResult use(Hero hero, String[] args) {
         int radius = getSetting(hero, Setting.RADIUS.node(), 10, false);
         int damage = getSetting(hero, Setting.DAMAGE.node(), 0, false);
         long duration = getSetting(hero, Setting.DURATION.node(), 10000, false);
@@ -53,6 +53,6 @@ public class SkillSonicBoom extends ActiveSkill {
             }
         }
         broadcastExecuteText(hero);
-        return true;
+        return SkillResult.NORMAL;
     }
 }

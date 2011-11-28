@@ -8,7 +8,7 @@ import org.bukkit.util.config.ConfigurationNode;
 import com.herocraftonline.dev.heroes.Heroes;
 import com.herocraftonline.dev.heroes.api.HeroesEventListener;
 import com.herocraftonline.dev.heroes.api.SkillDamageEvent;
-import com.herocraftonline.dev.heroes.classes.HeroClass;
+import com.herocraftonline.dev.heroes.api.SkillResult;
 import com.herocraftonline.dev.heroes.effects.Effect;
 import com.herocraftonline.dev.heroes.effects.EffectType;
 import com.herocraftonline.dev.heroes.hero.Hero;
@@ -47,13 +47,13 @@ public class SkillMercy extends ActiveSkill {
     }
     
     @Override
-    public boolean use(Hero hero, String[] args) {
+    public SkillResult use(Hero hero, String[] args) {
         if (hero.hasEffect("Mercy")) {
             hero.removeEffect(hero.getEffect("Mercy"));
         } else {
             hero.addEffect(new MercyEffect(this));
         }
-        return true;
+        return SkillResult.NORMAL;
     }
     
     public class MercyEffect extends Effect {
@@ -95,24 +95,18 @@ public class SkillMercy extends ActiveSkill {
                         return;
                     }
                     Hero hero = getPlugin().getHeroManager().getHero((Player) damager);
+                    //debug message
+                    //Messaging.send(hero.getPlayer(), "$1, $2, $3, $4", !hero.hasEffect("Mercy"), hero.hasSkill("Mercy"), !tHero.hasEffect("Mercy"), tHero.hasSkill("Mercy"));
                     if ((!hero.hasEffect("Mercy") && hero.hasSkill("Mercy")) || (!tHero.hasEffect("Mercy") && tHero.hasSkill("Mercy"))) {
-                        HeroClass heroClass = hero.getHeroClass();
-                        HeroClass tHeroClass = tHero.getHeroClass();
-                        int heroLVL = hero.getLevel();
-                        int tHeroLVL = tHero.getLevel();
+                        int heroLVL = (hero.getHeroClass().getTier() * getSetting(hero, "max-lvl", 20, false)) + hero.getLevel();
+                        int tHeroLVL = (tHero.getHeroClass().getTier() * getSetting(tHero, "max-lvl", 20, false)) + tHero.getLevel();
                         int expMultiplier = (int) getSetting(tHero, "lvl-multiplier-range", 2, false);
-                        while (heroClass.getParents().size() >= 1) {
-                            heroClass = heroClass.getParents().get(0);
-                            heroLVL += getSetting(hero, "max-lvl", 20, false);
-                        }
-                        while (tHeroClass.getParents().size() >= 1) {
-                            tHeroClass = tHeroClass.getParents().get(0);
-                            tHeroLVL += getSetting(tHero, "max-lvl", 20, false);
-                        }
-                        if (heroLVL / expMultiplier > tHeroLVL) {
+                        //debug message
+                        //Messaging.send(hero.getPlayer(), "$1, $2, $3, $4, $5", heroLVL, tHeroLVL, expMultiplier, heroLVL / expMultiplier >= tHeroLVL, heroLVL * expMultiplier <= tHeroLVL);
+                        if (heroLVL / expMultiplier >= tHeroLVL) {
                             event.setCancelled(true);
                             Messaging.send(hero.getPlayer(), "You ($2) are too strong to fight $1 ($3)", tHero.getPlayer().getDisplayName(), heroLVL, tHeroLVL);
-                        } else if (heroLVL * expMultiplier < tHeroLVL) {
+                        } else if (heroLVL * expMultiplier <= tHeroLVL) {
                             event.setCancelled(true);
                             Messaging.send(hero.getPlayer(), "You ($2) are too weak to fight $1, ($3)", tHero.getPlayer().getDisplayName(), heroLVL, tHeroLVL);
                         }
@@ -133,19 +127,9 @@ public class SkillMercy extends ActiveSkill {
                 Hero tHero = getPlugin().getHeroManager().getHero((Player) event.getEntity());
                 Hero hero = getPlugin().getHeroManager().getHero((Player) event.getDamager());
                 if ((hero.hasSkill("Mercy") && !hero.hasEffect("Mercy")) || (!tHero.hasEffect("Mercy") && tHero.hasSkill("Mercy"))) {
-                    HeroClass heroClass = hero.getHeroClass();
-                    HeroClass tHeroClass = tHero.getHeroClass();
-                    int heroLVL = hero.getLevel();
-                    int tHeroLVL = tHero.getLevel();
+                        int heroLVL = (hero.getHeroClass().getTier() * getSetting(hero, "max-lvl", 20, false)) + hero.getLevel();
+                        int tHeroLVL = (tHero.getHeroClass().getTier() * getSetting(tHero, "max-lvl", 20, false)) + tHero.getLevel();
                     int expMultiplier = (int) getSetting(tHero, "lvl-multiplier-range", 2, false);
-                    while (heroClass.getParents().size() >= 1) {
-                        heroClass = heroClass.getParents().get(0);
-                        heroLVL += getSetting(hero, "max-lvl", 20, false);
-                    }
-                    while (tHeroClass.getParents().size() >= 1) {
-                        tHeroClass = tHeroClass.getParents().get(0);
-                        tHeroLVL += getSetting(tHero, "max-lvl", 20, false);
-                    }
                     if (heroLVL / expMultiplier > tHeroLVL) {
                         event.setCancelled(true);
                         Messaging.send(hero.getPlayer(), "You are too strong to fight $1, $2 : $3", tHero.getPlayer().getDisplayName(), heroLVL, tHeroLVL);

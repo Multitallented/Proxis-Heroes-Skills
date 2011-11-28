@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.config.ConfigurationNode;
 
 import com.herocraftonline.dev.heroes.Heroes;
+import com.herocraftonline.dev.heroes.api.SkillResult;
 import com.herocraftonline.dev.heroes.effects.EffectType;
 import com.herocraftonline.dev.heroes.effects.ExpirableEffect;
 import com.herocraftonline.dev.heroes.hero.Hero;
@@ -47,16 +48,15 @@ public class SkillSlow extends TargettedSkill {
     }
 
     @Override
-    public boolean use(Hero hero, LivingEntity target, String[] args) {
+    public SkillResult use(Hero hero, LivingEntity target, String[] args) {
         if (!(target instanceof Player)) {
-            Messaging.send(hero.getPlayer(), "Invalid Target!");
-            return false;
+            return SkillResult.INVALID_TARGET;
         }
         Player player = hero.getPlayer();
         Player tPlayer = (Player) target;
         if (!damageCheck(player, tPlayer)) {
             Messaging.send(player, "You can't harm that target");
-            return false;
+            return SkillResult.INVALID_TARGET_NO_MSG;
         }
         tPlayer.damage((int) getSetting(hero, Setting.DAMAGE.node(), 0, false), player);
         int duration = getSetting(hero, Setting.DURATION.node(), 15000, false);
@@ -67,7 +67,7 @@ public class SkillSlow extends TargettedSkill {
         SlowEffect effect = new SlowEffect(this, duration, multiplier);
         plugin.getHeroManager().getHero((Player) target).addEffect(effect);
         broadcastExecuteText(hero, target);
-        return true;
+        return SkillResult.NORMAL;
     }
 
     public class SlowEffect extends ExpirableEffect {

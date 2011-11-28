@@ -4,6 +4,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.config.ConfigurationNode;
 
 import com.herocraftonline.dev.heroes.Heroes;
+import com.herocraftonline.dev.heroes.api.SkillResult;
 import com.herocraftonline.dev.heroes.effects.EffectType;
 import com.herocraftonline.dev.heroes.effects.ExpirableEffect;
 import com.herocraftonline.dev.heroes.hero.Hero;
@@ -57,18 +58,16 @@ public class SkillCreepingPain extends TargettedSkill {
     }
 
     @Override
-    public boolean use(Hero hero, LivingEntity target, String[] args) {
+    public SkillResult use(Hero hero, LivingEntity target, String[] args) {
         Player player = hero.getPlayer();
         if (target.equals(player) || target instanceof Creature) {
-            Messaging.send(player, "You need a target!");
-            return false;
+            return SkillResult.INVALID_TARGET;
         }
 
         if (target instanceof Player && hero.getParty() != null) {
             for (Hero h : hero.getParty().getMembers()) {
                 if (target.equals(h.getPlayer())) {
-                    Messaging.send(player, "You need a target!");
-                    return false;
+                    return SkillResult.INVALID_TARGET;
                 }
             }
         }
@@ -78,11 +77,9 @@ public class SkillCreepingPain extends TargettedSkill {
         if (target instanceof Player) {
             Hero tHero = getPlugin().getHeroManager().getHero((Player) target);
             tHero.addEffect(cEffect);
-            return true;
+            return SkillResult.NORMAL;
         }
-
-        Messaging.send(player, "Invalid target!");
-        return false;
+        return SkillResult.INVALID_TARGET;
     }
 
     public class CurseEffect extends ExpirableEffect {

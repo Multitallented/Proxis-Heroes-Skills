@@ -4,6 +4,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.config.ConfigurationNode;
 
 import com.herocraftonline.dev.heroes.Heroes;
+import com.herocraftonline.dev.heroes.api.SkillResult;
+import com.herocraftonline.dev.heroes.api.SkillResult.ResultType;
 import com.herocraftonline.dev.heroes.hero.Hero;
 import com.herocraftonline.dev.heroes.skill.ActiveSkill;
 import com.herocraftonline.dev.heroes.skill.SkillType;
@@ -36,7 +38,7 @@ public class SkillArrowstorm extends ActiveSkill {
     }
 
     @Override
-    public boolean use(Hero hero, String[] args) {
+    public SkillResult use(Hero hero, String[] args) {
         final Player player = hero.getPlayer();
         PlayerInventory inv = player.getInventory();
         int minArrows = (int) getSetting(hero, "min_arrows", 15, false);
@@ -84,8 +86,7 @@ public class SkillArrowstorm extends ActiveSkill {
             numArrows = 0;
         }
         if (numArrows == 0) {
-            Messaging.send(player, "You don't have enough arrows.");
-            return false;
+            return new SkillResult(ResultType.MISSING_REAGENT, true, minArrows, "Arrows");
         }
 
         int removedArrows = 0;
@@ -115,16 +116,18 @@ public class SkillArrowstorm extends ActiveSkill {
         float rate = 20/sleepTime;
         player.sendMessage("Casting "+ totalArrows + " at a rate of " + rate + " per second");
         final int shootArrows = plugin.getServer().getScheduler().scheduleAsyncRepeatingTask(plugin, new Runnable() {
+            @Override
             public void run() {
                 player.shootArrow();
             }
         }, 0L, sleepTime);
         plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+            @Override
             public void run() {
                 plugin.getServer().getScheduler().cancelTask(shootArrows);
             }
         }, numArrows * sleepTime);
-        return true;
+        return SkillResult.NORMAL;
     }
     
 

@@ -4,6 +4,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.config.ConfigurationNode;
 
 import com.herocraftonline.dev.heroes.Heroes;
+import com.herocraftonline.dev.heroes.api.SkillResult;
 import com.herocraftonline.dev.heroes.hero.Hero;
 import com.herocraftonline.dev.heroes.skill.ActiveSkill;
 import com.herocraftonline.dev.heroes.skill.SkillType;
@@ -33,7 +34,7 @@ public class SkillTree extends ActiveSkill {
     }
 
     @Override
-    public boolean use(Hero hero, String[] args) {
+    public SkillResult use(Hero hero, String[] args) {
         Player player = hero.getPlayer();
         Block refBlock = player.getTargetBlock(null,getSetting(hero, Setting.MAX_DISTANCE.node(), 100, false));
         Block refBlockTop = refBlock.getRelative(BlockFace.UP).getRelative(BlockFace.UP)
@@ -291,9 +292,9 @@ public class SkillTree extends ActiveSkill {
             //		.values().length)];
             //return player.getWorld()
             //		.generateTree(wTargetBlock.getLocation(), wType);
-            return true;
+            return SkillResult.NORMAL;
         } else {
-            return false;
+            return SkillResult.INVALID_TARGET_NO_MSG;
         }
     }
 

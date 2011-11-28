@@ -4,6 +4,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.config.ConfigurationNode;
 
 import com.herocraftonline.dev.heroes.Heroes;
+import com.herocraftonline.dev.heroes.api.SkillResult;
 import com.herocraftonline.dev.heroes.hero.Hero;
 import com.herocraftonline.dev.heroes.skill.ActiveSkill;
 import com.herocraftonline.dev.heroes.skill.SkillType;
@@ -31,7 +32,7 @@ public class SkillZombie extends ActiveSkill {
     }
 
     @Override
-    public boolean use(Hero hero, String[] args) {
+    public SkillResult use(Hero hero, String[] args) {
         Player player = hero.getPlayer();
         broadcastExecuteText(hero);
         Block wTargetBlock = player.getTargetBlock(null, 20).getFace(
@@ -51,7 +52,7 @@ public class SkillZombie extends ActiveSkill {
             count++;
         }
         broadcast(player.getLocation(), "" + count + "x Multiplier!");
-        return true;
+        return SkillResult.NORMAL;
     }
     
 

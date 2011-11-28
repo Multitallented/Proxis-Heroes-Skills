@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.config.ConfigurationNode;
 
 import com.herocraftonline.dev.heroes.Heroes;
+import com.herocraftonline.dev.heroes.api.SkillResult;
 import com.herocraftonline.dev.heroes.hero.Hero;
 import com.herocraftonline.dev.heroes.skill.ActiveSkill;
 import com.herocraftonline.dev.heroes.skill.SkillType;
@@ -34,13 +35,12 @@ public class SkillTrack extends ActiveSkill {
     }
 
     @Override
-    public boolean use(Hero hero, String[] args) {
+    public SkillResult use(Hero hero, String[] args) {
         Player player = hero.getPlayer();
 
         Player target = getPlugin().getServer().getPlayer(args[0]);
         if (target == null) {
-            Messaging.send(player, "Target not found.");
-            return false;
+            return SkillResult.INVALID_TARGET;
         }
 
         Location location = target.getLocation();
@@ -65,7 +65,7 @@ public class SkillTrack extends ActiveSkill {
         }
         player.setCompassTarget(location);
         broadcastExecuteText(hero);
-        return true;
+        return SkillResult.NORMAL;
     }
 
 }

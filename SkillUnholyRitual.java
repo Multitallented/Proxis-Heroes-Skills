@@ -6,6 +6,7 @@ import org.bukkit.entity.Skeleton;
 import org.bukkit.entity.Zombie;
 
 import com.herocraftonline.dev.heroes.Heroes;
+import com.herocraftonline.dev.heroes.api.SkillResult;
 import com.herocraftonline.dev.heroes.hero.Hero;
 import com.herocraftonline.dev.heroes.skill.SkillType;
 import com.herocraftonline.dev.heroes.skill.TargettedSkill;
@@ -31,19 +32,18 @@ public class SkillUnholyRitual extends TargettedSkill {
     }
 
     @Override
-    public boolean use(Hero hero, LivingEntity target, String[] args) {
+    public SkillResult use(Hero hero, LivingEntity target, String[] args) {
         Player player = hero.getPlayer();
 
         if (!(target instanceof Zombie) && !(target instanceof Skeleton)) {
-            Messaging.send(player, "You need a target!");
-            return false;
+            return SkillResult.INVALID_TARGET;
         }
 
         addSpellTarget(target, hero);
         target.damage(target.getHealth(), player);
         hero.setMana(hero.getMana() + (int) getSetting(hero, "mana-given", 20, false));
         broadcastExecuteText(hero, target);
-        return true;
+        return SkillResult.NORMAL;
     }
 
 }

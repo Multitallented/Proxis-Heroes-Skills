@@ -52,7 +52,7 @@ public class SkillDampen extends PassiveSkill {
 
         @Override
         public void onEntityDamage(EntityDamageEvent event) {
-            if (event.isCancelled() || event.getDamage() == 0)
+            if (event.isCancelled())
                 return;
             if (event instanceof EntityDamageByEntityEvent) {
                 EntityDamageByEntityEvent edBy = (EntityDamageByEntityEvent) event;
@@ -69,6 +69,7 @@ public class SkillDampen extends PassiveSkill {
                     int manaReq = (int) getSetting(hero, "block-if-mana-below", 15, false);
                     int minMana = (int) getSetting(hero, "mana-required", 20, false);
                     if (tHero.hasEffect("Dampen") && tHero.getMana() >= manaReq && hero.getMana() <= minMana) {
+                        event.setDamage(0);
                         event.setCancelled(true);
                         broadcast(tHero.getPlayer().getLocation(), skillBlockText, tHero.getPlayer().getDisplayName(), hero.getPlayer().getDisplayName());
                     }
@@ -82,7 +83,7 @@ public class SkillDampen extends PassiveSkill {
 
         @Override
         public void onSkillDamage(SkillDamageEvent event) {
-            if (event.isCancelled() || event.getDamage() == 0)
+            if (event.isCancelled())
                 return;
             if (event.getEntity() instanceof Player && event.getDamager() instanceof Player) {
                 Hero tHero = getPlugin().getHeroManager().getHero((Player) event.getEntity());

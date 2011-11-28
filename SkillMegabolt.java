@@ -4,6 +4,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.config.ConfigurationNode;
 
 import com.herocraftonline.dev.heroes.Heroes;
+import com.herocraftonline.dev.heroes.api.SkillResult;
 import com.herocraftonline.dev.heroes.hero.Hero;
 import com.herocraftonline.dev.heroes.skill.ActiveSkill;
 import com.herocraftonline.dev.heroes.skill.SkillType;
@@ -14,7 +15,7 @@ import org.bukkit.entity.LivingEntity;
 public class SkillMegabolt extends ActiveSkill {
     public SkillMegabolt(Heroes plugin) {
         super(plugin, "Megabolt");
-        setDescription("Strikes lightning on every mob/player within 30 blocks of you");
+        setDescription("Strikes lightning on every mob/player around you");
         setUsage("/skill megabolt");
         setArgumentRange(0, 0);
         setIdentifiers(new String[]{"skill megabolt"});
@@ -31,7 +32,7 @@ public class SkillMegabolt extends ActiveSkill {
     }
 
     @Override
-    public boolean use(Hero hero, String[] args) {
+    public SkillResult use(Hero hero, String[] args) {
         Player player = hero.getPlayer();
         int maxDistance = getSetting(hero, "radius", 30, false);
         int yDistance = maxDistance < 128 ? maxDistance : 128;
@@ -52,7 +53,7 @@ public class SkillMegabolt extends ActiveSkill {
                 ((LivingEntity) wMonster).damage(damage, player);
             }
         }
-        return true;
+        return SkillResult.NORMAL;
     }
 
 }

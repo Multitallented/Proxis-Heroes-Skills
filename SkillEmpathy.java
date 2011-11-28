@@ -1,13 +1,11 @@
 package com.herocraftonline.dev.heroes.skill.skills;
 
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.util.config.ConfigurationNode;
 
 import com.herocraftonline.dev.heroes.Heroes;
+import com.herocraftonline.dev.heroes.api.SkillResult;
 import com.herocraftonline.dev.heroes.hero.Hero;
 import com.herocraftonline.dev.heroes.skill.SkillType;
 import com.herocraftonline.dev.heroes.skill.TargettedSkill;
@@ -34,11 +32,10 @@ public class SkillEmpathy extends TargettedSkill {
     }
 
     @Override
-    public boolean use(Hero hero, LivingEntity target, String[] args) {
+    public SkillResult use(Hero hero, LivingEntity target, String[] args) {
         Player player = hero.getPlayer();
         if (target == player) {
-            Messaging.send(player, "You need a target!");
-            return false;
+            return SkillResult.INVALID_TARGET;
         }
         int maxDamage = (int) getSetting(hero, "max-damage", 10, false);
         double damageModifier = (double) getSetting(hero, "damage-modifier", 1, false);
@@ -50,11 +47,11 @@ public class SkillEmpathy extends TargettedSkill {
             damage = maxDamage;
         }
         if (target instanceof Player && damageCheck((Player) target, player))
-            return false;
+            return SkillResult.CANCELLED;
         damage = (int) Math.round(damage * damageModifier);
         target.damage(damage, player);
         broadcastExecuteText(hero, target);
-        return true;
+        return SkillResult.NORMAL;
     }
 
 }

@@ -3,6 +3,7 @@ package com.herocraftonline.dev.heroes.skill.skills;
 import org.bukkit.util.config.ConfigurationNode;
 
 import com.herocraftonline.dev.heroes.Heroes;
+import com.herocraftonline.dev.heroes.api.SkillResult;
 import com.herocraftonline.dev.heroes.effects.Effect;
 import com.herocraftonline.dev.heroes.effects.EffectType;
 import com.herocraftonline.dev.heroes.effects.common.InvulnerabilityEffect;
@@ -40,7 +41,7 @@ public class SkillEscape extends ActiveSkill {
     }
 
     @Override
-    public boolean use(Hero hero, String[] args) {
+    public SkillResult use(Hero hero, String[] args) {
         Player player = hero.getPlayer();
         int distance = getSetting(hero, Setting.MAX_DISTANCE.node(), 6, false);
         Block prev = null;
@@ -50,7 +51,7 @@ public class SkillEscape extends ActiveSkill {
             iter = new BlockIterator(player, distance);
         } catch (IllegalStateException e) {
             Messaging.send(player, "There was an error getting your blink location!");
-            return false;
+            return SkillResult.INVALID_TARGET_NO_MSG;
         }
         while (iter.hasNext()) {
             b = iter.next();
@@ -75,10 +76,10 @@ public class SkillEscape extends ActiveSkill {
             teleport.setPitch(player.getLocation().getPitch());
             teleport.setYaw(player.getLocation().getYaw());
             player.teleport(teleport);
-            return true;
+            return SkillResult.NORMAL;
         } else {
             Messaging.send(player, "No location to blink to.");
-            return false;
+            return SkillResult.INVALID_TARGET_NO_MSG;
         }
     }
 }

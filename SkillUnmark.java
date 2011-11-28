@@ -4,6 +4,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.config.ConfigurationNode;
 
 import com.herocraftonline.dev.heroes.Heroes;
+import com.herocraftonline.dev.heroes.api.SkillResult;
 import com.herocraftonline.dev.heroes.hero.Hero;
 import com.herocraftonline.dev.heroes.skill.ActiveSkill;
 import com.herocraftonline.dev.heroes.skill.SkillType;
@@ -29,7 +30,7 @@ public class SkillUnmark extends ActiveSkill {
     }
     
     @Override
-    public boolean use(Hero hero, String[] args) {
+    public SkillResult use(Hero hero, String[] args) {
         int x = (int) hero.getPlayer().getLocation().getX();
         int z = (int) hero.getPlayer().getLocation().getZ();
         for (Player p : getPlugin().getServer().getOnlinePlayers()) {
@@ -50,6 +51,6 @@ public class SkillUnmark extends ActiveSkill {
             } catch (Exception e) {
             }
         }
-        return true;
+        return SkillResult.NORMAL;
     }
 }

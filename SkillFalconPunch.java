@@ -13,15 +13,15 @@ import com.herocraftonline.dev.heroes.util.Setting;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
-public class SkillStun extends TargettedSkill {
+public class SkillFalconPunch extends TargettedSkill {
 
-    public SkillStun(Heroes plugin) {
-        super(plugin, "Stun");
-        setDescription("Stuns and damages your opponent");
-        setUsage("/skill stun");
+    public SkillFalconPunch(Heroes plugin) {
+        super(plugin, "FalconPunch");
+        setDescription("Stuns and does massive damage your opponent");
+        setUsage("/skill falconpunch");
         setArgumentRange(0, 0);
-        setIdentifiers("skill stun");
-        setTypes(SkillType.SILENCABLE, SkillType.HARMFUL, SkillType.DAMAGING, SkillType.DEBUFF);
+        setIdentifiers("skill falconpunch");
+        setTypes(SkillType.PHYSICAL, SkillType.HARMFUL, SkillType.DAMAGING, SkillType.DEBUFF);
     }
 
     @Override

@@ -4,6 +4,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.config.ConfigurationNode;
 
 import com.herocraftonline.dev.heroes.Heroes;
+import com.herocraftonline.dev.heroes.api.SkillResult;
 import com.herocraftonline.dev.heroes.hero.Hero;
 import com.herocraftonline.dev.heroes.skill.ActiveSkill;
 import com.herocraftonline.dev.heroes.skill.SkillType;
@@ -34,7 +35,7 @@ public class SkillMultibolt extends ActiveSkill {
     }
 
     @Override
-    public boolean use(final Hero hero, String[] args) {
+    public SkillResult use(final Hero hero, String[] args) {
         final Player player = hero.getPlayer();
         final Location wLocation = player.getTargetBlock(null, (int) getSetting(hero, "range", 40, false))
                         .getLocation();
@@ -47,7 +48,7 @@ public class SkillMultibolt extends ActiveSkill {
         }
         if (aTargetPlayer != null && !damageCheck(player, aTargetPlayer)) {
             Messaging.send(player, "You can't harm that target");
-            return false;
+            return SkillResult.INVALID_TARGET_NO_MSG;
         }
         final Player targetPlayer = aTargetPlayer;
         broadcastExecuteText(hero);
@@ -100,7 +101,7 @@ public class SkillMultibolt extends ActiveSkill {
                 }
             }, 20L);
         }
-        return true;
+        return SkillResult.NORMAL;
     }
 
     

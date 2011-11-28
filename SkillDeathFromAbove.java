@@ -3,6 +3,7 @@ package com.herocraftonline.dev.heroes.skill.skills;
 import org.bukkit.util.config.ConfigurationNode;
 
 import com.herocraftonline.dev.heroes.Heroes;
+import com.herocraftonline.dev.heroes.api.SkillResult;
 import com.herocraftonline.dev.heroes.effects.EffectType;
 import com.herocraftonline.dev.heroes.effects.ExpirableEffect;
 import com.herocraftonline.dev.heroes.hero.Hero;
@@ -54,11 +55,11 @@ public class SkillDeathFromAbove extends ActiveSkill {
     }
 
     @Override
-    public boolean use(Hero hero, String[] strings) {
+    public SkillResult use(Hero hero, String[] strings) {
         broadcastExecuteText(hero);
         long duration = getSetting(hero, Setting.DURATION.node(), 10000, false);
         hero.addEffect(new DeathFromAboveEffect(this, duration));
-        return true;
+        return SkillResult.NORMAL;
     }
 
     public class DeathFromAboveEffect extends ExpirableEffect {

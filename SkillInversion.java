@@ -5,10 +5,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.config.ConfigurationNode;
 
 import com.herocraftonline.dev.heroes.Heroes;
+import com.herocraftonline.dev.heroes.api.SkillResult;
 import com.herocraftonline.dev.heroes.hero.Hero;
 import com.herocraftonline.dev.heroes.skill.SkillType;
 import com.herocraftonline.dev.heroes.skill.TargettedSkill;
-import com.herocraftonline.dev.heroes.util.Messaging;
 
 public class SkillInversion extends TargettedSkill {
 
@@ -31,15 +31,14 @@ public class SkillInversion extends TargettedSkill {
     }
 
     @Override
-    public boolean use(Hero hero, LivingEntity target, String[] args) {
+    public SkillResult use(Hero hero, LivingEntity target, String[] args) {
         if (!(target instanceof Player)) {
-            return false;
+            return SkillResult.INVALID_TARGET;
         }
         Player player = hero.getPlayer();
         Hero enemy = getPlugin().getHeroManager().getHero((Player) target);
         if (target == player) {
-            Messaging.send(player, "You need a target!");
-            return false;
+            return SkillResult.INVALID_TARGET;
         }
         int maxDamage = (int) getSetting(hero, "max-damage", 10, false);
         double damageModifier = (double) getSetting(hero, "damage-modifier", 1, false);
@@ -48,10 +47,10 @@ public class SkillInversion extends TargettedSkill {
             damage = maxDamage;
         }
         if (damageCheck(player, target))
-            return false;
+            return SkillResult.CANCELLED;
         target.damage(damage, player);
         broadcastExecuteText(hero, target);
-        return true;
+        return SkillResult.NORMAL;
     }
 
 }

@@ -4,6 +4,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.config.ConfigurationNode;
 
 import com.herocraftonline.dev.heroes.Heroes;
+import com.herocraftonline.dev.heroes.api.SkillResult;
 import com.herocraftonline.dev.heroes.hero.Hero;
 import com.herocraftonline.dev.heroes.skill.ActiveSkill;
 import com.herocraftonline.dev.heroes.skill.SkillType;
@@ -34,7 +35,7 @@ public class SkillDetect extends ActiveSkill {
     }
 
     @Override
-    public boolean use(Hero hero, String[] args) {
+    public SkillResult use(Hero hero, String[] args) {
         Player player = hero.getPlayer();
         int blockID = 56;
         if (Material.getMaterial((int) getSetting(hero, "block-id",56, false)) != null) {
@@ -140,9 +141,9 @@ public class SkillDetect extends ActiveSkill {
             }
         } else {
             player.sendMessage(ChatColor.YELLOW + "Fizzle... face north east south or west");
-            return false;
+            return SkillResult.INVALID_TARGET_NO_MSG;
         }
-        return true;
+        return SkillResult.NORMAL;
     }
     public static BlockFace getPlayerDirection(Player player) {
             Block wTargetBlock = player.getTargetBlock(

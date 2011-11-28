@@ -4,6 +4,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.config.ConfigurationNode;
 
 import com.herocraftonline.dev.heroes.Heroes;
+import com.herocraftonline.dev.heroes.api.SkillResult;
 import com.herocraftonline.dev.heroes.hero.Hero;
 import com.herocraftonline.dev.heroes.skill.ActiveSkill;
 import com.herocraftonline.dev.heroes.skill.SkillType;
@@ -33,7 +34,7 @@ public class SkillFirespin extends ActiveSkill {
     }
 
     @Override
-    public boolean use(Hero hero, String[] args) {
+    public SkillResult use(Hero hero, String[] args) {
         Player player = hero.getPlayer();
         final Block wTarget = player.getTargetBlock(null, getSetting(hero, "max-distance", 30, false));
         final long duration = (long) (Math.rint(Math.random()*5)*20 + 100);
@@ -147,7 +148,7 @@ public class SkillFirespin extends ActiveSkill {
         }
         }, 1L);
 
-        return true;
+        return SkillResult.NORMAL;
     }
     
     

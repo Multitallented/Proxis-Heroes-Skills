@@ -10,7 +10,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event.Priority;
 import org.bukkit.event.Event.Type;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityListener;
 
 public class SkillDodge extends PassiveSkill {
@@ -33,15 +32,14 @@ public class SkillDodge extends PassiveSkill {
     public class SkillHeroListener extends EntityListener {
         @Override
         public void onEntityDamage(EntityDamageEvent event) {
-            if (event.isCancelled() || event.getDamage() == 0 ||
-                    event.getCause() != DamageCause.ENTITY_ATTACK || 
-                    !(event.getEntity() instanceof Player))
+            if (event.isCancelled() || !(event.getEntity() instanceof Player))
                 return;
             Player player = (Player) event.getEntity();
             Hero hero = getPlugin().getHeroManager().getHero(player);
             if (hero.hasEffect("Dodge")) {
                 double chance = (double) getSetting(hero, "chance-to-dodge", .1, false);
                 if (Math.random() <= chance) {
+                    event.setDamage(0);
                     event.setCancelled(true);
                     broadcast(player.getLocation(), "$1 dodged an attack!", player.getDisplayName());
                 }

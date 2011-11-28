@@ -4,6 +4,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.config.ConfigurationNode;
 
 import com.herocraftonline.dev.heroes.Heroes;
+import com.herocraftonline.dev.heroes.api.SkillResult;
 import com.herocraftonline.dev.heroes.hero.Hero;
 import com.herocraftonline.dev.heroes.skill.ActiveSkill;
 import com.herocraftonline.dev.heroes.skill.SkillType;
@@ -34,7 +35,7 @@ public class SkillTimebomb extends ActiveSkill {
     }
 
     @Override
-    public boolean use(Hero hero, String[] args) {
+    public SkillResult use(Hero hero, String[] args) {
         Player player = hero.getPlayer();
         final Block wTargetBlock = player.getTargetBlock(null, getSetting(hero, "range", 40, false));
 
@@ -145,47 +146,9 @@ public class SkillTimebomb extends ActiveSkill {
                 }, 200L);
             }
         }, 200L);
-        //Snowball snowball = player.throwSnowball();
-        //snowball.setFireTicks(1000);
 
         broadcastExecuteText(hero);
-        return true;
+        return SkillResult.NORMAL;
     }
-
-    /*public class SkillEntityListener extends EntityListener {
-
-        @Override
-        public void onEntityDamage(EntityDamageEvent event) {
-            if (event.isCancelled()) return;
-            if (event instanceof EntityDamageByEntityEvent) {
-                EntityDamageByEntityEvent subEvent = (EntityDamageByEntityEvent) event;
-                Entity projectile = subEvent.getDamager();
-                if (projectile instanceof Snowball) {
-                    if (projectile.getFireTicks() > 0) {
-                        Entity entity = subEvent.getEntity();
-                        if (entity instanceof LivingEntity) {
-                            Entity dmger = ((Snowball) subEvent.getDamager()).getShooter();
-                            if (dmger instanceof Player) {
-                                Hero hero = getPlugin().getHeroManager().getHero((Player) dmger);
-                                HeroClass heroClass = hero.getHeroClass();
-                                LivingEntity livingEntity = (LivingEntity) entity;
-                                // Perform a check to see if any plugin is preventing us from damaging the player.
-                                EntityDamageByEntityEvent damageEvent = new EntityDamageByEntityEvent(dmger, entity, DamageCause.ENTITY_ATTACK, 0);
-                                Bukkit.getServer().getPluginManager().callEvent(damageEvent);
-                                if (damageEvent.isCancelled()) return;
-                                // Damage the player and ignite them.
-                                livingEntity.setFireTicks(getSetting(heroClass, "fire-ticks", 100));
-
-                                getPlugin().getDamageManager().addSpellTarget((Entity) entity);
-                                int damage = getSetting(heroClass, "damage", 4);
-                                event.setDamage(damage);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-    }*/
 
 }

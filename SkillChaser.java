@@ -11,21 +11,20 @@ import com.herocraftonline.dev.heroes.hero.Hero;
 import com.herocraftonline.dev.heroes.skill.Skill;
 import com.herocraftonline.dev.heroes.skill.SkillType;
 import com.herocraftonline.dev.heroes.skill.TargettedSkill;
-import com.herocraftonline.dev.heroes.util.Messaging;
 import com.herocraftonline.dev.heroes.util.Setting;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-public class SkillCripple extends TargettedSkill {
+public class SkillChaser extends TargettedSkill {
     private String applyText;
     private String removeText;
 
-    public SkillCripple(Heroes plugin) {
-        super(plugin, "Cripple");
-        setDescription("Deal damage to the target, plus extra if they move");
-        setUsage("/skill cripple <target>");
+    public SkillChaser(Heroes plugin) {
+        super(plugin, "Chaser");
+        setDescription("Deal damage to the target, plus extra if they dont move");
+        setUsage("/skill chaser <target>");
         setArgumentRange(0, 1);
-        setIdentifiers("skill cripple");
+        setIdentifiers("skill chaser");
         setTypes(SkillType.DEBUFF, SkillType.DAMAGING, SkillType.PHYSICAL);
     }
 
@@ -37,16 +36,16 @@ public class SkillCripple extends TargettedSkill {
         node.setProperty("tick-damage", 2);
         node.setProperty(Setting.DAMAGE.node(), 5);
         node.setProperty(Setting.MAX_DISTANCE.node(), 15);
-        node.setProperty(Setting.APPLY_TEXT.node(), "%target% has been Crippled by %hero%!");
-        node.setProperty("remove-text", "%target% has recovered from %hero%s Crippling blow!");
+        node.setProperty(Setting.APPLY_TEXT.node(), "%hero% makes the ground under %target%s feet hot!");
+        node.setProperty("remove-text", "%hero% stops burning %target%s feet!");
         return node;
     }
     
     @Override
     public void init() {
         super.init();
-        applyText = getSetting(null, Setting.APPLY_TEXT.node(), "%target% has been Crippled by %hero%!").replace("%target%", "$1").replace("%hero%", "$2");
-        removeText = getSetting(null, "remove-text", "%target% has recovered from %hero%s Crippling blow!").replace("%target%", "$1").replace("%hero%", "$2");
+        applyText = getSetting(null, Setting.APPLY_TEXT.node(), "%hero% makes the ground under %target%s feet hot!!").replace("%target%", "$1").replace("%hero%", "$2");
+        removeText = getSetting(null, "remove-text", "%hero% stops burning %target%s feet!").replace("%target%", "$1").replace("%hero%", "$2");
     }
 
     @Override
@@ -74,7 +73,7 @@ public class SkillCripple extends TargettedSkill {
         private Player caster;
         private Location prevLocation;
         public CrippleEffect(Skill skill, long period, long duration, Player caster) {
-            super(skill, "Cripple", period, duration);
+            super(skill, "Chaser", period, duration);
             this.caster=caster;
             this.types.add(EffectType.BLEED);
             this.types.add(EffectType.DISPELLABLE);
@@ -85,8 +84,8 @@ public class SkillCripple extends TargettedSkill {
         public void tick(Hero hero) {
             super.tick(hero);
             if (prevLocation != null
-                    && Math.abs(hero.getPlayer().getLocation().getX() - prevLocation.getX()) >= 1
-                    && Math.abs(hero.getPlayer().getLocation().getZ() - prevLocation.getZ()) >= 1) {
+                    && Math.abs(hero.getPlayer().getLocation().getX() - prevLocation.getX()) < 1
+                    && Math.abs(hero.getPlayer().getLocation().getZ() - prevLocation.getZ()) < 1) {
                 Hero eHero = getPlugin().getHeroManager().getHero(caster);
                 int damage = getSetting(eHero, Setting.DAMAGE.node(),5,false);
                 hero.getPlayer().damage(damage, caster);

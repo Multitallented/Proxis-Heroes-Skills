@@ -4,6 +4,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.util.config.ConfigurationNode;
 
 import com.herocraftonline.dev.heroes.Heroes;
+import com.herocraftonline.dev.heroes.api.SkillResult;
 import com.herocraftonline.dev.heroes.hero.Hero;
 import com.herocraftonline.dev.heroes.skill.SkillType;
 import com.herocraftonline.dev.heroes.skill.TargettedSkill;
@@ -35,7 +36,7 @@ public class SkillHealBomb extends TargettedSkill {
     }
 
     @Override
-    public boolean use(Hero hero, LivingEntity le, String[] strings) {
+    public SkillResult use(Hero hero, LivingEntity le, String[] strings) {
         Player player = hero.getPlayer();
         if (le.equals(player)) {
             broadcastExecuteText(hero, player);
@@ -47,10 +48,9 @@ public class SkillHealBomb extends TargettedSkill {
                 healBomb(hero, tHero);
             }
         } else {
-            Messaging.send(player, "Invalid target.");
-            return false;
+            return SkillResult.INVALID_TARGET;
         }
-        return true;
+        return SkillResult.NORMAL;
     }
     
     private void healBomb(Hero hero, Hero target) {

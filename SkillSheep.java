@@ -12,15 +12,15 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.CreatureType;
 
-public class SkillPig extends ActiveSkill {
+public class SkillSheep extends ActiveSkill {
     public final static int MAX_DISTANCE = 120;
 
-    public SkillPig(Heroes plugin) {
-        super(plugin, "Pig");
-        setDescription("spawns 1-3 pigs");
-        setUsage("/skill pig");
+    public SkillSheep(Heroes plugin) {
+        super(plugin, "Sheep");
+        setDescription("Create sheep");
+        setUsage("/skill sheep");
         setArgumentRange(0, 0);
-        setIdentifiers(new String[]{"skill pig"});
+        setIdentifiers(new String[]{"skill sheep"});
         
         setTypes(SkillType.DARK, SkillType.SUMMON, SkillType.SILENCABLE);
     }
@@ -39,16 +39,16 @@ public class SkillPig extends ActiveSkill {
                         BlockFace.UP);
         double rand = Math.random();
         player.getWorld().spawnCreature(wTargetBlock.getLocation(),
-                        CreatureType.PIG);
+                        CreatureType.SHEEP);
         int count = 1;
         if (rand > .7) {
             player.getWorld().spawnCreature(wTargetBlock.getLocation(),
-                        CreatureType.PIG);
+                        CreatureType.SHEEP);
             count++;
         }
         if (rand > .9) {
             player.getWorld().spawnCreature(wTargetBlock.getLocation(),
-                        CreatureType.PIG);
+                        CreatureType.SHEEP);
             count++;
         }
         broadcast(player.getLocation(), "" + count + "x Multiplier!");

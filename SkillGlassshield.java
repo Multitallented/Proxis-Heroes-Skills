@@ -4,6 +4,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.config.ConfigurationNode;
 
 import com.herocraftonline.dev.heroes.Heroes;
+import com.herocraftonline.dev.heroes.api.SkillResult;
 import com.herocraftonline.dev.heroes.effects.EffectType;
 import com.herocraftonline.dev.heroes.effects.PeriodicExpirableEffect;
 import com.herocraftonline.dev.heroes.hero.Hero;
@@ -48,7 +49,7 @@ public class SkillGlassshield extends ActiveSkill {
         expireText = getSetting(null, "expire-text", "%hero%s %skill% fades as the wind dies down!").replace("%hero%", "$1").replace("%skill%", "$2");
     }
     @Override
-    public boolean use(Hero hero, String[] args) {
+    public SkillResult use(Hero hero, String[] args) {
         Player player = hero.getPlayer();
         int minDuration = (int) getSetting(hero, "min_duration", 20000,false);
         if (minDuration < 1000 || minDuration > 60000) {
@@ -67,7 +68,7 @@ public class SkillGlassshield extends ActiveSkill {
         Messaging.send(player, "Duration " + duration/1000 + "s");
         GlassshieldEffect gEffect = new GlassshieldEffect(this, "Glassshield", 200, duration);
         hero.addEffect(gEffect);
-        return true;
+        return SkillResult.NORMAL;
     }
     
     public class GlassshieldEffect extends PeriodicExpirableEffect{

@@ -4,6 +4,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import com.herocraftonline.dev.heroes.Heroes;
+import com.herocraftonline.dev.heroes.api.SkillResult;
 import com.herocraftonline.dev.heroes.effects.common.SafeFallEffect;
 import com.herocraftonline.dev.heroes.hero.Hero;
 import com.herocraftonline.dev.heroes.skill.ActiveSkill;
@@ -31,7 +32,7 @@ public class SkillJump extends ActiveSkill {
     }
 
     @Override
-    public boolean use(Hero hero, String[] args) {
+    public SkillResult use(Hero hero, String[] args) {
         Player player = hero.getPlayer();
         float jumpMult = (float) getSetting(hero, "jump-force-multiplier", 1.0, false);
         float pitch = player.getEyeLocation().getPitch();
@@ -50,6 +51,6 @@ public class SkillJump extends ActiveSkill {
         hero.addEffect(new SafeFallEffect(this, duration));
         broadcastExecuteText(hero);
         
-        return true;
+        return SkillResult.NORMAL;
     }
 }

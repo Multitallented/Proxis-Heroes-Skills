@@ -5,6 +5,7 @@ import java.util.List;
 import org.bukkit.entity.Entity;
 
 import com.herocraftonline.dev.heroes.Heroes;
+import com.herocraftonline.dev.heroes.api.SkillResult;
 import com.herocraftonline.dev.heroes.effects.common.StunEffect;
 import com.herocraftonline.dev.heroes.hero.Hero;
 import com.herocraftonline.dev.heroes.skill.ActiveSkill;
@@ -34,7 +35,7 @@ public class SkillWrestle extends ActiveSkill {
     }
 
     @Override
-    public boolean use(Hero hero, String[] args) {
+    public SkillResult use(Hero hero, String[] args) {
         int radius = (int) getSetting(hero, Setting.RADIUS.node(), 3, false);
         radius = radius < 2 ? 3 : radius;
         List<Entity> entities = hero.getPlayer().getNearbyEntities(radius, radius, radius);
@@ -50,7 +51,7 @@ public class SkillWrestle extends ActiveSkill {
         
         
         broadcastExecuteText(hero);
-        return true;
+        return SkillResult.NORMAL;
     }
 
 }
