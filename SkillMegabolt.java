@@ -26,7 +26,7 @@ public class SkillMegabolt extends ActiveSkill {
     @Override
     public ConfigurationNode getDefaultConfig() {
         ConfigurationNode node = super.getDefaultConfig();
-        node.setProperty("radius", 30);
+        node.setProperty(Setting.RADIUS.node(), 30);
         node.setProperty(Setting.DAMAGE.node(), 14);
         return node;
     }
@@ -34,25 +34,23 @@ public class SkillMegabolt extends ActiveSkill {
     @Override
     public SkillResult use(Hero hero, String[] args) {
         Player player = hero.getPlayer();
-        int maxDistance = getSetting(hero, "radius", 30, false);
+        int maxDistance = getSetting(hero, Setting.RADIUS.node(), 30, false);
         int yDistance = maxDistance < 128 ? maxDistance : 128;
         int damage = (int) getSetting(hero, Setting.DAMAGE.node(), 14, false);
         for ( Entity wMonster : player.getNearbyEntities(maxDistance, yDistance, maxDistance) ) {
             if (wMonster instanceof Player) {
                 Hero friendly = getPlugin().getHeroManager().getHero((Player) wMonster);
-                if (hero.getParty() != null && !hero.getParty().getMembers().contains(friendly)) {
-                    if (damageCheck(friendly.getPlayer(), player)) {
-                        Player tPlayer = friendly.getPlayer();
-                        addSpellTarget(tPlayer, hero);
-                        player.getWorld().strikeLightningEffect(tPlayer.getLocation());
-                        tPlayer.damage(damage, player);
-                    }
+                if (damageCheck(player, friendly.getPlayer())) {
+                    Player tPlayer = friendly.getPlayer();
+                    player.getWorld().strikeLightningEffect(tPlayer.getLocation());
+                    tPlayer.damage(damage, player);
                 }
             } else if (wMonster instanceof LivingEntity) {
                 wMonster.getWorld().strikeLightningEffect(wMonster.getLocation());
                 ((LivingEntity) wMonster).damage(damage, player);
             }
         }
+        broadcastExecuteText(hero);
         return SkillResult.NORMAL;
     }
 
