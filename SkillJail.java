@@ -56,9 +56,10 @@ public class SkillJail extends TargettedSkill {
     public void init() {
         super.init();
         jailLocations = new HashSet<Location>();
-        jailText = SkillConfigManager.getUseSetting(null, this, "jail-text", "%target% was jailed!").replace("%target%", "$1");
-        for (String n : SkillConfigManager.getUseSettingKeys(null, this, null)) {
-            String retrievedNode = SkillConfigManager.getUseSetting(null, this, n, (String) null);
+        jailText = SkillConfigManager.getRaw(this, "jail-text",  "%target% was jailed!").replace("%target%", "$1");
+        for (String n : SkillConfigManager.getRawKeys(this, null)) {
+            System.out.println(n == null);
+            String retrievedNode = SkillConfigManager.getRaw(this, n, (String) null);
             String[] splitArg = retrievedNode.split(":");
             if (retrievedNode != null && splitArg.length == 4) {
                 World world = plugin.getServer().getWorld(splitArg[0]);
