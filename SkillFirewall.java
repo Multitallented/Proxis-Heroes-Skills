@@ -1,18 +1,19 @@
 package com.herocraftonline.dev.heroes.skill.skills;
 
 import org.bukkit.entity.Player;
-import org.bukkit.util.config.ConfigurationNode;
 
 import com.herocraftonline.dev.heroes.Heroes;
 import com.herocraftonline.dev.heroes.api.SkillResult;
 import com.herocraftonline.dev.heroes.hero.Hero;
 import com.herocraftonline.dev.heroes.skill.ActiveSkill;
+import com.herocraftonline.dev.heroes.skill.SkillConfigManager;
 import com.herocraftonline.dev.heroes.skill.SkillType;
 import com.herocraftonline.dev.heroes.util.Messaging;
 import com.herocraftonline.dev.heroes.util.Setting;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.configuration.ConfigurationSection;
 
 public class SkillFirewall extends ActiveSkill {
     public final static int MAX_DISTANCE = 120;
@@ -28,12 +29,12 @@ public class SkillFirewall extends ActiveSkill {
     }
 
     @Override
-    public ConfigurationNode getDefaultConfig() {
-        ConfigurationNode node = super.getDefaultConfig();
-        node.setProperty(Setting.MAX_DISTANCE.node(), 25);
-        node.setProperty("max duration seconds", 10);
-        node.setProperty("min duration seconds", 5);
-        node.setProperty("max length", 9);
+    public ConfigurationSection getDefaultConfig() {
+        ConfigurationSection node = super.getDefaultConfig();
+        node.set(Setting.MAX_DISTANCE.node(), 25);
+        node.set("max duration seconds", 10);
+        node.set("min duration seconds", 5);
+        node.set("max length", 9);
         return node;
     }
 
@@ -41,7 +42,7 @@ public class SkillFirewall extends ActiveSkill {
     public SkillResult use(Hero hero, String[] args) {
         Player player = hero.getPlayer();
         broadcastExecuteText(hero);
-        int range = Math.abs((int) getSetting(hero, Setting.MAX_DISTANCE.node(), 25, false));
+        int range = Math.abs((int) SkillConfigManager.getUseSetting(hero, this, Setting.MAX_DISTANCE.node(), 25, false));
         if (!(range > 0 && range <= 100)) {
             range = 25;
         }
@@ -49,12 +50,18 @@ public class SkillFirewall extends ActiveSkill {
         final Material matOne = wTargetBlock.getRelative(BlockFace.UP).getType();
         final Block wOneUp = wTargetBlock.getRelative(BlockFace.UP);
         BlockFace wDirection = getPlayerDirection(player);
-        int addedduration = Math.abs((int) getSetting(hero, "max duration seconds", 5, false) -
-                getSetting(hero, "min duration seconds", 5, false));
+        for (Player p : plugin.getServer().getOnlinePlayers()) {
+            if (!p.equals(player) && p.getWorld().equals(wTargetBlock.getWorld()) && Math.sqrt(p.getLocation().distanceSquared(wTargetBlock.getLocation())) <= 6
+                    && !damageCheck(p, player))
+                return SkillResult.INVALID_TARGET;
+        }
+        
+        int addedduration = Math.abs((int) SkillConfigManager.getUseSetting(hero, this, "max duration seconds", 5, false) -
+                SkillConfigManager.getUseSetting(hero, this, "min duration seconds", 5, false));
         if (!(addedduration > 0 && addedduration <= 600)) {
             addedduration = 5;
         }
-        int minDuration = Math.abs((int) getSetting(hero, "min duration seconds", 5, false));
+        int minDuration = Math.abs((int) SkillConfigManager.getUseSetting(hero, this, "min duration seconds", 5, false));
         if (!(minDuration > 0 && minDuration <= 300)) {
             minDuration = 5;
         }
@@ -72,7 +79,7 @@ public class SkillFirewall extends ActiveSkill {
             final Material matNine = retrieveBlock(wOneUp,0,-4,0).getType();
             if (retrieveBlock(wTargetBlock,0,0,2).getType() == Material.AIR) {
                 setRelativeBlocks(wTargetBlock, BlockFace.UP, Material.FIRE, 0);
-                int sideLength = Math.abs((int) (getSetting(hero, "max length", 9, false)/2));
+                int sideLength = Math.abs((int) (SkillConfigManager.getUseSetting(hero, this, "max length", 9, false)/2));
                 if (!(sideLength > 0 && sideLength <= 6)) {
                     sideLength = 4;
                 }

@@ -39,7 +39,7 @@ public class SkillFirespin extends ActiveSkill {
         Player player = hero.getPlayer();
         final Block wTarget = player.getTargetBlock(null, SkillConfigManager.getUseSetting(hero, this, "max-distance", 30, false));
         for (Player p : plugin.getServer().getOnlinePlayers()) {
-            if (p.getWorld().equals(wTarget.getWorld()) && p.getLocation().distanceSquared(wTarget.getLocation()) <= 2 && !p.equals(player)
+            if (p.getWorld().equals(wTarget.getWorld()) && Math.sqrt(p.getLocation().distanceSquared(wTarget.getLocation())) <= 2 && !p.equals(player)
                     && !damageCheck(p, player)) {
                 return SkillResult.INVALID_TARGET;
             }
