@@ -1,17 +1,18 @@
 package com.herocraftonline.dev.heroes.skill.skills;
 
 import org.bukkit.entity.Player;
-import org.bukkit.util.config.ConfigurationNode;
 
 import com.herocraftonline.dev.heroes.Heroes;
 import com.herocraftonline.dev.heroes.api.SkillResult;
 import com.herocraftonline.dev.heroes.hero.Hero;
 import com.herocraftonline.dev.heroes.skill.ActiveSkill;
+import com.herocraftonline.dev.heroes.skill.SkillConfigManager;
 import com.herocraftonline.dev.heroes.skill.SkillType;
 import com.herocraftonline.dev.heroes.util.Messaging;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.configuration.ConfigurationSection;
 
 public class SkillFirespin extends ActiveSkill {
     public final static int MAX_DISTANCE = 120;
@@ -27,16 +28,22 @@ public class SkillFirespin extends ActiveSkill {
     }
 
     @Override
-    public ConfigurationNode getDefaultConfig() {
-        ConfigurationNode node = super.getDefaultConfig();
-        node.setProperty("max-distance", 30);
+    public ConfigurationSection getDefaultConfig() {
+        ConfigurationSection node = super.getDefaultConfig();
+        node.set("max-distance", 30);
         return node;
     }
 
     @Override
     public SkillResult use(Hero hero, String[] args) {
         Player player = hero.getPlayer();
-        final Block wTarget = player.getTargetBlock(null, getSetting(hero, "max-distance", 30, false));
+        final Block wTarget = player.getTargetBlock(null, SkillConfigManager.getUseSetting(hero, this, "max-distance", 30, false));
+        for (Player p : plugin.getServer().getOnlinePlayers()) {
+            if (p.getWorld().equals(wTarget.getWorld()) && p.getLocation().distanceSquared(wTarget.getLocation()) <= 2 && !p.equals(player)
+                    && !damageCheck(p, player)) {
+                return SkillResult.INVALID_TARGET;
+            }
+        }
         final long duration = (long) (Math.rint(Math.random()*5)*20 + 100);
         broadcastExecuteText(hero);
         Messaging.send(player, "Duration: " + duration/20 + "s");
