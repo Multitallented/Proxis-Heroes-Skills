@@ -1,0 +1,117 @@
+package com.herocraftonline.dev.heroes.skill.skills;
+
+
+import com.herocraftonline.dev.heroes.Heroes;
+import com.herocraftonline.dev.heroes.api.SkillResult;
+import com.herocraftonline.dev.heroes.effects.common.InvulnerabilityEffect;
+import com.herocraftonline.dev.heroes.hero.Hero;
+import com.herocraftonline.dev.heroes.skill.ActiveSkill;
+import com.herocraftonline.dev.heroes.skill.SkillConfigManager;
+import com.herocraftonline.dev.heroes.skill.SkillType;
+import com.herocraftonline.dev.heroes.util.Setting;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
+
+public class SkillGuardianAngel extends ActiveSkill {
+
+    public SkillGuardianAngel(Heroes plugin) {
+        super(plugin, "GuardianAngel");
+        setDescription("Gives you and your party within $1 blocks invuln for $2s");
+        setUsage("/skill guardianangel");
+        setArgumentRange(0, 0);
+        setIdentifiers(new String[]{"skill guardianangel"});
+
+        setTypes(SkillType.BUFF, SkillType.SILENCABLE);
+    }
+
+    @Override
+    public String getDescription(Hero hero) {
+        double radius = SkillConfigManager.getUseSetting(hero, this, Setting.RADIUS.node(), 10, false) +
+                (SkillConfigManager.getUseSetting(hero, this, "radius-increase", 0.0, false) * hero.getLevel());
+        double duration = SkillConfigManager.getUseSetting(hero, this, Setting.DURATION.node(), 12000, false) +
+                (SkillConfigManager.getUseSetting(hero, this, "duration-increase", 0, false) * hero.getLevel());
+        String description = getDescription().replace("$1", radius + "").replace("$2", duration + "");
+        
+        //COOLDOWN
+        int cooldown = (SkillConfigManager.getUseSetting(hero, this, Setting.COOLDOWN.node(), 0, false)
+                - SkillConfigManager.getUseSetting(hero, this, Setting.COOLDOWN_REDUCE.node(), 0, false) * hero.getLevel()) / 1000;
+        if (cooldown > 0) {
+            description += " CD:" + cooldown + "s";
+        }
+        
+        //MANA
+        int mana = SkillConfigManager.getUseSetting(hero, this, Setting.MANA.node(), 10, false)
+                - (SkillConfigManager.getUseSetting(hero, this, Setting.MANA_REDUCE.node(), 0, false) * hero.getLevel());
+        if (mana > 0) {
+            description += " M:" + mana;
+        }
+        
+        //HEALTH_COST
+        int healthCost = SkillConfigManager.getUseSetting(hero, this, Setting.HEALTH_COST, 0, false) - 
+                (SkillConfigManager.getUseSetting(hero, this, Setting.HEALTH_COST_REDUCE, mana, true) * hero.getLevel());
+        if (healthCost > 0) {
+            description += " HP:" + healthCost;
+        }
+        
+        //STAMINA
+        int staminaCost = SkillConfigManager.getUseSetting(hero, this, Setting.STAMINA.node(), 0, false)
+                - (SkillConfigManager.getUseSetting(hero, this, Setting.STAMINA_REDUCE.node(), 0, false) * hero.getLevel());
+        if (staminaCost > 0) {
+            description += " FP:" + staminaCost;
+        }
+        
+        //DELAY
+        int delay = SkillConfigManager.getUseSetting(hero, this, Setting.DELAY.node(), 0, false) / 1000;
+        if (delay > 0) {
+            description += " W:" + delay + "s";
+        }
+        
+        //EXP
+        int exp = SkillConfigManager.getUseSetting(hero, this, Setting.EXP.node(), 0, false);
+        if (exp > 0) {
+            description += " XP:" + exp;
+        }
+        return description;
+    }
+    
+    @Override
+    public ConfigurationSection getDefaultConfig() {
+        ConfigurationSection node = super.getDefaultConfig();
+        node.set(Setting.RADIUS.node(), 10);
+        node.set("radius-increase", 0);
+        node.set(Setting.DURATION.node(), 12000); // in Milliseconds - 10 minutes
+        node.set("duration-increase", 0);
+        return node;
+    }
+
+    @Override
+    public SkillResult use(Hero hero, String[] args) {
+        Player player = hero.getPlayer();
+        long duration = SkillConfigManager.getUseSetting(hero, this, Setting.DURATION.node(), 12000, false) +
+                (SkillConfigManager.getUseSetting(hero, this, "duration-increase", 0, false) * hero.getLevel());
+
+        InvulnerabilityEffect iEffect = new InvulnerabilityEffect(this, duration);
+        if (!hero.hasParty()) {
+            hero.addEffect(iEffect);
+        } else {
+            int rangeSquared = (int) Math.pow(SkillConfigManager.getUseSetting(hero, this, Setting.RADIUS.node(), 10, false) +
+                (SkillConfigManager.getUseSetting(hero, this, "radius-increase", 0.0, false) * hero.getLevel()), 2);
+            for (Hero pHero : hero.getParty().getMembers()) {
+                Player pPlayer = pHero.getPlayer();
+                if (!pPlayer.getWorld().equals(player.getWorld())) {
+                    continue;
+                }
+                if (pPlayer.getLocation().distanceSquared(player.getLocation()) > rangeSquared) {
+                    continue;
+                }
+                pHero.addEffect(iEffect);
+            }
+        }
+
+        broadcastExecuteText(hero);
+        return SkillResult.NORMAL;
+    }
+
+    
+
+}

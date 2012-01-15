@@ -1,0 +1,203 @@
+package com.herocraftonline.dev.heroes.skill.skills;
+
+
+import com.herocraftonline.dev.heroes.Heroes;
+import com.herocraftonline.dev.heroes.api.SkillResult;
+import com.herocraftonline.dev.heroes.classes.HeroClass.ExperienceType;
+import com.herocraftonline.dev.heroes.effects.EffectType;
+import com.herocraftonline.dev.heroes.effects.ExpirableEffect;
+import com.herocraftonline.dev.heroes.hero.Hero;
+import com.herocraftonline.dev.heroes.skill.ActiveSkill;
+import com.herocraftonline.dev.heroes.skill.Skill;
+import com.herocraftonline.dev.heroes.skill.SkillConfigManager;
+import com.herocraftonline.dev.heroes.skill.SkillType;
+import com.herocraftonline.dev.heroes.util.Setting;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Creature;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
+import org.bukkit.event.Event.Priority;
+import org.bukkit.event.Event.Type;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.event.entity.EntityListener;
+
+public class SkillDeathFromAbove extends ActiveSkill {
+    private String applyText;
+    private String removeText;
+
+    public SkillDeathFromAbove(Heroes plugin) {
+        super(plugin, "DeathFromAbove");
+        setDescription("For $1s, deals your fall damage times $2 to players within $3 blocks of you.");
+        setUsage("/skill deathfromabove");
+        setArgumentRange(0, 1);
+        setIdentifiers("skill deathfromabove", "skill dfa");
+        setTypes(SkillType.DAMAGING, SkillType.PHYSICAL, SkillType.MOVEMENT);
+        
+        registerEvent(Type.ENTITY_DAMAGE, new DeathFromAboveListener(this), Priority.Normal);
+    }
+
+    @Override
+    public String getDescription(Hero hero) {
+        long duration = (long) (SkillConfigManager.getUseSetting(hero, this, Setting.DURATION.node(), 10000, false) +
+                (SkillConfigManager.getUseSetting(hero, this, "duration-increase", 0.0, false) * hero.getLevel())) / 1000;
+        duration = duration > 0 ? duration : 0;
+        double damageMulti = (SkillConfigManager.getUseSetting(hero, this, "damage-multiplier", 1.0, false) +
+                (SkillConfigManager.getUseSetting(hero, this, "damage-multi-increase", 0.0, false) * hero.getLevel()));
+        damageMulti = damageMulti > 0 ? damageMulti : 0;
+        int radius = (int) (SkillConfigManager.getUseSetting(hero, this, Setting.RADIUS.node(), 5, false) +
+                (SkillConfigManager.getUseSetting(hero, this, "radius-increase", 0.0, false) * hero.getLevel()));
+        radius = radius > 0 ? radius : 0;
+        String description = getDescription().replace("$1", duration + "").replace("$2", damageMulti + "").replace("$3", radius + "");
+        
+        //COOLDOWN
+        int cooldown = (SkillConfigManager.getUseSetting(hero, this, Setting.COOLDOWN.node(), 0, false)
+                - SkillConfigManager.getUseSetting(hero, this, Setting.COOLDOWN_REDUCE.node(), 0, false) * hero.getLevel()) / 1000;
+        if (cooldown > 0) {
+            description += " CD:" + cooldown + "s";
+        }
+        
+        //MANA
+        int mana = SkillConfigManager.getUseSetting(hero, this, Setting.MANA.node(), 10, false)
+                - (SkillConfigManager.getUseSetting(hero, this, Setting.MANA_REDUCE.node(), 0, false) * hero.getLevel());
+        if (mana > 0) {
+            description += " M:" + mana;
+        }
+        
+        //HEALTH_COST
+        int healthCost = SkillConfigManager.getUseSetting(hero, this, Setting.HEALTH_COST, 0, false) - 
+                (SkillConfigManager.getUseSetting(hero, this, Setting.HEALTH_COST_REDUCE, mana, true) * hero.getLevel());
+        if (healthCost > 0) {
+            description += " HP:" + healthCost;
+        }
+        
+        //STAMINA
+        int staminaCost = SkillConfigManager.getUseSetting(hero, this, Setting.STAMINA.node(), 0, false)
+                - (SkillConfigManager.getUseSetting(hero, this, Setting.STAMINA_REDUCE.node(), 0, false) * hero.getLevel());
+        if (staminaCost > 0) {
+            description += " FP:" + staminaCost;
+        }
+        
+        //DELAY
+        int delay = SkillConfigManager.getUseSetting(hero, this, Setting.DELAY.node(), 0, false) / 1000;
+        if (delay > 0) {
+            description += " W:" + delay + "s";
+        }
+        
+        //EXP
+        int exp = SkillConfigManager.getUseSetting(hero, this, Setting.EXP.node(), 0, false);
+        if (exp > 0) {
+            description += " XP:" + exp;
+        }
+        return description;
+    }
+
+    @Override
+    public ConfigurationSection getDefaultConfig() {
+        ConfigurationSection node = super.getDefaultConfig();
+        node.set(Setting.DURATION.node(), 10000);
+        node.set("duration-increase", 0);
+        node.set(Setting.RADIUS.node(), 5);
+        node.set("radius-increase", 0);
+        node.set("damage-multiplier", 1.0);
+        node.set("damage-multi-increase", 0);
+        node.set("safefall", "true");
+        node.set("exp-per-player-hit", 0);
+        node.set("exp-per-creature-hit", 0);
+        node.set(Setting.APPLY_TEXT.node(), "%hero% is ready to pounce!");
+        node.set("remove-text", "%hero% is not ready to pounce anymore!");
+        return node;
+    }
+    
+    @Override
+    public void init() {
+        super.init();
+        applyText = SkillConfigManager.getUseSetting(null, this, Setting.APPLY_TEXT.node(), "%hero% is ready to pounce!").replace("%hero%", "$1");
+        removeText = SkillConfigManager.getUseSetting(null, this, "remove-text", "%hero% is not ready to pounce anymore!").replace("%hero%", "$1");
+    }
+
+    @Override
+    public SkillResult use(Hero hero, String[] strings) {
+        broadcastExecuteText(hero);
+        long duration = (long) (SkillConfigManager.getUseSetting(hero, this, Setting.DURATION.node(), 10000, false) +
+                (SkillConfigManager.getUseSetting(hero, this, "duration-increase", 0.0, false) * hero.getLevel()));
+        duration = duration > 0 ? duration : 0;
+        hero.addEffect(new DeathFromAboveEffect(this, duration));
+        return SkillResult.NORMAL;
+    }
+
+    public class DeathFromAboveEffect extends ExpirableEffect {
+        public DeathFromAboveEffect(Skill skill, long duration) {
+            super(skill, "DeathFromAbove", duration);
+            this.types.add(EffectType.BENEFICIAL);
+            this.types.add(EffectType.DISPELLABLE);
+            this.types.add(EffectType.PHYSICAL);
+        }
+        @Override
+        public void apply(Hero hero) {
+            super.apply(hero);
+            broadcast(hero.getPlayer().getLocation(), applyText, hero.getPlayer().getDisplayName());
+        }
+        
+        @Override
+        public void remove(Hero hero) {
+            super.remove(hero);
+            broadcast(hero.getPlayer().getLocation(), removeText, hero.getPlayer().getDisplayName());
+        }
+    }
+    
+    public class DeathFromAboveListener extends EntityListener {
+        private Skill skill;
+        public DeathFromAboveListener(Skill skill) {
+            this.skill = skill;
+        }
+        @Override
+        public void onEntityDamage(EntityDamageEvent event) {
+            if (event.isCancelled() || event.getDamage() == 0 || !(event.getEntity() instanceof Player)
+                    || event.getCause() != DamageCause.FALL)
+                return;
+            Player player = (Player) event.getEntity();
+            Hero hero = plugin.getHeroManager().getHero(player);
+            if (!hero.hasEffect("DeathFromAbove")) {
+                return;
+            }
+            int radius = (int) (SkillConfigManager.getUseSetting(hero, skill, Setting.RADIUS.node(), 5, false) +
+                    (SkillConfigManager.getUseSetting(hero, skill, "radius-increase", 0.0, false) * hero.getLevel()));
+            radius = radius > 0 ? radius : 0;
+            int damage = event.getDamage();
+            double damageMulti = (SkillConfigManager.getUseSetting(hero, skill, "damage-multiplier", 1.0, false) +
+                    (SkillConfigManager.getUseSetting(hero, skill, "damage-multi-increase", 0.0, false) * hero.getLevel()));
+            damageMulti = damageMulti > 0 ? damageMulti : 0;
+            damage = (int) (damage * damageMulti);
+            double expPlayer = SkillConfigManager.getUseSetting(hero, skill, "exp-per-player-hit", 0, false);
+            double expCreature = SkillConfigManager.getUseSetting(hero, skill, "exp-per-creature-hit", 0, false);
+            double exp = 0;
+            for (Entity e : player.getNearbyEntities(radius,radius,radius)) {
+                if (e instanceof Player && !(e.equals(player))) {
+                    Player p = (Player) e;
+                    p.damage(damage, player);
+                    if (expPlayer > 0) {
+                        exp += expPlayer;
+                    }
+                } else if (e instanceof Creature) {
+                    Creature c = (Creature) e;
+                    c.damage(damage, player);
+                    if (expCreature > 0) {
+                        exp += expCreature;
+                    }
+                }
+            }
+            if (exp > 0) {
+                if (hero.hasParty()) {
+                    hero.getParty().gainExp(exp, ExperienceType.SKILL, player.getLocation());
+                } else {
+                    hero.gainExp(exp, ExperienceType.SKILL);
+                }
+            }
+            if (SkillConfigManager.getUseSetting(hero, skill, "safefall", "true").equals("true")) {
+                event.setDamage(0);
+                event.setCancelled(true);
+            }
+        }
+    }
+}
