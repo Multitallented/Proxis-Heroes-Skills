@@ -18,11 +18,11 @@ import org.bukkit.configuration.ConfigurationSection;
 public class SkillArrowblast extends ActiveSkill {
     private Map<Hero, Integer> shootingPlayers = new HashMap<Hero, Integer>();
     public SkillArrowblast(Heroes plugin) {
-        super(plugin, "Arrowstorm");
+        super(plugin, "Arrowblast");
         setDescription("Shoots between $1-$2 arrows at a rate of $3-$4 per second.");
-        setUsage("/skill arrowstorm");
+        setUsage("/skill arrowblast");
         setArgumentRange(0, 0);
-        setIdentifiers(new String[]{"skill arrowstorm"});
+        setIdentifiers(new String[]{"skill arrowblast"});
         
         setTypes(SkillType.PHYSICAL, SkillType.DAMAGING);
     }
