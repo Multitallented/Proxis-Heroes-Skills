@@ -1,6 +1,5 @@
 package com.herocraftonline.dev.heroes.skill.skills;
 
-import org.bukkit.entity.LivingEntity;
 
 import com.herocraftonline.dev.heroes.Heroes;
 import com.herocraftonline.dev.heroes.api.SkillResult;
@@ -8,18 +7,19 @@ import com.herocraftonline.dev.heroes.classes.HeroClass.ExperienceType;
 import com.herocraftonline.dev.heroes.effects.EffectType;
 import com.herocraftonline.dev.heroes.effects.ExpirableEffect;
 import com.herocraftonline.dev.heroes.hero.Hero;
+import com.herocraftonline.dev.heroes.skill.ActiveSkill;
 import com.herocraftonline.dev.heroes.skill.Skill;
 import com.herocraftonline.dev.heroes.skill.SkillConfigManager;
 import com.herocraftonline.dev.heroes.skill.SkillType;
-import com.herocraftonline.dev.heroes.skill.TargettedSkill;
 import com.herocraftonline.dev.heroes.util.Setting;
 import net.minecraft.server.MobEffect;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
-public class SkillDespair extends TargettedSkill {
+public class SkillDespair extends ActiveSkill {
     private String applyText;
     private String expireText;
 
@@ -111,38 +111,40 @@ public class SkillDespair extends TargettedSkill {
     }
 
     @Override
-    public SkillResult use(Hero hero, LivingEntity target, String[] args) {
+    public SkillResult use(Hero hero, String[] args) {
         int radius = (int) (SkillConfigManager.getUseSetting(hero, this, Setting.RADIUS.node(), 10, false) +
                 (SkillConfigManager.getUseSetting(hero, this, "radius-increase", 0.0, false) * hero.getLevel()));
         radius = radius > 0 ? radius : 0;
         int radiusSquared = (int) Math.pow(radius, 2);
         int duration = (int) (SkillConfigManager.getUseSetting(hero, this, Setting.DURATION.node(), 10000, false) +
                 (SkillConfigManager.getUseSetting(hero, this, "duration-increase", 0.0, false) * hero.getLevel())) / 50;
-        duration = duration > 0 ? duration : 0;;
+        duration = duration > 0 ? duration : 0;
         Player player = hero.getPlayer();
         Location location = player.getLocation();
         int damage = SkillConfigManager.getUseSetting(hero, this, Setting.DAMAGE.node(), 0, false);
-        boolean doesntHaveParty = hero.getParty() != null;
         int exp = SkillConfigManager.getUseSetting(hero, this, "exp-per-blinded-player", 0, false);
-        for (Player p : plugin.getServer().getOnlinePlayers()) {
-            if (location.distanceSquared(p.getLocation()) < radiusSquared && (doesntHaveParty || !hero.getParty().isPartyMember(p)) &&
-                    damageCheck(p, player)) {
-                Hero dHero = plugin.getHeroManager().getHero(p);
-                dHero.addEffect(new DespairEffect(this, duration, player));
-                if (damage > 0) {
-                    p.damage(damage, player);
-                }
-                if (exp > 0) {
-                    if (hero.hasParty()) {
-                        hero.getParty().gainExp(exp, ExperienceType.SKILL, location);
-                    } else {
-                        hero.gainExp(exp, ExperienceType.SKILL);
+        for (Entity e : player.getNearbyEntities(radius, radius, radius)) {
+            if ((e instanceof Player) && location.distanceSquared(e.getLocation()) < radiusSquared) {
+                Player p = (Player) e;
+                if ((!hero.hasParty() || !hero.getParty().isPartyMember(p)) && damageCheck(p, player)) {
+                    Hero dHero = plugin.getHeroManager().getHero(p);
+                    dHero.addEffect(new DespairEffect(this, duration, player));
+                    if (damage > 0) {
+                        p.damage(damage, player);
+                    }
+                    if (exp > 0) {
+                        if (hero.hasParty()) {
+                            hero.getParty().gainExp(exp, ExperienceType.SKILL, location);
+                        } else {
+                            hero.gainExp(exp, ExperienceType.SKILL);
+                        }
                     }
                 }
                 
             }
         }
-        return null;
+        broadcastExecuteText(hero);
+        return SkillResult.NORMAL;
     }
 
     public class DespairEffect extends ExpirableEffect {
