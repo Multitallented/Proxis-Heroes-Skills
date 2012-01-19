@@ -42,7 +42,7 @@ public class SkillGrace extends PassiveSkill {
 
     @Override
     public String getDescription(Hero hero) {
-        long duration = SkillConfigManager.getUseSetting(hero, this, Setting.DURATION.node(), 300000, false);
+        long duration = SkillConfigManager.getUseSetting(hero, this, Setting.DURATION.node(), 300000, false) / 1000;
         String description = getDescription().replace("$1", duration + "");
         return description;
     }

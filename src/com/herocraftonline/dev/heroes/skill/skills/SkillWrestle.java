@@ -19,7 +19,7 @@ public class SkillWrestle extends ActiveSkill {
     
     public SkillWrestle(Heroes plugin) {
         super(plugin, "Wrestle");
-        setDescription("$1s root and silence + $3 damage for all players within $2 blocks you.");
+        setDescription("$1s stun + $3 damage for all players within $2 blocks you.");
         setUsage("/skill wrestle");
         setArgumentRange(0, 0);
         setIdentifiers(new String[] { "skill wrestle" });

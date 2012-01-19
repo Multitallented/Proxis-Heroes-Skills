@@ -126,7 +126,7 @@ public class SkillDespair extends ActiveSkill {
         for (Entity e : player.getNearbyEntities(radius, radius, radius)) {
             if ((e instanceof Player) && location.distanceSquared(e.getLocation()) < radiusSquared) {
                 Player p = (Player) e;
-                if ((!hero.hasParty() || !hero.getParty().isPartyMember(p)) && damageCheck(p, player)) {
+                if (!p.equals(player) && (!hero.hasParty() || !hero.getParty().isPartyMember(p)) && damageCheck(p, player)) {
                     Hero dHero = plugin.getHeroManager().getHero(p);
                     dHero.addEffect(new DespairEffect(this, duration, player));
                     if (damage > 0) {
