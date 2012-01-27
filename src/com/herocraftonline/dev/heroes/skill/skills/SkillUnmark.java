@@ -96,7 +96,7 @@ public class SkillUnmark extends ActiveSkill {
                         Player currentPlayer = currentHero.getPlayer();
                         currentHero.setSkillSetting("Recall", "world", "");
                         Messaging.send(currentPlayer, "Your Mark was eradicated by $1", hero.getPlayer().getDisplayName());
-                        plugin.getHeroManager().saveHero(currentPlayer);
+                        plugin.getHeroManager().saveHero(currentPlayer, false);
                     }
                 }
             } catch (Exception e) {
