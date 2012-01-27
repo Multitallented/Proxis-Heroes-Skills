@@ -90,8 +90,8 @@ public class SkillUnmark extends ActiveSkill {
                 if (currentHero.getSkillSettings("Recall") != null) {
                     int radius = (int) (SkillConfigManager.getUseSetting(hero, this, Setting.RADIUS.node(), 30, false)
                             + (SkillConfigManager.getUseSetting(hero, this, "radius-increase", 0, false) * hero.getLevel()));
-                    double currentX = (Double) currentHero.getSkillSettings("Recall").get("x");
-                    double currentZ = (Double) currentHero.getSkillSettings("Recall").get("z");
+                    double currentX = currentHero.getSkillSettings("Recall").getDouble("x");
+                    double currentZ = currentHero.getSkillSettings("Recall").getDouble("z");
                     if (Math.abs(currentX - x) <= radius && Math.abs(currentZ - z) <= radius) {
                         Player currentPlayer = currentHero.getPlayer();
                         currentHero.setSkillSetting("Recall", "world", "");
