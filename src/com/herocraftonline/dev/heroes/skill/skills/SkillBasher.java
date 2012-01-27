@@ -2,8 +2,6 @@ package com.herocraftonline.dev.heroes.skill.skills;
 
 
 import com.herocraftonline.dev.heroes.Heroes;
-import com.herocraftonline.dev.heroes.api.HeroesEventListener;
-import com.herocraftonline.dev.heroes.api.WeaponDamageEvent;
 import com.herocraftonline.dev.heroes.classes.HeroClass.ExperienceType;
 import com.herocraftonline.dev.heroes.effects.common.StunEffect;
 import com.herocraftonline.dev.heroes.hero.Hero;
@@ -12,11 +10,14 @@ import com.herocraftonline.dev.heroes.skill.Skill;
 import com.herocraftonline.dev.heroes.skill.SkillConfigManager;
 import com.herocraftonline.dev.heroes.skill.SkillType;
 import com.herocraftonline.dev.heroes.util.Setting;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
-import org.bukkit.event.Event.Priority;
-import org.bukkit.event.Event.Type;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
 public class SkillBasher extends PassiveSkill {
@@ -27,7 +28,8 @@ public class SkillBasher extends PassiveSkill {
         setDescription("Passive $1% chance to stun for $2s on attack.");
         setTypes(SkillType.COUNTER, SkillType.BUFF);
         
-        registerEvent(Type.CUSTOM_EVENT, new SkillHeroListener(this), Priority.Normal);
+        Bukkit.getServer().getPluginManager().registerEvents(new SkillHeroListener(this), plugin);
+        //registerEvent(Type.CUSTOM_EVENT, new SkillHeroListener(this), Priority.Normal);
     }
     
     @Override
@@ -68,19 +70,21 @@ public class SkillBasher extends PassiveSkill {
         basher = this;
     }
     
-    public class SkillHeroListener extends HeroesEventListener {
+    public class SkillHeroListener implements Listener {
         private final Skill skill;
         public SkillHeroListener(Skill skill) {
             this.skill = skill;
         }
-        
-        @Override
-        public void onWeaponDamage(WeaponDamageEvent event) {
-            if (event.isCancelled() || event.getDamage() == 0 || event.getCause() != DamageCause.ENTITY_ATTACK || !(event.getEntity() instanceof Player))
+        @EventHandler()
+        public void onEntityDamage(EntityDamageEvent event) {
+            if (event.isCancelled() || event.getDamage() == 0 || event.getCause() != DamageCause.ENTITY_ATTACK
+                    || !(event.getEntity() instanceof Player) || !(event instanceof EntityDamageByEntityEvent)) {
                 return;
+            }
+            EntityDamageByEntityEvent edby = (EntityDamageByEntityEvent) event;
             Player tPlayer = (Player) event.getEntity();
-            if (event.getDamager() instanceof Player) {
-                Player player = (Player) event.getDamager();
+            if (edby.getDamager() instanceof Player) {
+                Player player = (Player) edby.getDamager();
                 Hero hero = plugin.getHeroManager().getHero(player);
                 
                 if (hero.hasEffect("Basher")) {
@@ -109,9 +113,9 @@ public class SkillBasher extends PassiveSkill {
                         }
                     }
                 }
-            } else if (event.getDamager() instanceof Projectile) {
-                if (((Projectile) event.getDamager()).getShooter() instanceof Player) {
-                    Player player = (Player) ((Projectile) event.getDamager()).getShooter();
+            } else if (edby.getDamager() instanceof Projectile) {
+                if (((Projectile) edby.getDamager()).getShooter() instanceof Player) {
+                    Player player = (Player) ((Projectile) edby.getDamager()).getShooter();
                     Hero hero = plugin.getHeroManager().getHero(player);
 
                     if (hero.hasEffect("Basher")) {
