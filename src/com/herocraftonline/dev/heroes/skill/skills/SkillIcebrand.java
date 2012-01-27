@@ -2,7 +2,6 @@ package com.herocraftonline.dev.heroes.skill.skills;
 
 
 import com.herocraftonline.dev.heroes.Heroes;
-import com.herocraftonline.dev.heroes.api.HeroesEventListener;
 import com.herocraftonline.dev.heroes.api.WeaponDamageEvent;
 import com.herocraftonline.dev.heroes.classes.HeroClass.ExperienceType;
 import com.herocraftonline.dev.heroes.effects.common.SlowEffect;
@@ -12,12 +11,12 @@ import com.herocraftonline.dev.heroes.skill.Skill;
 import com.herocraftonline.dev.heroes.skill.SkillConfigManager;
 import com.herocraftonline.dev.heroes.skill.SkillType;
 import com.herocraftonline.dev.heroes.util.Setting;
-import java.text.DecimalFormat;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
-import org.bukkit.event.Event.Priority;
-import org.bukkit.event.Event.Type;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
 public class SkillIcebrand extends PassiveSkill {
@@ -27,8 +26,8 @@ public class SkillIcebrand extends PassiveSkill {
         super(plugin, "Icebrand");
         setDescription("Passive $1% chance to slow for $2s on attack.");
         setTypes(SkillType.COUNTER, SkillType.BUFF);
-        
-        registerEvent(Type.CUSTOM_EVENT, new SkillHeroListener(this), Priority.Normal);
+        Bukkit.getServer().getPluginManager().registerEvents(new SkillHeroListener(this), plugin);
+        //registerEvent(Type.CUSTOM_EVENT, new SkillHeroListener(this), Priority.Normal);
     }
     
     @Override
@@ -69,13 +68,13 @@ public class SkillIcebrand extends PassiveSkill {
         icebrand = this;
     }
     
-    public class SkillHeroListener extends HeroesEventListener {
+    public class SkillHeroListener implements Listener {
         private final Skill skill;
         public SkillHeroListener(Skill skill) {
             this.skill = skill;
         }
         
-        @Override
+        @EventHandler
         public void onWeaponDamage(WeaponDamageEvent event) {
             if (event.isCancelled() || event.getDamage() == 0 || event.getCause() != DamageCause.ENTITY_ATTACK || !(event.getEntity() instanceof Player))
                 return;

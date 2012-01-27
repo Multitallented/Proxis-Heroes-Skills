@@ -17,14 +17,15 @@ import com.herocraftonline.dev.heroes.util.Setting;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityListener;
 import org.bukkit.util.Vector;
 
 public class SkillPounce extends ActiveSkill
@@ -39,7 +40,8 @@ public class SkillPounce extends ActiveSkill
     setArgumentRange(0, 1);
     setIdentifiers(new String[] { "skill pounce" });
     setTypes(new SkillType[] { SkillType.PHYSICAL, SkillType.MOVEMENT, SkillType.HARMFUL });
-    registerEvent(Event.Type.ENTITY_DAMAGE, new ChargeEntityListener(this), Event.Priority.Lowest);
+    Bukkit.getServer().getPluginManager().registerEvents(new ChargeEntityListener(this), plugin);
+    //registerEvent(Event.Type.ENTITY_DAMAGE, new ChargeEntityListener(this), Event.Priority.Lowest);
   }
 
     @Override
@@ -188,7 +190,7 @@ public class SkillPounce extends ActiveSkill
     return SkillResult.NORMAL;
   }
 
-  public class ChargeEntityListener extends EntityListener
+  public class ChargeEntityListener implements Listener
   {
     private final Skill skill;
 
@@ -197,7 +199,7 @@ public class SkillPounce extends ActiveSkill
       this.skill = arg2;
     }
 
-    @Override
+    @EventHandler()
     public void onEntityDamage(EntityDamageEvent paramEntityDamageEvent)
     {
       Heroes.debug.startTask("HeroesSkillListener");
@@ -276,8 +278,10 @@ public class SkillPounce extends ActiveSkill
           if (l3 > 0L)
             plugin.getEffectManager().addEntityEffect(localLivingEntity, new RootEffect(this.skill, l3));
         }
-        if (j > 0)
-          this.skill.damageEntity(localLivingEntity, localPlayer1, j, EntityDamageEvent.DamageCause.ENTITY_ATTACK);
+        if (j > 0) {
+            localLivingEntity.damage(j, localPlayer1);
+        }
+          //this.skill.damageEntity(localLivingEntity, localPlayer1, j, EntityDamageEvent.DamageCause.ENTITY_ATTACK);
       }
       Heroes.debug.stopTask("HeroesSkillListener");
     }

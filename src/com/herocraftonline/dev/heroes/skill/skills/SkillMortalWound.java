@@ -4,7 +4,6 @@ import org.bukkit.entity.Player;
 
 import com.herocraftonline.dev.heroes.Heroes;
 import com.herocraftonline.dev.heroes.api.HeroRegainHealthEvent;
-import com.herocraftonline.dev.heroes.api.HeroesEventListener;
 import com.herocraftonline.dev.heroes.api.SkillResult;
 import com.herocraftonline.dev.heroes.effects.EffectType;
 import com.herocraftonline.dev.heroes.hero.Hero;
@@ -14,11 +13,12 @@ import com.herocraftonline.dev.heroes.skill.SkillConfigManager;
 import com.herocraftonline.dev.heroes.skill.SkillType;
 import com.herocraftonline.dev.heroes.skill.TargettedSkill;
 import com.herocraftonline.dev.heroes.util.Setting;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.event.Event.Priority;
-import org.bukkit.event.Event.Type;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityListener;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 
@@ -33,8 +33,9 @@ public class SkillMortalWound extends TargettedSkill {
         setUsage("/skill mortalwound");
         setArgumentRange(0, 0);
         setIdentifiers(new String[]{"skill mortalwound"});
-        registerEvent(Type.ENTITY_REGAIN_HEALTH, new SkillEntityListener(), Priority.Normal);
-        registerEvent(Type.CUSTOM_EVENT, new SkillEventListener(), Priority.Normal);
+        Bukkit.getServer().getPluginManager().registerEvents(new SkillEntityListener(), plugin);
+        //registerEvent(Type.ENTITY_REGAIN_HEALTH, new SkillEntityListener(), Priority.Normal);
+        //registerEvent(Type.CUSTOM_EVENT, new SkillEventListener(), Priority.Normal);
         
         setTypes(SkillType.PHYSICAL, SkillType.DEBUFF, SkillType.DAMAGING);
     }
@@ -180,9 +181,9 @@ public class SkillMortalWound extends TargettedSkill {
         }
     }
     
-    public class SkillEventListener extends HeroesEventListener {
+    public class SkillEventListener implements Listener {
         
-        @Override
+        @EventHandler()
         public void onHeroRegainHealth(HeroRegainHealthEvent event) {
             if (event.getHero().hasEffect("MortalWound")) {
                 event.setAmount(0);

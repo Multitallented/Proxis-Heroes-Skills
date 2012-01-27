@@ -10,17 +10,17 @@ import com.herocraftonline.dev.heroes.util.Messaging;
 import com.herocraftonline.dev.heroes.util.Setting;
 import java.util.Date;
 import java.util.HashMap;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
-import org.bukkit.event.Event.Priority;
-import org.bukkit.event.Event.Type;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.entity.EntityListener;
 
 public class SkillGrace extends PassiveSkill {
     
@@ -34,8 +34,10 @@ public class SkillGrace extends PassiveSkill {
         setDescription("Disables pvp and spells for $1s after death");
         setArgumentRange(0, 0);
         
-	registerEvent(Type.ENTITY_DEATH, new EntityDeathListener(this), Priority.Normal);
-        registerEvent(Type.ENTITY_DAMAGE, new EntityDamageListener(this), Priority.Normal);
+        Bukkit.getServer().getPluginManager().registerEvents(new EntityDeathListener(this), plugin);
+        Bukkit.getServer().getPluginManager().registerEvents(new EntityDamageListener(this), plugin);
+	//registerEvent(Type.ENTITY_DEATH, new EntityDeathListener(this), Priority.Normal);
+        //registerEvent(Type.ENTITY_DAMAGE, new EntityDamageListener(this), Priority.Normal);
         
         setTypes(SkillType.COUNTER);
     }
@@ -72,13 +74,13 @@ public class SkillGrace extends PassiveSkill {
             return SkillConfigManager.getUseSetting(plugin.getHeroManager().getHero(player), this, Setting.DURATION.node(), 300000, false) / 1000;
         }
     }
-    public class EntityDeathListener extends EntityListener {
+    public class EntityDeathListener implements Listener {
         private Skill skill;
         public EntityDeathListener(Skill skill) {
             this.skill = skill;
         }
 	
-        @Override
+        @EventHandler
         public void onEntityDeath(EntityDeathEvent event) {
             if (event.getEntity() instanceof Player) {
                 Player player = (Player) event.getEntity();
@@ -89,12 +91,12 @@ public class SkillGrace extends PassiveSkill {
         }
     }
     
-    public class EntityDamageListener extends EntityListener {
+    public class EntityDamageListener implements Listener {
         private Skill skill;
         public EntityDamageListener(Skill skill) {
             this.skill = skill;
         }
-        @Override
+        @EventHandler
         public void onEntityDamage(EntityDamageEvent event){
             if (event.getEntity() instanceof Player){
                 Player player = (Player) event.getEntity();

@@ -2,10 +2,7 @@ package com.herocraftonline.dev.heroes.skill.skills;
 
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event.Priority;
-import org.bukkit.event.Event.Type;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityListener;
 
 import com.herocraftonline.dev.heroes.Heroes;
 import com.herocraftonline.dev.heroes.api.SkillResult;
@@ -17,8 +14,11 @@ import com.herocraftonline.dev.heroes.skill.Skill;
 import com.herocraftonline.dev.heroes.skill.SkillConfigManager;
 import com.herocraftonline.dev.heroes.skill.SkillType;
 import com.herocraftonline.dev.heroes.util.Setting;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Projectile;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
@@ -33,8 +33,8 @@ public class SkillVoid extends ActiveSkill {
         setUsage("/skill void");
         setArgumentRange(0, 0);
         setIdentifiers(new String[] { "skill void" });
-
-        registerEvent(Type.ENTITY_DAMAGE, new SkillEntityListener(), Priority.Normal);
+        Bukkit.getServer().getPluginManager().registerEvents(new SkillEntityListener(), plugin);
+        //registerEvent(Type.ENTITY_DAMAGE, new SkillEntityListener(), Priority.Normal);
         
         setTypes(SkillType.COUNTER, SkillType.BUFF, SkillType.DARK);
     }
@@ -139,9 +139,9 @@ public class SkillVoid extends ActiveSkill {
 
     }
 
-    public class SkillEntityListener extends EntityListener {
+    public class SkillEntityListener implements Listener {
 
-        @Override
+        @EventHandler
         public void onEntityDamage(EntityDamageEvent event) {
             if (event.isCancelled())
                 return;

@@ -10,12 +10,15 @@ import com.herocraftonline.dev.heroes.skill.Skill;
 import com.herocraftonline.dev.heroes.skill.SkillConfigManager;
 import com.herocraftonline.dev.heroes.skill.SkillType;
 import com.herocraftonline.dev.heroes.util.Setting;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityListener;
+import org.bukkit.event.entity.EntityRegainHealthEvent;
+import org.bukkit.event.entity.EntityRegainHealthEvent.RegainReason;
 
 public class SkillInvertDamage extends ActiveSkill
 {
@@ -30,7 +33,8 @@ public class SkillInvertDamage extends ActiveSkill
     setArgumentRange(0, 0);
     setIdentifiers(new String[] { "skill invertdamage" });
     setTypes(new SkillType[] { SkillType.SILENCABLE, SkillType.BUFF, SkillType.MANA });
-    registerEvent(Event.Type.ENTITY_DAMAGE, new SkillEntityListener(), Event.Priority.Normal);
+    Bukkit.getServer().getPluginManager().registerEvents(new SkillEntityListener(), plugin);
+    //registerEvent(Event.Type.ENTITY_DAMAGE, new SkillEntityListener(), Event.Priority.Normal);
   }
 
     @Override
@@ -112,13 +116,13 @@ public class SkillInvertDamage extends ActiveSkill
     return SkillResult.NORMAL;
   }
 
-  public class SkillEntityListener extends EntityListener
+  public class SkillEntityListener implements Listener
   {
     public SkillEntityListener()
     {
     }
 
-        @Override
+    @EventHandler
     public void onEntityDamage(EntityDamageEvent paramEntityDamageEvent)
     {
       if (paramEntityDamageEvent.isCancelled())
@@ -130,15 +134,8 @@ public class SkillInvertDamage extends ActiveSkill
         Hero localHero = plugin.getHeroManager().getHero((Player) localEntity);
         if (localHero.hasEffect("InvertDamage"))
         {
-          double maxHealth = localHero.getMaxHealth(); 
-          double damage = paramEntityDamageEvent.getDamage();
-          double j = localHero.getHealth();
-          if (j + damage > maxHealth) {
-              damage = maxHealth - j;
-          }
-          localHero.setHealth(damage + j);
-          localHero.syncHealth();
-          paramEntityDamageEvent.setCancelled(true);
+            Bukkit.getServer().getPluginManager().callEvent(new EntityRegainHealthEvent(localHero.getPlayer(), paramEntityDamageEvent.getDamage(), RegainReason.CUSTOM));
+            paramEntityDamageEvent.setCancelled(true);
         }
       }
     }

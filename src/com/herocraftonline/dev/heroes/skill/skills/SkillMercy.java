@@ -1,8 +1,6 @@
 package com.herocraftonline.dev.heroes.skill.skills;
 
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event.Priority;
-import org.bukkit.event.Event.Type;
 
 import com.herocraftonline.dev.heroes.Heroes;
 import com.herocraftonline.dev.heroes.api.SkillResult;
@@ -14,14 +12,15 @@ import com.herocraftonline.dev.heroes.skill.Skill;
 import com.herocraftonline.dev.heroes.skill.SkillConfigManager;
 import com.herocraftonline.dev.heroes.skill.SkillType;
 import com.herocraftonline.dev.heroes.util.Messaging;
-import com.herocraftonline.dev.heroes.util.Setting;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Projectile;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
-import org.bukkit.event.entity.EntityListener;
 
 public class SkillMercy extends ActiveSkill {
     
@@ -34,7 +33,8 @@ public class SkillMercy extends ActiveSkill {
         setIdentifiers("skill mercy");
 
         setTypes(SkillType.COUNTER);
-        registerEvent(Type.ENTITY_DAMAGE, new EntityDamageListener(this), Priority.Normal);
+        Bukkit.getServer().getPluginManager().registerEvents(new EntityDamageListener(this), plugin);
+        //registerEvent(Type.ENTITY_DAMAGE, new EntityDamageListener(this), Priority.Normal);
     }
 
     @Override
@@ -86,13 +86,13 @@ public class SkillMercy extends ActiveSkill {
         }
     }
     
-    public class EntityDamageListener extends EntityListener {
+    public class EntityDamageListener implements Listener {
         private Skill skill;
         public EntityDamageListener(Skill skill) {
             this.skill = skill;
         }
 
-        @Override
+        @EventHandler
         public void onEntityDamage(EntityDamageEvent event) {
             if (event.isCancelled())
                 return;

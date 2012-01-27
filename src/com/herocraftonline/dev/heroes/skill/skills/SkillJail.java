@@ -15,16 +15,15 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event.Priority;
-import org.bukkit.event.Event.Type;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityListener;
-import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
 public class SkillJail extends TargettedSkill {
@@ -40,8 +39,10 @@ public class SkillJail extends TargettedSkill {
         setIdentifiers(new String[]{"skill jail"});
 
         setTypes(SkillType.HARMFUL, SkillType.TELEPORT);
-        registerEvent(Type.PLAYER_RESPAWN, new RespawnListener(), Priority.Highest);
-        registerEvent(Type.ENTITY_DAMAGE, new JailListener(), Priority.Monitor);
+        Bukkit.getServer().getPluginManager().registerEvents(new RespawnListener(), plugin);
+        Bukkit.getServer().getPluginManager().registerEvents(new JailListener(), plugin);
+        //registerEvent(Type.PLAYER_RESPAWN, new RespawnListener(), Priority.Highest);
+        //registerEvent(Type.ENTITY_DAMAGE, new JailListener(), Priority.Monitor);
     }
 
     @Override
@@ -154,8 +155,8 @@ public class SkillJail extends TargettedSkill {
         }
     }
     
-    public class JailListener extends EntityListener {
-        @Override
+    public class JailListener implements Listener {
+        @EventHandler
         public void onEntityDamage(EntityDamageEvent event) {
             if (event.isCancelled() || !(event.getEntity() instanceof Player) || event.getDamage() == 0 || jailLocations.isEmpty() ||
                     event.getDamage() < plugin.getHeroManager().getHero((Player) event.getEntity()).getHealth()) {
@@ -176,8 +177,8 @@ public class SkillJail extends TargettedSkill {
         }
     }
     
-    public class RespawnListener extends PlayerListener {
-        @Override
+    public class RespawnListener implements Listener {
+        @EventHandler
         public void onPlayerRespawn(final PlayerRespawnEvent event) {
             if (!jailedPlayers.isEmpty() && jailedPlayers.containsKey(event.getPlayer())) {
                 event.setRespawnLocation(jailedPlayers.get(event.getPlayer()));

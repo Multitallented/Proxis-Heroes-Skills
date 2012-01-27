@@ -9,23 +9,12 @@ import com.herocraftonline.dev.heroes.skill.SkillType;
 import com.herocraftonline.dev.heroes.skill.TargettedSkill;
 import com.herocraftonline.dev.heroes.util.Messaging;
 import com.herocraftonline.dev.heroes.util.Setting;
-import java.util.HashSet;
-import java.util.Set;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.TNTPrimed;
-import org.bukkit.event.Event.Priority;
-import org.bukkit.event.Event.Type;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
-import org.bukkit.event.entity.EntityExplodeEvent;
-import org.bukkit.event.entity.EntityListener;
 
 public class SkillFalconPunch extends TargettedSkill {
 
-    private Set<TNTPrimed> explosions = new HashSet<TNTPrimed>();
     public SkillFalconPunch(Heroes plugin) {
         super(plugin, "FalconPunch");
         setDescription("$1s stun $2 damage. R:$3");
@@ -33,9 +22,6 @@ public class SkillFalconPunch extends TargettedSkill {
         setArgumentRange(0, 0);
         setIdentifiers("skill falconpunch");
         setTypes(SkillType.PHYSICAL, SkillType.HARMFUL, SkillType.DAMAGING, SkillType.DEBUFF);
-        PunchListener pl = new PunchListener(this);
-        registerEvent(Type.ENTITY_EXPLODE, pl, Priority.Normal);
-        registerEvent(Type.ENTITY_DAMAGE, pl, Priority.Normal);
     }
 
     @Override
@@ -102,8 +88,6 @@ public class SkillFalconPunch extends TargettedSkill {
         node.set("damage-increase", 0);
         node.set(Setting.MAX_DISTANCE.node(), 4);
         node.set(Setting.MAX_DISTANCE_INCREASE.node(), 0);
-        node.set("use-explosions", false);
-        node.set("explosion-block-damage", false);
         return node;
     }
     
@@ -135,56 +119,6 @@ public class SkillFalconPunch extends TargettedSkill {
         if (damage > 0) {
             tPlayer.damage(damage, player);
         }
-        if (!SkillConfigManager.getUseSetting(hero, this, "use-explosions", false)) {
-            return SkillResult.NORMAL;
-        }
-        TNTPrimed tnt = tPlayer.getWorld().spawn(tPlayer.getLocation(), TNTPrimed.class);
-        tnt.setFuseTicks(1);
-        if (explosions.size() > 5) {
-            explosions = new HashSet<TNTPrimed>();
-        }
-        explosions.add(tnt);
         return SkillResult.NORMAL;
-    }
-    
-    
-    public class PunchListener extends EntityListener {
-        private final SkillFalconPunch skill;
-
-        public PunchListener(SkillFalconPunch aThis) {
-            this.skill = aThis;
-        }
-        
-        @Override
-        public void onEntityExplode(EntityExplodeEvent event) {
-            if (event.isCancelled() || explosions.isEmpty() || !(event.getEntity() instanceof TNTPrimed)) {
-                return;
-            }
-            TNTPrimed tnt = (TNTPrimed) event.getEntity();
-            if (!explosions.contains(tnt)) {
-                return;
-            }
-            if (!SkillConfigManager.getRaw(skill, "explosion-block-damage", false)) {
-                event.setCancelled(true);
-                return;
-            }
-        }
-        
-        @Override
-        public void onEntityDamage(EntityDamageEvent event) {
-            if (event.isCancelled() || explosions.isEmpty() || !(event.getEntity() instanceof Player) || !(event instanceof EntityDamageByEntityEvent)
-                    || event.getCause() != DamageCause.ENTITY_EXPLOSION) {
-                return;
-            }
-            EntityDamageByEntityEvent edby = (EntityDamageByEntityEvent) event;
-            if (!(edby.getDamager() instanceof TNTPrimed)) {
-                return;
-            }
-            TNTPrimed tnt = (TNTPrimed) edby.getDamager();
-            if (explosions.contains(tnt)) {
-                event.setCancelled(true);
-                return;
-            }
-        }
     }
 }

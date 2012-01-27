@@ -2,7 +2,6 @@ package com.herocraftonline.dev.heroes.skill.skills;
 
 
 import com.herocraftonline.dev.heroes.Heroes;
-import com.herocraftonline.dev.heroes.api.HeroesEventListener;
 import com.herocraftonline.dev.heroes.api.WeaponDamageEvent;
 import com.herocraftonline.dev.heroes.hero.Hero;
 import com.herocraftonline.dev.heroes.skill.PassiveSkill;
@@ -10,11 +9,12 @@ import com.herocraftonline.dev.heroes.skill.Skill;
 import com.herocraftonline.dev.heroes.skill.SkillConfigManager;
 import com.herocraftonline.dev.heroes.skill.SkillType;
 import com.herocraftonline.dev.heroes.util.Setting;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
-import org.bukkit.event.Event.Priority;
-import org.bukkit.event.Event.Type;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
 public class SkillCritical extends PassiveSkill {
@@ -23,8 +23,8 @@ public class SkillCritical extends PassiveSkill {
         super(plugin, "Critical");
         setDescription("Passive $1% chance to do $2 times damage.");
         setTypes(SkillType.COUNTER, SkillType.BUFF);
-        
-        registerEvent(Type.CUSTOM_EVENT, new SkillHeroListener(this), Priority.Normal);
+        Bukkit.getServer().getPluginManager().registerEvents(new SkillHeroListener(this), plugin);
+        //registerEvent(Type.CUSTOM_EVENT, new SkillHeroListener(this), Priority.Normal);
     }
 
     @Override
@@ -49,13 +49,13 @@ public class SkillCritical extends PassiveSkill {
         return node;
     }
     
-    public class SkillHeroListener extends HeroesEventListener {
+    public class SkillHeroListener implements Listener {
         private Skill skill;
         public SkillHeroListener(Skill skill) {
             this.skill = skill;
         }
         
-        @Override
+        @EventHandler
         public void onWeaponDamage(WeaponDamageEvent event) {
             if (event.isCancelled() ||event.getCause() != DamageCause.ENTITY_ATTACK || !(event.getEntity() instanceof Player) ||
                     event.getDamage() == 0)

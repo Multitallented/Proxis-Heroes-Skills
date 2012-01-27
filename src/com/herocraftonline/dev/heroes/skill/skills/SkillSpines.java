@@ -7,10 +7,13 @@ import com.herocraftonline.dev.heroes.skill.Skill;
 import com.herocraftonline.dev.heroes.skill.SkillConfigManager;
 import com.herocraftonline.dev.heroes.skill.SkillType;
 import com.herocraftonline.dev.heroes.util.Setting;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event.Priority;
 import org.bukkit.event.Event.Type;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityListener;
@@ -22,8 +25,8 @@ public class SkillSpines extends PassiveSkill {
         super(plugin, "Spines");
         setDescription("Passive $1% chance to shoot arrows when hit. CD:$2");
         setTypes(SkillType.COUNTER, SkillType.HARMFUL);
-        
-        registerEvent(Type.ENTITY_DAMAGE, new SkillHeroListener(this), Priority.Normal);
+        Bukkit.getServer().getPluginManager().registerEvents(new SkillHeroListener(this), plugin);
+        //registerEvent(Type.ENTITY_DAMAGE, new SkillHeroListener(this), Priority.Normal);
     }
 
     @Override
@@ -48,12 +51,12 @@ public class SkillSpines extends PassiveSkill {
         return node;
     }
     
-    public class SkillHeroListener extends EntityListener {
+    public class SkillHeroListener implements Listener {
         private Skill skill;
         public SkillHeroListener(Skill skill) {
             this.skill = skill;
         }
-        @Override
+        @EventHandler
         public void onEntityDamage(EntityDamageEvent event) {
             if (event.isCancelled() || event.getDamage() == 0 || event.getCause() != DamageCause.ENTITY_ATTACK || !(event.getEntity() instanceof Player))
                 return;

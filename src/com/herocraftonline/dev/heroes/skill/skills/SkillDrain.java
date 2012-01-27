@@ -2,7 +2,6 @@ package com.herocraftonline.dev.heroes.skill.skills;
 
 
 import com.herocraftonline.dev.heroes.Heroes;
-import com.herocraftonline.dev.heroes.api.HeroesEventListener;
 import com.herocraftonline.dev.heroes.api.WeaponDamageEvent;
 import com.herocraftonline.dev.heroes.classes.HeroClass.ExperienceType;
 import com.herocraftonline.dev.heroes.hero.Hero;
@@ -11,11 +10,12 @@ import com.herocraftonline.dev.heroes.skill.Skill;
 import com.herocraftonline.dev.heroes.skill.SkillConfigManager;
 import com.herocraftonline.dev.heroes.skill.SkillType;
 import com.herocraftonline.dev.heroes.util.Setting;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
-import org.bukkit.event.Event.Priority;
-import org.bukkit.event.Event.Type;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
 public class SkillDrain extends PassiveSkill {
@@ -24,8 +24,8 @@ public class SkillDrain extends PassiveSkill {
         super(plugin, "Drain");
         setDescription("Passive $1 mana drain on attack. CD:$2");
         setTypes(SkillType.COUNTER, SkillType.BUFF, SkillType.MANA);
-        
-        registerEvent(Type.CUSTOM_EVENT, new SkillHeroListener(this), Priority.Normal);
+        Bukkit.getServer().getPluginManager().registerEvents(new SkillHeroListener(this), plugin);
+        //registerEvent(Type.CUSTOM_EVENT, new SkillHeroListener(this), Priority.Normal);
     }
 
     @Override
@@ -51,12 +51,12 @@ public class SkillDrain extends PassiveSkill {
         return node;
     }
     
-    public class SkillHeroListener extends HeroesEventListener {
+    public class SkillHeroListener implements Listener {
         private Skill skill;
         public SkillHeroListener(Skill skill) {
             this.skill = skill;
         }
-        @Override
+        @EventHandler
         public void onWeaponDamage(WeaponDamageEvent event) {
             if (event.getCause() != DamageCause.ENTITY_ATTACK || event.isCancelled() || event.getDamage() == 0)
                 return;

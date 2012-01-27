@@ -109,14 +109,14 @@ public class SkillBurningPresence extends ActiveSkill {
         public void apply(Hero hero) {
             super.apply(hero);
             Player player = hero.getPlayer();
-            broadcast(player.getLocation(), applyText, player.getDisplayName());
+            broadcast(player.getLocation(), applyText, player.getDisplayName(), "BurningPresence");
         }
 
         @Override
         public void remove(Hero hero) {
             super.remove(hero);
             Player player = hero.getPlayer();
-            broadcast(player.getLocation(), expireText, player.getDisplayName());
+            broadcast(player.getLocation(), expireText, player.getDisplayName(), "BurningPresence");
         }
 
         @Override

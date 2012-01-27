@@ -2,8 +2,6 @@ package com.herocraftonline.dev.heroes.skill.skills;
 
 import org.bukkit.entity.Player;
 import com.herocraftonline.dev.heroes.Heroes;
-import com.herocraftonline.dev.heroes.api.HeroRegainHealthEvent;
-import com.herocraftonline.dev.heroes.api.HeroesEventListener;
 import com.herocraftonline.dev.heroes.api.SkillResult;
 import com.herocraftonline.dev.heroes.effects.EffectType;
 import com.herocraftonline.dev.heroes.hero.Hero;
@@ -13,12 +11,12 @@ import com.herocraftonline.dev.heroes.skill.SkillConfigManager;
 import com.herocraftonline.dev.heroes.skill.SkillType;
 import com.herocraftonline.dev.heroes.skill.TargettedSkill;
 import com.herocraftonline.dev.heroes.util.Setting;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.event.Event.Priority;
-import org.bukkit.event.Event.Type;
-import org.bukkit.event.entity.EntityListener;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 
 public class SkillUnheal extends TargettedSkill {
@@ -33,8 +31,9 @@ public class SkillUnheal extends TargettedSkill {
         setUsage("/skill unheal");
         setArgumentRange(0, 0);
         setIdentifiers(new String[]{"skill unheal"});
-        registerEvent(Type.ENTITY_REGAIN_HEALTH, new SkillEntityListener(), Priority.Normal);
-        registerEvent(Type.CUSTOM_EVENT, new SkillEventListener(), Priority.Normal);
+        Bukkit.getServer().getPluginManager().registerEvents(new SkillEntityListener(), plugin);
+        //registerEvent(Type.ENTITY_REGAIN_HEALTH, new SkillEntityListener(), Priority.Normal);
+        //registerEvent(Type.CUSTOM_EVENT, new SkillEventListener(), Priority.Normal);
         
         setTypes(SkillType.DEBUFF, SkillType.SILENCABLE, SkillType.DARK);
     }
@@ -162,8 +161,8 @@ public class SkillUnheal extends TargettedSkill {
         }
     }
 
-    public class SkillEntityListener extends EntityListener {
-        @Override
+    public class SkillEntityListener implements Listener {
+        @EventHandler
         public void onEntityRegainHealth(EntityRegainHealthEvent event) {
             if (!(event.getEntity() instanceof Player))
                 return;
@@ -175,23 +174,6 @@ public class SkillUnheal extends TargettedSkill {
                 plugin.getDamageManager().addSpellTarget(hero.getPlayer(),hero,null);
                 hero.getPlayer().damage(damage, hero.getPlayer());
                 broadcast(hero.getPlayer().getLocation(), missText, hero.getPlayer().getDisplayName());
-            }
-        }
-    }
-    
-    public class SkillEventListener extends HeroesEventListener {
-        
-        @Override
-        public void onHeroRegainHealth(HeroRegainHealthEvent event) {
-            if (event.isCancelled()) {
-                return;
-            }
-            Hero hero = event.getHero();
-            if (event.getHero().hasEffect("Unheal")) {
-                int damage = event.getAmount();
-                event.setCancelled(true);
-                hero.getPlayer().damage(damage, hero.getPlayer());
-                broadcast(hero.getPlayer().getLocation(), missText, event.getHero().getPlayer().getDisplayName());
             }
         }
     }

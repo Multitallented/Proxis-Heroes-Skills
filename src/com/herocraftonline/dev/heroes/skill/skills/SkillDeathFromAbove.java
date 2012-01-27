@@ -12,15 +12,15 @@ import com.herocraftonline.dev.heroes.skill.Skill;
 import com.herocraftonline.dev.heroes.skill.SkillConfigManager;
 import com.herocraftonline.dev.heroes.skill.SkillType;
 import com.herocraftonline.dev.heroes.util.Setting;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event.Priority;
-import org.bukkit.event.Event.Type;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
-import org.bukkit.event.entity.EntityListener;
 
 public class SkillDeathFromAbove extends ActiveSkill {
     private String applyText;
@@ -33,8 +33,8 @@ public class SkillDeathFromAbove extends ActiveSkill {
         setArgumentRange(0, 1);
         setIdentifiers("skill deathfromabove", "skill dfa");
         setTypes(SkillType.DAMAGING, SkillType.PHYSICAL, SkillType.MOVEMENT);
-        
-        registerEvent(Type.ENTITY_DAMAGE, new DeathFromAboveListener(this), Priority.Normal);
+        Bukkit.getServer().getPluginManager().registerEvents(new DeathFromAboveListener(this), plugin);
+        //registerEvent(Type.ENTITY_DAMAGE, new DeathFromAboveListener(this), Priority.Normal);
     }
 
     @Override
@@ -146,12 +146,12 @@ public class SkillDeathFromAbove extends ActiveSkill {
         }
     }
     
-    public class DeathFromAboveListener extends EntityListener {
+    public class DeathFromAboveListener implements Listener {
         private Skill skill;
         public DeathFromAboveListener(Skill skill) {
             this.skill = skill;
         }
-        @Override
+        @EventHandler
         public void onEntityDamage(EntityDamageEvent event) {
             if (event.isCancelled() || event.getDamage() == 0 || !(event.getEntity() instanceof Player)
                     || event.getCause() != DamageCause.FALL)

@@ -8,10 +8,11 @@ import com.herocraftonline.dev.heroes.skill.Skill;
 import com.herocraftonline.dev.heroes.skill.SkillConfigManager;
 import com.herocraftonline.dev.heroes.skill.SkillType;
 import com.herocraftonline.dev.heroes.util.Setting;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event.Priority;
-import org.bukkit.event.Event.Type;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityListener;
 
@@ -21,8 +22,8 @@ public class SkillDodge extends PassiveSkill {
         super(plugin, "Dodge");
         setDescription("Passive $1% chance to dodge enemy attacks.");
         setTypes(SkillType.COUNTER, SkillType.BUFF);
-        
-        registerEvent(Type.ENTITY_DAMAGE, new SkillHeroListener(this), Priority.Normal);
+        Bukkit.getServer().getPluginManager().registerEvents(new SkillHeroListener(this), plugin);
+        //registerEvent(Type.ENTITY_DAMAGE, new SkillHeroListener(this), Priority.Normal);
     }
 
     @Override
@@ -42,12 +43,12 @@ public class SkillDodge extends PassiveSkill {
         return node;
     }
     
-    public class SkillHeroListener extends EntityListener {
+    public class SkillHeroListener implements Listener {
         private Skill skill;
         public SkillHeroListener(Skill skill) {
             this.skill=skill;
         }
-        @Override
+        @EventHandler
         public void onEntityDamage(EntityDamageEvent event) {
             if (event.isCancelled() || !(event.getEntity() instanceof Player))
                 return;

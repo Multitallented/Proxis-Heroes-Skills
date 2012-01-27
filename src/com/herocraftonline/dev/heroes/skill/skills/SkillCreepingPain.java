@@ -13,13 +13,13 @@ import com.herocraftonline.dev.heroes.skill.SkillType;
 import com.herocraftonline.dev.heroes.skill.TargettedSkill;
 import com.herocraftonline.dev.heroes.util.Setting;
 import java.util.HashMap;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.event.Event.Priority;
-import org.bukkit.event.Event.Type;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityListener;
 
 public class SkillCreepingPain extends TargettedSkill {
     private String applyText;
@@ -33,7 +33,8 @@ public class SkillCreepingPain extends TargettedSkill {
         setUsage("/skill creepingpain");
         setArgumentRange(0, 0);
         setIdentifiers(new String[]{"skill creepingpain"});
-        registerEvent(Type.ENTITY_DAMAGE, new SkillEntityListener(), Priority.Normal);
+        Bukkit.getServer().getPluginManager().registerEvents(new SkillEntityListener(), plugin);
+        //registerEvent(Type.ENTITY_DAMAGE, new SkillEntityListener(), Priority.Normal);
         
         setTypes(SkillType.DEBUFF, SkillType.DAMAGING, SkillType.DARK, SkillType.SILENCABLE);
     }
@@ -170,9 +171,9 @@ public class SkillCreepingPain extends TargettedSkill {
         }
     }
 
-    public class SkillEntityListener extends EntityListener {
+    public class SkillEntityListener implements Listener {
 
-        @Override
+        @EventHandler
         public void onEntityDamage(EntityDamageEvent event) {
             if (event.getEntity() instanceof Player) {
                 Hero hero = plugin.getHeroManager().getHero((Player) event.getEntity());

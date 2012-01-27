@@ -7,13 +7,13 @@ import com.herocraftonline.dev.heroes.skill.Skill;
 import com.herocraftonline.dev.heroes.skill.SkillConfigManager;
 import com.herocraftonline.dev.heroes.skill.SkillType;
 import com.herocraftonline.dev.heroes.util.Setting;
+import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event.Priority;
-import org.bukkit.event.Event.Type;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityListener;
 
 public class SkillReborn extends PassiveSkill {
     private String rebornText;
@@ -22,8 +22,8 @@ public class SkillReborn extends PassiveSkill {
         super(plugin, "Reborn");
         setDescription("Passive gives you $1% hp if not you were about to die. CD:$2");
         setTypes(SkillType.COUNTER, SkillType.DARK);
-        
-        registerEvent(Type.ENTITY_DAMAGE, new RebornListener(this), Priority.Normal);
+        Bukkit.getServer().getPluginManager().registerEvents(new RebornListener(this), plugin);
+        //registerEvent(Type.ENTITY_DAMAGE, new RebornListener(this), Priority.Normal);
     }
 
     @Override
@@ -53,12 +53,12 @@ public class SkillReborn extends PassiveSkill {
         rebornText = SkillConfigManager.getUseSetting(null, this, "on-reborn-text", "%hero% is saved from death, but weakened!").replace("%hero%", "$1");
     }
     
-    public class RebornListener extends EntityListener {
+    public class RebornListener implements Listener {
         private Skill skill;
         public RebornListener(Skill skill) {
             this.skill = skill;
         }
-        @Override
+        @EventHandler
         public void onEntityDamage(EntityDamageEvent event) {
             if (event.isCancelled() || !(event.getEntity() instanceof Player) || event.getDamage() == 0 ||
                     event.getDamage() < plugin.getHeroManager().getHero((Player) event.getEntity()).getHealth()) {
