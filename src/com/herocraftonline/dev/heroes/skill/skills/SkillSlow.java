@@ -15,6 +15,7 @@ import com.herocraftonline.dev.heroes.skill.TargettedSkill;
 import com.herocraftonline.dev.heroes.util.Messaging;
 import com.herocraftonline.dev.heroes.util.Setting;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
 public class SkillSlow extends TargettedSkill {
 
@@ -117,7 +118,8 @@ public class SkillSlow extends TargettedSkill {
         int damage = (int) (SkillConfigManager.getUseSetting(hero, this, Setting.DAMAGE.node(), 0, false) +
                 (SkillConfigManager.getUseSetting(hero, this, "damage-increase", 0.0, false) * hero.getLevel()));
         damage = damage > 0 ? damage : 0;
-        tPlayer.damage(damage, player);
+        damageEntity(tPlayer, player, damage, DamageCause.MAGIC);
+        //tPlayer.damage(damage, player);
         long duration = (long) (SkillConfigManager.getUseSetting(hero, this, Setting.DURATION.node(), 10000, false) +
                 (SkillConfigManager.getUseSetting(hero, this, "duration-increase", 0.0, false) * hero.getLevel()));
         duration = duration > 0 ? duration : 0;

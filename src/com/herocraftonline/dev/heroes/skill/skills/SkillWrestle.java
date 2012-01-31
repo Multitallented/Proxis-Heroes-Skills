@@ -14,6 +14,7 @@ import com.herocraftonline.dev.heroes.skill.SkillType;
 import com.herocraftonline.dev.heroes.util.Setting;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
 public class SkillWrestle extends ActiveSkill {
     
@@ -116,7 +117,8 @@ public class SkillWrestle extends ActiveSkill {
                 Hero tHero = plugin.getHeroManager().getHero(p);
                 tHero.addEffect(cEffect);
                 if (damage > 0) {
-                    p.damage(damage, player);
+                    damageEntity(p, player, damage, DamageCause.MAGIC);
+                    //p.damage(damage, player);
                 }
             }
         }

@@ -11,6 +11,7 @@ import com.herocraftonline.dev.heroes.skill.SkillType;
 import com.herocraftonline.dev.heroes.skill.TargettedSkill;
 import com.herocraftonline.dev.heroes.util.Setting;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
 public class SkillEmpathy extends TargettedSkill {
 
@@ -85,7 +86,7 @@ public class SkillEmpathy extends TargettedSkill {
     @Override
     public SkillResult use(Hero hero, LivingEntity target, String[] args) {
         Player player = hero.getPlayer();
-        if (target == player) {
+        if (target.equals(player)) {
             return SkillResult.INVALID_TARGET;
         }
         int maxDamage = (int) SkillConfigManager.getUseSetting(hero, this, "max-damage", 10, false);
@@ -96,11 +97,12 @@ public class SkillEmpathy extends TargettedSkill {
         if (maxDamage != 0 && damage > maxDamage) {
             damage = maxDamage;
         }
-        if (target instanceof Player && damageCheck((Player) target, player)) {
+        if (target instanceof Player && !damageCheck(player, target)) {
             return SkillResult.CANCELLED;
         }
         damage = (int) Math.round(damage * damageMod);
-        target.damage(damage, player);
+        damageEntity(target, player, damage, DamageCause.MAGIC);
+        //target.damage(damage, player);
         broadcastExecuteText(hero, target);
         return SkillResult.NORMAL;
     }

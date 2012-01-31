@@ -15,6 +15,7 @@ import com.herocraftonline.dev.heroes.util.Setting;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
 public class SkillCripple extends TargettedSkill {
     private String applyText;
@@ -122,7 +123,8 @@ public class SkillCripple extends TargettedSkill {
                     int damage = (int) (SkillConfigManager.getUseSetting(hero, this, Setting.DAMAGE.node(), 5, false) +
                             (SkillConfigManager.getUseSetting(hero, this, "damage-increase", 0.0, false) * hero.getLevel()));
                     damage = damage > 0 ? damage : 0;
-                    tHero.getPlayer().damage(damage, player);
+                    damageEntity(tHero.getPlayer(), player, damage, DamageCause.MAGIC);
+                    //tHero.getPlayer().damage(damage, player);
                     long duration = (long) (SkillConfigManager.getUseSetting(hero, this, Setting.DURATION.node(), 10000, false) +
                             (SkillConfigManager.getUseSetting(hero, this, "duration-increase", 0.0, false) * hero.getLevel()));
                     duration = duration > 0 ? duration : 0;
@@ -158,7 +160,8 @@ public class SkillCripple extends TargettedSkill {
             if (prevLocation != null
                     && Math.abs(hero.getPlayer().getLocation().getX() - prevLocation.getX()) >= 1
                     && Math.abs(hero.getPlayer().getLocation().getZ() - prevLocation.getZ()) >= 1) {
-                hero.getPlayer().damage(damageTick, caster);
+                damageEntity(hero.getPlayer(), caster, damageTick, DamageCause.MAGIC);
+                //hero.getPlayer().damage(damageTick, caster);
             }
             prevLocation = hero.getPlayer().getLocation();
         }

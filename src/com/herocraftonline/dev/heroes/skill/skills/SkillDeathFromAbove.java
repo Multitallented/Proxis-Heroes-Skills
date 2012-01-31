@@ -175,13 +175,15 @@ public class SkillDeathFromAbove extends ActiveSkill {
             for (Entity e : player.getNearbyEntities(radius,radius,radius)) {
                 if (e instanceof Player && !(e.equals(player))) {
                     Player p = (Player) e;
-                    p.damage(damage, player);
+                    damageEntity(p, player, damage, DamageCause.MAGIC);
+                    //p.damage(damage, player);
                     if (expPlayer > 0) {
                         exp += expPlayer;
                     }
                 } else if (e instanceof Creature) {
                     Creature c = (Creature) e;
-                    c.damage(damage, player);
+                    damageEntity(c, player, damage, DamageCause.MAGIC);
+                    //c.damage(damage, player);
                     if (expCreature > 0) {
                         exp += expCreature;
                     }

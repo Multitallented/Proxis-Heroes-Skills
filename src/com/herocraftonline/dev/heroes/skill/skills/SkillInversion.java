@@ -10,6 +10,7 @@ import com.herocraftonline.dev.heroes.skill.SkillType;
 import com.herocraftonline.dev.heroes.skill.TargettedSkill;
 import com.herocraftonline.dev.heroes.util.Setting;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
 public class SkillInversion extends TargettedSkill {
 
@@ -88,20 +89,22 @@ public class SkillInversion extends TargettedSkill {
         }
         Player player = hero.getPlayer();
         Hero enemy = plugin.getHeroManager().getHero((Player) target);
-        if (target == player) {
+        if (target.equals(player)) {
             return SkillResult.INVALID_TARGET;
         }
         int maxDamage = (int) SkillConfigManager.getUseSetting(hero, this, "max-damage", 0, false);
         double damageModifier = SkillConfigManager.getUseSetting(hero, this, "damage-modifier", 1.0, false) +
                 (SkillConfigManager.getUseSetting(hero, this, "damage-modifier-increase", 0.0, false) * hero.getLevel());
         damageModifier = damageModifier > 0 ? damageModifier : 0;
-        int damage = (int) Math.round((100 - hero.getMana()) / 100 * enemy.getMaxHealth() * damageModifier);
+        int damage = (int) ((double) (((double) (100 - enemy.getMana()) / 100)) * enemy.getMaxHealth() * damageModifier);
         if (maxDamage != 0 && damage > maxDamage) {
             damage = maxDamage;
         }
-        if (damageCheck(player, target))
+        if (!damageCheck(player, target)) {
             return SkillResult.CANCELLED;
-        target.damage(damage, player);
+        }
+        damageEntity(target, player, damage, DamageCause.MAGIC);
+        //target.damage(damage, player);
         broadcastExecuteText(hero, target);
         return SkillResult.NORMAL;
     }

@@ -14,6 +14,7 @@ import org.bukkit.Effect;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
 public class SkillSonicBoom extends ActiveSkill {
 
@@ -43,7 +44,7 @@ public class SkillSonicBoom extends ActiveSkill {
         int radius = SkillConfigManager.getUseSetting(hero, this, Setting.RADIUS.node(), 30, false)
                 + (SkillConfigManager.getUseSetting(hero, this, "radius-increase", 0, false) * hero.getLevel());
         int duration = (SkillConfigManager.getUseSetting(hero, this, Setting.DURATION.node(), 10000, false) +
-                (SkillConfigManager.getUseSetting(hero, this, "duration-increase", 0, false) * hero.getLevel()) / 1000);
+                (SkillConfigManager.getUseSetting(hero, this, "duration-increase", 0, false) * hero.getLevel())) / 1000;
         int damage = (SkillConfigManager.getUseSetting(hero, this, Setting.DAMAGE.node(), 0, false) + 
                 (SkillConfigManager.getUseSetting(hero, this, "damage-increase", 0, false) * hero.getLevel()));
         String description = getDescription().replace("$1", radius + "").replace("$2", duration + "").replace("$3", damage + "");
@@ -102,11 +103,13 @@ public class SkillSonicBoom extends ActiveSkill {
         for (Entity e : player.getNearbyEntities(radius, radius, radius)) {
             if (e instanceof Creature) {
                 Creature c = (Creature) e;
-                c.damage(damage, player);
+                damageEntity(c, player, damage, DamageCause.MAGIC);
+                //c.damage(damage, player);
             } else if (e instanceof Player) {
                 Player p = (Player) e;
                 if (damageCheck(player, p)) {
-                    p.damage(damage, player);
+                    damageEntity(p, player, damage, DamageCause.MAGIC);
+                    //p.damage(damage, player);
                     Hero tHero = plugin.getHeroManager().getHero(p);
                     tHero.addEffect(new SilenceEffect(this, duration));
                 }

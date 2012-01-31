@@ -20,6 +20,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
 public class SkillCreepingPain extends TargettedSkill {
     private String applyText;
@@ -159,7 +160,8 @@ public class SkillCreepingPain extends TargettedSkill {
 
             Player player = hero.getPlayer();
             if (affectedPlayers.containsKey(player)&& affectedPlayers.get(player) > 0) {
-                player.damage(affectedPlayers.get(player), caster);
+                damageEntity(player, caster, affectedPlayers.get(player), DamageCause.MAGIC);
+                //player.damage(affectedPlayers.get(player), caster);
                 affectedPlayers.remove(player);
                 broadcast(player.getLocation(), expireText, player.getDisplayName());
             } else {

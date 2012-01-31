@@ -11,18 +11,21 @@ import com.herocraftonline.dev.heroes.skill.SkillConfigManager;
 import com.herocraftonline.dev.heroes.skill.SkillType;
 import com.herocraftonline.dev.heroes.skill.TargettedSkill;
 import com.herocraftonline.dev.heroes.util.Setting;
+import java.util.HashMap;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 
 public class SkillUnheal extends TargettedSkill {
     private String applyText;
     private String expireText;
     private String missText;
+    public HashMap<Hero, Player> affectedPlayers = new HashMap<Hero, Player>();
 
     public SkillUnheal(Heroes plugin) {
         super(plugin, "Unheal");
@@ -126,7 +129,7 @@ public class SkillUnheal extends TargettedSkill {
         long duration = 10000;
         duration = SkillConfigManager.getUseSetting(hero, this, Setting.DURATION.node(), 10000, false) -
                 (SkillConfigManager.getUseSetting(hero, this, "duration-reduce", 0, false) * hero.getLevel());
-        CurseEffect cEffect = new CurseEffect(this, duration);
+        CurseEffect cEffect = new CurseEffect(this, duration, player);
         if (target instanceof Player) {
             Hero tHero = plugin.getHeroManager().getHero((Player) target);
             tHero.addEffect(cEffect);
@@ -136,9 +139,11 @@ public class SkillUnheal extends TargettedSkill {
     }
 
     public class CurseEffect extends ExpirableEffect {
+        private final Player caster;
 
-        public CurseEffect(Skill skill, long duration) {
+        public CurseEffect(Skill skill, long duration, Player caster) {
             super(skill, "Unheal", duration);
+            this.caster = caster;
             this.types.add(EffectType.HARMFUL);
             this.types.add(EffectType.WOUNDING);
             this.types.add(EffectType.DARK);
@@ -149,6 +154,7 @@ public class SkillUnheal extends TargettedSkill {
         public void apply(Hero hero) {
             super.apply(hero);
             Player player = hero.getPlayer();
+            affectedPlayers.put(hero, caster);
             broadcast(player.getLocation(), applyText, player.getDisplayName());
         }
 
@@ -157,6 +163,7 @@ public class SkillUnheal extends TargettedSkill {
             super.remove(hero);
 
             Player player = hero.getPlayer();
+            affectedPlayers.remove(hero);
             broadcast(player.getLocation(), expireText, player.getDisplayName());
         }
     }
@@ -171,8 +178,13 @@ public class SkillUnheal extends TargettedSkill {
                 int damage = event.getAmount();
                 event.setAmount(0);
                 event.setCancelled(true);
-                plugin.getDamageManager().addSpellTarget(hero.getPlayer(),hero,null);
-                hero.getPlayer().damage(damage, hero.getPlayer());
+                addSpellTarget(hero.getPlayer(),hero);
+                try {
+                    damageEntity(hero.getPlayer(), affectedPlayers.get(hero), damage, DamageCause.MAGIC);
+                } catch (Exception e) {
+                    damageEntity(hero.getPlayer(), hero.getPlayer(), damage, DamageCause.MAGIC);
+                }
+                //hero.getPlayer().damage(damage, hero.getPlayer());
                 broadcast(hero.getPlayer().getLocation(), missText, hero.getPlayer().getDisplayName());
             }
         }

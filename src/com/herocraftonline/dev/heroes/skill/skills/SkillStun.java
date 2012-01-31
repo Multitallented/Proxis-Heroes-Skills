@@ -12,6 +12,7 @@ import com.herocraftonline.dev.heroes.util.Setting;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
 public class SkillStun extends TargettedSkill {
 
@@ -112,7 +113,8 @@ public class SkillStun extends TargettedSkill {
             tHero.addEffect(new StunEffect(this, duration));
         }
         if (damage > 0) {
-            tPlayer.damage(damage, player);
+            damageEntity(tPlayer, player, damage, DamageCause.MAGIC);
+            //tPlayer.damage(damage, player);
         }
         return SkillResult.NORMAL;
     }

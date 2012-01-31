@@ -13,6 +13,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
 public class SkillHealBomb extends TargettedSkill {
 
@@ -137,12 +138,14 @@ public class SkillHealBomb extends TargettedSkill {
             if (e instanceof LivingEntity) {
                 if (e instanceof Creature) {
                     Creature c = (Creature) e;
-                    c.damage(damage, player);
+                    damageEntity(c, player, damage, DamageCause.MAGIC);
+                    //c.damage(damage, player);
                     totalExp += exp;
                 } else if (e instanceof Player) {
                     Player p = (Player) e;
                     if (hero.getParty() == null || !hero.getParty().getMembers().contains(plugin.getHeroManager().getHero(p))) {
-                        p.damage(damage, player);
+                        damageEntity(p, player, damage, DamageCause.MAGIC);
+                        //p.damage(damage, player);
                     }
                     totalExp += exp;
                 }

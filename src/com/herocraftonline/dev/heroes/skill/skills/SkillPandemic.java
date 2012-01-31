@@ -14,6 +14,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
 public class SkillPandemic extends ActiveSkill {
     public String applyText;
@@ -121,7 +122,8 @@ public class SkillPandemic extends ActiveSkill {
         for (Entity e : player.getNearbyEntities(radius, radius, radius)) {
             if (e instanceof Monster) {
                 Monster m = (Monster) e;
-                m.damage(damage, player);
+                damageEntity(m, player, damage, DamageCause.MAGIC);
+                //m.damage(damage, player);
             } else if (e instanceof Player) {
                 Player p = (Player) e;
                 plugin.getHeroManager().getHero(p).addEffect(pe);
@@ -159,7 +161,8 @@ public class SkillPandemic extends ActiveSkill {
         public void tick(Hero hero) {
             super.tick(hero);
             if (hero.getHealth() - damage > 1) {
-                hero.getPlayer().damage(damage, caster);
+                damageEntity(hero.getPlayer(), caster, damage, DamageCause.MAGIC);
+                //hero.getPlayer().damage(damage, caster);
             }
         }
     }

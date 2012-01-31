@@ -15,6 +15,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
 public class SkillBurningPresence extends ActiveSkill {
     private String applyText;
@@ -129,12 +130,8 @@ public class SkillBurningPresence extends ActiveSkill {
                 if (entity instanceof LivingEntity) {
                     LivingEntity lEntity = (LivingEntity) entity;
 
-                    // Check if the target is damagable
-                    if (!damageCheck(player, lEntity)) {
-                        continue;
-                    }
-                    addSpellTarget(lEntity, hero);
-                    lEntity.damage(tickDamage, player);
+                    //lEntity.damage(tickDamage, player);
+                    damageEntity(lEntity, player, tickDamage, DamageCause.MAGIC);
                 }
             }
             if (mana > 0) {

@@ -26,6 +26,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.util.Vector;
 
 public class SkillPounce extends ActiveSkill
@@ -279,7 +280,8 @@ public class SkillPounce extends ActiveSkill
             plugin.getEffectManager().addEntityEffect(localLivingEntity, new RootEffect(this.skill, l3));
         }
         if (j > 0) {
-            localLivingEntity.damage(j, localPlayer1);
+            damageEntity(localLivingEntity, localPlayer1, j, DamageCause.MAGIC);
+            //localLivingEntity.damage(j, localPlayer1);
         }
           //this.skill.damageEntity(localLivingEntity, localPlayer1, j, EntityDamageEvent.DamageCause.ENTITY_ATTACK);
       }

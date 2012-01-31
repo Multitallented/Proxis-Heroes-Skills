@@ -14,6 +14,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Enderman;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
 public class SkillMegabolt extends ActiveSkill {
     public SkillMegabolt(Heroes plugin) {
@@ -105,7 +106,8 @@ public class SkillMegabolt extends ActiveSkill {
                 LivingEntity target = (LivingEntity) wMonster;
                 if (damageCheck(player, target)) {
                     target.getWorld().strikeLightningEffect(target.getLocation());
-                    target.damage(damage, player);
+                    damageEntity(target, player, damage, DamageCause.MAGIC); 
+                    //target.damage(damage, player);
                     exp += expTarget;
                 }
             }

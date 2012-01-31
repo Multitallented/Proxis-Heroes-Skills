@@ -15,6 +15,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
 public class SkillIceAura extends ActiveSkill {
     private String applyText;
@@ -130,11 +131,9 @@ public class SkillIceAura extends ActiveSkill {
                     LivingEntity lEntity = (LivingEntity) entity;
 
                     // Check if the target is damagable
-                    if (!damageCheck(player, lEntity)) {
-                        continue;
-                    }
-                    addSpellTarget(lEntity, hero);
-                    lEntity.damage(tickDamage, player);
+                    //addSpellTarget(lEntity, hero);
+                    damageEntity(lEntity, player, tickDamage, DamageCause.MAGIC);
+                    //lEntity.damage(tickDamage, player);
                 }
             }
             if (mana > 0) {
