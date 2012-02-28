@@ -100,71 +100,71 @@ public class SkillFirespin extends ActiveSkill {
         Messaging.send(player, "Duration: " + duration/20 + "s");
         final Material matOne = wTarget.getRelative(BlockFace.UP).getType();
         if (retrieveBlock(wTarget,0,0,2).getType() == Material.AIR) {
-            wTarget.getFace(BlockFace.UP).setType(Material.FIRE);
+            wTarget.getRelative(BlockFace.UP).setType(Material.FIRE);
         }
 
         plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
         @Override
         public void run() {
             final Material matTwo = wTarget.getRelative(BlockFace.EAST).getRelative(BlockFace.UP).getType();
-            if (wTarget.getRelative(BlockFace.EAST).getFace(BlockFace.UP).getType() == Material.AIR) {
-                wTarget.getRelative(BlockFace.EAST).getFace(BlockFace.UP).setType(Material.FIRE);
+            if (wTarget.getRelative(BlockFace.EAST).getRelative(BlockFace.UP).getType() == Material.AIR) {
+                wTarget.getRelative(BlockFace.EAST).getRelative(BlockFace.UP).setType(Material.FIRE);
             }
 
             plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
                 @Override
             public void run() {
                 final Material matSix = wTarget.getRelative(BlockFace.NORTH_EAST).getRelative(BlockFace.UP).getType();
-                if (wTarget.getRelative(BlockFace.NORTH_EAST).getFace(BlockFace.UP).getType() == Material.AIR) {
-                    wTarget.getRelative(BlockFace.NORTH_EAST).getFace(BlockFace.UP).setType(Material.FIRE);
+                if (wTarget.getRelative(BlockFace.NORTH_EAST).getRelative(BlockFace.UP).getType() == Material.AIR) {
+                    wTarget.getRelative(BlockFace.NORTH_EAST).getRelative(BlockFace.UP).setType(Material.FIRE);
                 }
 
                 plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
                         @Override
                 public void run() {
                     final Material matFour = wTarget.getRelative(BlockFace.NORTH).getRelative(BlockFace.UP).getType();
-                    if (wTarget.getRelative(BlockFace.NORTH).getFace(BlockFace.UP).getType() == Material.AIR) {
-                        wTarget.getRelative(BlockFace.NORTH).getFace(BlockFace.UP).setType(Material.FIRE);
+                    if (wTarget.getRelative(BlockFace.NORTH).getRelative(BlockFace.UP).getType() == Material.AIR) {
+                        wTarget.getRelative(BlockFace.NORTH).getRelative(BlockFace.UP).setType(Material.FIRE);
                     }
 
                     plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
                                 @Override
                     public void run() {
                         final Material matSeven = wTarget.getRelative(BlockFace.NORTH_WEST).getRelative(BlockFace.UP).getType();
-                        if (wTarget.getRelative(BlockFace.NORTH_WEST).getFace(BlockFace.UP).getType() == Material.AIR) {
-                            wTarget.getRelative(BlockFace.NORTH_WEST).getFace(BlockFace.UP).setType(Material.FIRE);
+                        if (wTarget.getRelative(BlockFace.NORTH_WEST).getRelative(BlockFace.UP).getType() == Material.AIR) {
+                            wTarget.getRelative(BlockFace.NORTH_WEST).getRelative(BlockFace.UP).setType(Material.FIRE);
                         }
 
                         plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
                                         @Override
                         public void run() {
                             final Material matThree = wTarget.getRelative(BlockFace.WEST).getRelative(BlockFace.UP).getType();
-                            if (wTarget.getRelative(BlockFace.WEST).getFace(BlockFace.UP).getType() == Material.AIR) {
-                                wTarget.getRelative(BlockFace.WEST).getFace(BlockFace.UP).setType(Material.FIRE);
+                            if (wTarget.getRelative(BlockFace.WEST).getRelative(BlockFace.UP).getType() == Material.AIR) {
+                                wTarget.getRelative(BlockFace.WEST).getRelative(BlockFace.UP).setType(Material.FIRE);
                             }
 
                             plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
                                                 @Override
                             public void run() {
                                 final Material matNine = wTarget.getRelative(BlockFace.SOUTH_WEST).getRelative(BlockFace.UP).getType();
-                                if (wTarget.getRelative(BlockFace.SOUTH_WEST).getFace(BlockFace.UP).getType() == Material.AIR) {
-                                    wTarget.getRelative(BlockFace.SOUTH_WEST).getFace(BlockFace.UP).setType(Material.FIRE);
+                                if (wTarget.getRelative(BlockFace.SOUTH_WEST).getRelative(BlockFace.UP).getType() == Material.AIR) {
+                                    wTarget.getRelative(BlockFace.SOUTH_WEST).getRelative(BlockFace.UP).setType(Material.FIRE);
                                 }
 
                                 plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
                                                         @Override
                                 public void run() {
                                     final Material matFive = wTarget.getRelative(BlockFace.SOUTH).getRelative(BlockFace.UP).getType();
-                                    if (wTarget.getRelative(BlockFace.SOUTH).getFace(BlockFace.UP).getType() == Material.AIR) {
-                                        wTarget.getRelative(BlockFace.SOUTH).getFace(BlockFace.UP).setType(Material.FIRE);
+                                    if (wTarget.getRelative(BlockFace.SOUTH).getRelative(BlockFace.UP).getType() == Material.AIR) {
+                                        wTarget.getRelative(BlockFace.SOUTH).getRelative(BlockFace.UP).setType(Material.FIRE);
                                     }
 
                                     plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
                                                                 @Override
                                     public void run() {
                                         final Material matEight = wTarget.getRelative(BlockFace.SOUTH_EAST).getRelative(BlockFace.UP).getType();
-                                        if (wTarget.getRelative(BlockFace.SOUTH_EAST).getFace(BlockFace.UP).getType() == Material.AIR) {
-                                            wTarget.getRelative(BlockFace.SOUTH_EAST).getFace(BlockFace.UP).setType(Material.FIRE);
+                                        if (wTarget.getRelative(BlockFace.SOUTH_EAST).getRelative(BlockFace.UP).getType() == Material.AIR) {
+                                            wTarget.getRelative(BlockFace.SOUTH_EAST).getRelative(BlockFace.UP).setType(Material.FIRE);
                                         }
 
                                         plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {

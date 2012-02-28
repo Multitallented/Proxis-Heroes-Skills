@@ -98,7 +98,7 @@ public class SkillTree extends ActiveSkill {
         Material refMatNorthWest = refBlockTop.getRelative(BlockFace.NORTH_WEST).getRelative(BlockFace.NORTH_WEST).getType();
         Material refMatSouthEast = refBlockTop.getRelative(BlockFace.SOUTH_EAST).getRelative(BlockFace.SOUTH_EAST).getType();
         Material refMatSouthWest = refBlockTop.getRelative(BlockFace.SOUTH_WEST).getRelative(BlockFace.SOUTH_WEST).getType();
-        if (refBlock.getFace(BlockFace.UP).getType() == Material.AIR &&
+        if (refBlock.getRelative(BlockFace.UP).getType() == Material.AIR &&
                 (refBlock.getType() == Material.DIRT || refBlock.getType() == Material.GRASS) &&
                 refMatNorthEast == Material.AIR &&
                 refMatNorthWest == Material.AIR &&
@@ -110,7 +110,7 @@ public class SkillTree extends ActiveSkill {
                 refBlock.getRelative(BlockFace.UP).getRelative(BlockFace.SOUTH_WEST).getType() == Material.AIR) {
 
 
-            final Block wTargetBlock = player.getTargetBlock(null, 100).getFace(BlockFace.UP);
+            final Block wTargetBlock = player.getTargetBlock(null, 100).getRelative(BlockFace.UP);
             final Block wOneUp = wTargetBlock.getRelative(BlockFace.UP);
             final Block wTwoUp = wOneUp.getRelative(BlockFace.UP);
             final Block wThreeUp = wTwoUp.getRelative(BlockFace.UP);
