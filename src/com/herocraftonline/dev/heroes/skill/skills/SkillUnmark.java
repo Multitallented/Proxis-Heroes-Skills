@@ -102,6 +102,7 @@ public class SkillUnmark extends ActiveSkill {
             } catch (Exception e) {
             }
         }
+        broadcastExecuteText(hero);
         return SkillResult.NORMAL;
     }
 }
