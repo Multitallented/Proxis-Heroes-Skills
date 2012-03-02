@@ -188,7 +188,7 @@ public class SkillTimebomb extends ActiveSkill {
                     @Override
                     public void run() {
                         wTargetBlock.setType(matOne);
-                        wTargetBlock.getFace(BlockFace.UP).setType(matTwo);
+                        wTargetBlock.getRelative(BlockFace.UP).setType(matTwo);
                         wTargetBlock.getRelative(BlockFace.NORTH).setType(matThree);
                         wTargetBlock.getRelative(BlockFace.SOUTH).setType(matFour);
                         wTargetBlock.getRelative(BlockFace.EAST).setType(matFive);

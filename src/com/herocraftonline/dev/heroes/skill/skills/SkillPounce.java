@@ -270,7 +270,7 @@ public class SkillPounce extends ActiveSkill
           if (l4 > 0L)
             localHero2.addEffect(new SilenceEffect(this.skill, l4));
           if (j > 0)
-            this.skill.damageEntity(localLivingEntity, localPlayer1, j, EntityDamageEvent.DamageCause.ENTITY_ATTACK);
+            damageEntity(localLivingEntity, localPlayer1, j, EntityDamageEvent.DamageCause.ENTITY_ATTACK);
         }
         else if ((localEntity instanceof LivingEntity))
         {

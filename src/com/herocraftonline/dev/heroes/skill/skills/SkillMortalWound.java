@@ -19,7 +19,6 @@ import org.bukkit.entity.Creature;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityListener;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 
 public class SkillMortalWound extends TargettedSkill {
@@ -168,9 +167,9 @@ public class SkillMortalWound extends TargettedSkill {
         }
     }
 
-    public class SkillEntityListener extends EntityListener {
+    public class SkillEntityListener implements Listener {
 
-        @Override
+        @EventHandler
         public void onEntityRegainHealth(EntityRegainHealthEvent event) {
             Hero hero = plugin.getHeroManager().getHero((Player) event.getEntity());
             if (hero.hasEffect("MortalWound")) {

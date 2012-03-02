@@ -26,7 +26,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityListener;
 import org.bukkit.util.Vector;
 
 public class SkillLaunch extends ActiveSkill
@@ -282,7 +281,7 @@ public class SkillLaunch extends ActiveSkill
           if (l4 > 0L)
             localHero2.addEffect(new SilenceEffect(this.skill, l4));
           if (j > 0)
-            this.skill.damageEntity(localLivingEntity, localPlayer1, j, EntityDamageEvent.DamageCause.ENTITY_ATTACK);
+            this.skill.damageEntity(localLivingEntity, localPlayer1, j, EntityDamageEvent.DamageCause.MAGIC);
         }
         else if ((localEntity instanceof LivingEntity))
         {
@@ -292,7 +291,7 @@ public class SkillLaunch extends ActiveSkill
             plugin.getEffectManager().addEntityEffect(localLivingEntity, new RootEffect(this.skill, l3));
         }
         if (j > 0)
-          this.skill.damageEntity(localLivingEntity, localPlayer1, j, EntityDamageEvent.DamageCause.ENTITY_ATTACK);
+          this.skill.damageEntity(localLivingEntity, localPlayer1, j, EntityDamageEvent.DamageCause.MAGIC);
       }
       Heroes.debug.stopTask("HeroesSkillListener");
     }
