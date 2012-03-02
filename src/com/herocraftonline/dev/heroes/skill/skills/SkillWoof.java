@@ -92,7 +92,7 @@ public class SkillWoof extends ActiveSkill {
         broadcastExecuteText(hero);
         double chance2x = SkillConfigManager.getUseSetting(hero, this, "chance-2x", 0.2, false);
         double chance3x = SkillConfigManager.getUseSetting(hero, this, "chance-3x", 0.1, false);
-        Block wTargetBlock = player.getTargetBlock(null, 20).getFace(
+        Block wTargetBlock = player.getTargetBlock(null, 20).getRelative(
                         BlockFace.UP);
         double rand = Math.random();
         Wolf w1 = (Wolf) player.getWorld().spawnCreature(wTargetBlock.getLocation(),
