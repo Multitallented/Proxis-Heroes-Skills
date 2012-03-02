@@ -142,9 +142,6 @@ public class SkillIceAura extends ActiveSkill {
                 } else {
                     hero.setMana(hero.getMana() - mana);
                 }
-                if (hero.isVerbose()) {
-                    Messaging.send(hero.getPlayer(), Messaging.createManaBar(100));
-                }
             }
         }
     }
