@@ -86,7 +86,7 @@ public class SkillUnmark extends ActiveSkill {
         for (Player p : plugin.getServer().getOnlinePlayers()) {
 
             try {
-                Hero currentHero = plugin.getHeroManager().getHero(p);
+                Hero currentHero = plugin.getCharacterManager().getHero(p);
                 if (currentHero.getSkillSettings("Recall") != null) {
                     int radius = (int) (SkillConfigManager.getUseSetting(hero, this, Setting.RADIUS.node(), 30, false)
                             + (SkillConfigManager.getUseSetting(hero, this, "radius-increase", 0, false) * hero.getSkillLevel(this)));
@@ -96,7 +96,7 @@ public class SkillUnmark extends ActiveSkill {
                         Player currentPlayer = currentHero.getPlayer();
                         currentHero.setSkillSetting("Recall", "world", "");
                         Messaging.send(currentPlayer, "Your Mark was eradicated by $1", hero.getPlayer().getDisplayName());
-                        plugin.getHeroManager().saveHero(currentPlayer, false);
+                        plugin.getCharacterManager().saveHero(currentPlayer, false);
                     }
                 }
             } catch (Exception e) {
