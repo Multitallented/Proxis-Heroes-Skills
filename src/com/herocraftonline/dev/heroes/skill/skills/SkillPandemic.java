@@ -1,15 +1,14 @@
-package com.herocraftonline.dev.heroes.skill.skills;
+package com.herocraftonline.heroes.characters.skill.skills;
 
-
-import com.herocraftonline.dev.heroes.Heroes;
-import com.herocraftonline.dev.heroes.api.SkillResult;
-import com.herocraftonline.dev.heroes.effects.PeriodicExpirableEffect;
-import com.herocraftonline.dev.heroes.hero.Hero;
-import com.herocraftonline.dev.heroes.skill.ActiveSkill;
-import com.herocraftonline.dev.heroes.skill.Skill;
-import com.herocraftonline.dev.heroes.skill.SkillConfigManager;
-import com.herocraftonline.dev.heroes.skill.SkillType;
-import com.herocraftonline.dev.heroes.util.Setting;
+import com.herocraftonline.heroes.Heroes;
+import com.herocraftonline.heroes.api.SkillResult;
+import com.herocraftonline.heroes.characters.Hero;
+import com.herocraftonline.heroes.characters.effects.PeriodicExpirableEffect;
+import com.herocraftonline.heroes.characters.skill.ActiveSkill;
+import com.herocraftonline.heroes.characters.skill.Skill;
+import com.herocraftonline.heroes.characters.skill.SkillConfigManager;
+import com.herocraftonline.heroes.characters.skill.SkillType;
+import com.herocraftonline.heroes.util.Setting;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Monster;
@@ -38,6 +37,8 @@ public class SkillPandemic extends ActiveSkill {
         node.set(Setting.DAMAGE.node(), 16);
         node.set("damage-increase", 0);
         node.set(Setting.PERIOD.node(), 2000);
+        node.set(Setting.DURATION.node(), 20000);
+        node.set("duration-increase", 0);
         node.set(Setting.APPLY_TEXT.node(), "%target% has caught %hero%s %skill%!");
         node.set(Setting.EXPIRE_TEXT.node(), "%target% has recovered from %hero%s %skill%!");
         return node;
@@ -53,40 +54,40 @@ public class SkillPandemic extends ActiveSkill {
     @Override
     public String getDescription(Hero hero) {
         int radius = (int) (SkillConfigManager.getUseSetting(hero, this, Setting.RADIUS.node(), 10, false) +
-                (SkillConfigManager.getUseSetting(hero, this, "radius-increase", 0, false) * hero.getLevel()));
+                (SkillConfigManager.getUseSetting(hero, this, "radius-increase", 0, false) * hero.getSkillLevel(this)));
         radius = radius > 0 ? radius : 0;
         long duration = (long) (SkillConfigManager.getUseSetting(hero, this, Setting.DURATION.node(), 10, false) +
-                (SkillConfigManager.getUseSetting(hero, this, "duration-increase", 0, false) * hero.getLevel())) / 1000;
+                (SkillConfigManager.getUseSetting(hero, this, "duration-increase", 0, false) * hero.getSkillLevel(this))) / 1000;
         duration = duration > 0 ? duration : 0;
         int damage = (int) (SkillConfigManager.getUseSetting(hero, this, Setting.DAMAGE.node(), 16, false) +
-                (SkillConfigManager.getUseSetting(hero, this, "damage-increase", 0, false) * hero.getLevel()));
+                (SkillConfigManager.getUseSetting(hero, this, "damage-increase", 0, false) * hero.getSkillLevel(this)));
         damage = damage > 0 ? damage : 0;
         String description = getDescription().replace("$1", radius + "").replace("$2", damage + "").replace("$3", duration + "");
         
         //COOLDOWN
         int cooldown = (SkillConfigManager.getUseSetting(hero, this, Setting.COOLDOWN.node(), 0, false)
-                - SkillConfigManager.getUseSetting(hero, this, Setting.COOLDOWN_REDUCE.node(), 0, false) * hero.getLevel()) / 1000;
+                - SkillConfigManager.getUseSetting(hero, this, Setting.COOLDOWN_REDUCE.node(), 0, false) * hero.getSkillLevel(this)) / 1000;
         if (cooldown > 0) {
             description += " CD:" + cooldown + "s";
         }
         
         //MANA
         int mana = SkillConfigManager.getUseSetting(hero, this, Setting.MANA.node(), 10, false)
-                - (SkillConfigManager.getUseSetting(hero, this, Setting.MANA_REDUCE.node(), 0, false) * hero.getLevel());
+                - (SkillConfigManager.getUseSetting(hero, this, Setting.MANA_REDUCE.node(), 0, false) * hero.getSkillLevel(this));
         if (mana > 0) {
             description += " M:" + mana;
         }
         
         //HEALTH_COST
         int healthCost = SkillConfigManager.getUseSetting(hero, this, Setting.HEALTH_COST, 0, false) - 
-                (SkillConfigManager.getUseSetting(hero, this, Setting.HEALTH_COST_REDUCE, mana, true) * hero.getLevel());
+                (SkillConfigManager.getUseSetting(hero, this, Setting.HEALTH_COST_REDUCE, mana, true) * hero.getSkillLevel(this));
         if (healthCost > 0) {
             description += " HP:" + healthCost;
         }
         
         //STAMINA
         int staminaCost = SkillConfigManager.getUseSetting(hero, this, Setting.STAMINA.node(), 0, false)
-                - (SkillConfigManager.getUseSetting(hero, this, Setting.STAMINA_REDUCE.node(), 0, false) * hero.getLevel());
+                - (SkillConfigManager.getUseSetting(hero, this, Setting.STAMINA_REDUCE.node(), 0, false) * hero.getSkillLevel(this));
         if (staminaCost > 0) {
             description += " FP:" + staminaCost;
         }
@@ -109,13 +110,13 @@ public class SkillPandemic extends ActiveSkill {
     public SkillResult use(Hero hero, String[] args) {
         Player player = hero.getPlayer();
         int damage = (int) (SkillConfigManager.getUseSetting(hero, this, Setting.DAMAGE.node(), 16, false) +
-                (SkillConfigManager.getUseSetting(hero, this, "damage-increase", 0, false) * hero.getLevel()));
+                (SkillConfigManager.getUseSetting(hero, this, "damage-increase", 0, false) * hero.getSkillLevel(this)));
         damage = damage > 0 ? damage : 0;
         int radius = (int) (SkillConfigManager.getUseSetting(hero, this, Setting.RADIUS.node(), 10, false) +
-                (SkillConfigManager.getUseSetting(hero, this, "radius-increase", 0, false) * hero.getLevel()));
+                (SkillConfigManager.getUseSetting(hero, this, "radius-increase", 0, false) * hero.getSkillLevel(this)));
         radius = radius > 0 ? radius : 0;
         long duration = (long) (SkillConfigManager.getUseSetting(hero, this, Setting.DURATION.node(), 10, false) +
-                (SkillConfigManager.getUseSetting(hero, this, "duration-increase", 0, false) * hero.getLevel()));
+                (SkillConfigManager.getUseSetting(hero, this, "duration-increase", 0, false) * hero.getSkillLevel(this)));
         duration = duration > 0 ? duration : 0;
         long period = (long) SkillConfigManager.getUseSetting(hero, this, Setting.PERIOD.node(), 2000, false);
         PandemicEffect pe = new PandemicEffect(this, duration, period, damage, player);

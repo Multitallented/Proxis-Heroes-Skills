@@ -1,13 +1,12 @@
-package com.herocraftonline.dev.heroes.skill.skills;
+package com.herocraftonline.heroes.characters.skill.skills;
 
-
-import com.herocraftonline.dev.heroes.Heroes;
-import com.herocraftonline.dev.heroes.api.SkillResult;
-import com.herocraftonline.dev.heroes.hero.Hero;
-import com.herocraftonline.dev.heroes.skill.ActiveSkill;
-import com.herocraftonline.dev.heroes.skill.SkillConfigManager;
-import com.herocraftonline.dev.heroes.skill.SkillType;
-import com.herocraftonline.dev.heroes.util.Setting;
+import com.herocraftonline.heroes.Heroes;
+import com.herocraftonline.heroes.api.SkillResult;
+import com.herocraftonline.heroes.characters.Hero;
+import com.herocraftonline.heroes.characters.skill.ActiveSkill;
+import com.herocraftonline.heroes.characters.skill.SkillConfigManager;
+import com.herocraftonline.heroes.characters.skill.SkillType;
+import com.herocraftonline.heroes.util.Setting;
 import org.bukkit.configuration.ConfigurationSection;
 
 public class SkillManaPotion extends ActiveSkill {
@@ -25,34 +24,34 @@ public class SkillManaPotion extends ActiveSkill {
     @Override
     public String getDescription(Hero hero) {
         int manaGiven = (int) (SkillConfigManager.getUseSetting(hero, this, "mana-given", 1.0, false) +
-                (SkillConfigManager.getUseSetting(hero, this, "mana-given-increase", 0.0, false) * hero.getLevel()));
+                (SkillConfigManager.getUseSetting(hero, this, "mana-given-increase", 0.0, false) * hero.getSkillLevel(this)));
         manaGiven = manaGiven > 0 ? manaGiven : 0;
         String description = getDescription().replace("$1", manaGiven + "");
         
         //COOLDOWN
         int cooldown = (SkillConfigManager.getUseSetting(hero, this, Setting.COOLDOWN.node(), 0, false)
-                - SkillConfigManager.getUseSetting(hero, this, Setting.COOLDOWN_REDUCE.node(), 0, false) * hero.getLevel()) / 1000;
+                - SkillConfigManager.getUseSetting(hero, this, Setting.COOLDOWN_REDUCE.node(), 0, false) * hero.getSkillLevel(this)) / 1000;
         if (cooldown > 0) {
             description += " CD:" + cooldown + "s";
         }
         
         //MANA
         int mana = SkillConfigManager.getUseSetting(hero, this, Setting.MANA.node(), 10, false)
-                - (SkillConfigManager.getUseSetting(hero, this, Setting.MANA_REDUCE.node(), 0, false) * hero.getLevel());
+                - (SkillConfigManager.getUseSetting(hero, this, Setting.MANA_REDUCE.node(), 0, false) * hero.getSkillLevel(this));
         if (mana > 0) {
             description += " M:" + mana;
         }
         
         //HEALTH_COST
         int healthCost = SkillConfigManager.getUseSetting(hero, this, Setting.HEALTH_COST, 0, false) - 
-                (SkillConfigManager.getUseSetting(hero, this, Setting.HEALTH_COST_REDUCE, mana, true) * hero.getLevel());
+                (SkillConfigManager.getUseSetting(hero, this, Setting.HEALTH_COST_REDUCE, mana, true) * hero.getSkillLevel(this));
         if (healthCost > 0) {
             description += " HP:" + healthCost;
         }
         
         //STAMINA
         int staminaCost = SkillConfigManager.getUseSetting(hero, this, Setting.STAMINA.node(), 0, false)
-                - (SkillConfigManager.getUseSetting(hero, this, Setting.STAMINA_REDUCE.node(), 0, false) * hero.getLevel());
+                - (SkillConfigManager.getUseSetting(hero, this, Setting.STAMINA_REDUCE.node(), 0, false) * hero.getSkillLevel(this));
         if (staminaCost > 0) {
             description += " FP:" + staminaCost;
         }
@@ -85,7 +84,7 @@ public class SkillManaPotion extends ActiveSkill {
         broadcastExecuteText(hero);
         int currentMana = hero.getMana();
         int manaGiven = (int) (SkillConfigManager.getUseSetting(hero, this, "mana-given", 1.0, false) +
-                (SkillConfigManager.getUseSetting(hero, this, "mana-given-increase", 0.0, false) * hero.getLevel()));
+                (SkillConfigManager.getUseSetting(hero, this, "mana-given-increase", 0.0, false) * hero.getSkillLevel(this)));
         manaGiven = manaGiven > 0 ? manaGiven : 0;
         if (manaGiven < 0 || manaGiven > 100) {
             manaGiven = 10;

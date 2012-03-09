@@ -1,17 +1,17 @@
-package com.herocraftonline.dev.heroes.skill.skills;
+package com.herocraftonline.heroes.characters.skill.skills;
 
+import com.herocraftonline.heroes.Heroes;
+import com.herocraftonline.heroes.api.SkillResult;
+import com.herocraftonline.heroes.characters.Hero;
+import com.herocraftonline.heroes.characters.effects.Effect;
+import com.herocraftonline.heroes.characters.effects.EffectType;
 import org.bukkit.entity.Player;
 
-import com.herocraftonline.dev.heroes.Heroes;
-import com.herocraftonline.dev.heroes.api.SkillResult;
-import com.herocraftonline.dev.heroes.effects.Effect;
-import com.herocraftonline.dev.heroes.effects.EffectType;
-import com.herocraftonline.dev.heroes.hero.Hero;
-import com.herocraftonline.dev.heroes.skill.ActiveSkill;
-import com.herocraftonline.dev.heroes.skill.Skill;
-import com.herocraftonline.dev.heroes.skill.SkillConfigManager;
-import com.herocraftonline.dev.heroes.skill.SkillType;
-import com.herocraftonline.dev.heroes.util.Messaging;
+import com.herocraftonline.heroes.characters.skill.ActiveSkill;
+import com.herocraftonline.heroes.characters.skill.Skill;
+import com.herocraftonline.heroes.characters.skill.SkillConfigManager;
+import com.herocraftonline.heroes.characters.skill.SkillType;
+import com.herocraftonline.heroes.util.Messaging;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -50,7 +50,6 @@ public class SkillMercy extends ActiveSkill {
     @Override
     public ConfigurationSection getDefaultConfig() {
         ConfigurationSection node = super.getDefaultConfig();
-        node.set("max-lvl", 20);
         node.set("lvl-multiplier-range", 2);
         return node;
     }
@@ -111,8 +110,8 @@ public class SkillMercy extends ActiveSkill {
                     //debug message
                     //Messaging.send(hero.getPlayer(), "$1, $2, $3, $4", !hero.hasEffect("Mercy"), hero.hasSkill("Mercy"), !tHero.hasEffect("Mercy"), tHero.hasSkill("Mercy"));
                     if ((!hero.hasEffect("Mercy") && hero.canUseSkill("Mercy")) || (!tHero.hasEffect("Mercy") && tHero.canUseSkill("Mercy"))) {
-                        int heroLVL = (hero.getHeroClass().getTier() * SkillConfigManager.getUseSetting(hero, skill, "max-lvl", 20, false)) + hero.getLevel();
-                        int tHeroLVL = (tHero.getHeroClass().getTier() * SkillConfigManager.getUseSetting(tHero, skill, "max-lvl", 20, false)) + tHero.getLevel();
+                        int heroLVL = hero.getTieredLevel(hero.getHeroClass());
+                        int tHeroLVL = tHero.getTieredLevel(tHero.getHeroClass());
                         int expMultiplier = (int) SkillConfigManager.getUseSetting(tHero, skill, "lvl-multiplier-range", 2, false);
                         //debug message
                         //Messaging.send(hero.getPlayer(), "$1, $2, $3, $4, $5", heroLVL, tHeroLVL, expMultiplier, heroLVL / expMultiplier >= tHeroLVL, heroLVL * expMultiplier <= tHeroLVL);

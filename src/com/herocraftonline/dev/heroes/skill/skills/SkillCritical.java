@@ -1,14 +1,14 @@
-package com.herocraftonline.dev.heroes.skill.skills;
+package com.herocraftonline.heroes.characters.skill.skills;
 
 
-import com.herocraftonline.dev.heroes.Heroes;
-import com.herocraftonline.dev.heroes.api.WeaponDamageEvent;
-import com.herocraftonline.dev.heroes.hero.Hero;
-import com.herocraftonline.dev.heroes.skill.PassiveSkill;
-import com.herocraftonline.dev.heroes.skill.Skill;
-import com.herocraftonline.dev.heroes.skill.SkillConfigManager;
-import com.herocraftonline.dev.heroes.skill.SkillType;
-import com.herocraftonline.dev.heroes.util.Setting;
+import com.herocraftonline.heroes.Heroes;
+import com.herocraftonline.heroes.api.events.WeaponDamageEvent;
+import com.herocraftonline.heroes.characters.Hero;
+import com.herocraftonline.heroes.characters.skill.PassiveSkill;
+import com.herocraftonline.heroes.characters.skill.Skill;
+import com.herocraftonline.heroes.characters.skill.SkillConfigManager;
+import com.herocraftonline.heroes.characters.skill.SkillType;
+import com.herocraftonline.heroes.util.Setting;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -30,10 +30,10 @@ public class SkillCritical extends PassiveSkill {
     @Override
     public String getDescription(Hero hero) {
         double chance = (SkillConfigManager.getUseSetting(hero, this, Setting.CHANCE.node(), 0.2, false) +
-                (SkillConfigManager.getUseSetting(hero, this, Setting.CHANCE_LEVEL.node(), 0.0, false) * hero.getLevel())) * 100;
+                (SkillConfigManager.getUseSetting(hero, this, Setting.CHANCE_LEVEL.node(), 0.0, false) * hero.getSkillLevel(this))) * 100;
         chance = chance > 0 ? chance : 0;
         double damageMod = (SkillConfigManager.getUseSetting(hero, this, "damage-multiplier", 0.2, false) +
-                (SkillConfigManager.getUseSetting(hero, this, "damage-multiplier-increase", 0.0, false) * hero.getLevel()));
+                (SkillConfigManager.getUseSetting(hero, this, "damage-multiplier-increase", 0.0, false) * hero.getSkillLevel(this)));
         damageMod = damageMod > 0 ? damageMod : 0;
         String description = getDescription().replace("$1", chance + "").replace("$2", damageMod + "");
         return description;
@@ -66,11 +66,11 @@ public class SkillCritical extends PassiveSkill {
 
                 if (hero.hasEffect("Critical")) {
                     double chance = (SkillConfigManager.getUseSetting(hero, skill, Setting.CHANCE.node(), 0.2, false) +
-                            (SkillConfigManager.getUseSetting(hero, skill, Setting.CHANCE_LEVEL.node(), 0.0, false) * hero.getLevel())) * 100;
+                            (SkillConfigManager.getUseSetting(hero, skill, Setting.CHANCE_LEVEL.node(), 0.0, false) * hero.getSkillLevel(skill))) * 100;
                     chance = chance > 0 ? chance : 0;
                     if (Math.random() <= chance) {
                         double damageMod = (SkillConfigManager.getUseSetting(hero, skill, "damage-multiplier", 0.2, false) +
-                                (SkillConfigManager.getUseSetting(hero, skill, "damage-multiplier-increase", 0.0, false) * hero.getLevel()));
+                                (SkillConfigManager.getUseSetting(hero, skill, "damage-multiplier-increase", 0.0, false) * hero.getSkillLevel(skill)));
                         damageMod = damageMod > 0 ? damageMod : 0;
                         event.setDamage((int) (event.getDamage() * damageMod));
                     }
@@ -82,11 +82,11 @@ public class SkillCritical extends PassiveSkill {
 
                     if (hero.hasEffect("Critical")) {
                         double chance = (SkillConfigManager.getUseSetting(hero, skill, Setting.CHANCE.node(), 0.2, false) +
-                                (SkillConfigManager.getUseSetting(hero, skill, Setting.CHANCE_LEVEL.node(), 0.0, false) * hero.getLevel())) * 100;
+                                (SkillConfigManager.getUseSetting(hero, skill, Setting.CHANCE_LEVEL.node(), 0.0, false) * hero.getSkillLevel(skill))) * 100;
                         chance = chance > 0 ? chance : 0;
                         if (Math.random() <= chance) {
                             double damageMod = (SkillConfigManager.getUseSetting(hero, skill, "damage-multiplier", 0.2, false) +
-                                    (SkillConfigManager.getUseSetting(hero, skill, "damage-multiplier-increase", 0.0, false) * hero.getLevel()));
+                                    (SkillConfigManager.getUseSetting(hero, skill, "damage-multiplier-increase", 0.0, false) * hero.getSkillLevel(skill)));
                             damageMod = damageMod > 0 ? damageMod : 0;
                             event.setDamage((int) (event.getDamage() * damageMod));
                             

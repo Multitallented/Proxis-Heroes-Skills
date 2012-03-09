@@ -1,18 +1,18 @@
-package com.herocraftonline.dev.heroes.skill.skills;
+package com.herocraftonline.heroes.characters.skill.skills;
 
+import com.herocraftonline.heroes.Heroes;
+import com.herocraftonline.heroes.api.SkillResult;
+import com.herocraftonline.heroes.characters.Hero;
+import com.herocraftonline.heroes.characters.effects.EffectType;
+import com.herocraftonline.heroes.characters.effects.PeriodicExpirableEffect;
+import com.herocraftonline.heroes.characters.skill.ActiveSkill;
+import com.herocraftonline.heroes.characters.skill.Skill;
+import com.herocraftonline.heroes.characters.skill.SkillConfigManager;
+import com.herocraftonline.heroes.characters.skill.SkillType;
+import com.herocraftonline.heroes.util.Messaging;
+import com.herocraftonline.heroes.util.Setting;
 import org.bukkit.entity.Player;
 
-import com.herocraftonline.dev.heroes.Heroes;
-import com.herocraftonline.dev.heroes.api.SkillResult;
-import com.herocraftonline.dev.heroes.effects.EffectType;
-import com.herocraftonline.dev.heroes.effects.PeriodicExpirableEffect;
-import com.herocraftonline.dev.heroes.hero.Hero;
-import com.herocraftonline.dev.heroes.skill.ActiveSkill;
-import com.herocraftonline.dev.heroes.skill.Skill;
-import com.herocraftonline.dev.heroes.skill.SkillConfigManager;
-import com.herocraftonline.dev.heroes.skill.SkillType;
-import com.herocraftonline.dev.heroes.util.Messaging;
-import com.herocraftonline.dev.heroes.util.Setting;
 import java.util.ArrayList;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -36,35 +36,35 @@ public class SkillGlassshield extends ActiveSkill {
 
     @Override
     public String getDescription(Hero hero) {
-        long addDur = SkillConfigManager.getUseSetting(hero, this, "duration-increase", 0, false) * hero.getLevel();
+        long addDur = SkillConfigManager.getUseSetting(hero, this, "duration-increase", 0, false) * hero.getSkillLevel(this);
         long minDur = SkillConfigManager.getUseSetting(hero, this, "min_duration", 20000, false) + addDur;
         long maxDur = SkillConfigManager.getUseSetting(hero, this, "max_duration", 40000, false) + addDur;
         String description = getDescription().replace("$1", minDur + "").replace("$2", maxDur + "");
         
         //COOLDOWN
         int cooldown = (SkillConfigManager.getUseSetting(hero, this, Setting.COOLDOWN.node(), 0, false)
-                - SkillConfigManager.getUseSetting(hero, this, Setting.COOLDOWN_REDUCE.node(), 0, false) * hero.getLevel()) / 1000;
+                - SkillConfigManager.getUseSetting(hero, this, Setting.COOLDOWN_REDUCE.node(), 0, false) * hero.getSkillLevel(this)) / 1000;
         if (cooldown > 0) {
             description += " CD:" + cooldown + "s";
         }
         
         //MANA
         int mana = SkillConfigManager.getUseSetting(hero, this, Setting.MANA.node(), 10, false)
-                - (SkillConfigManager.getUseSetting(hero, this, Setting.MANA_REDUCE.node(), 0, false) * hero.getLevel());
+                - (SkillConfigManager.getUseSetting(hero, this, Setting.MANA_REDUCE.node(), 0, false) * hero.getSkillLevel(this));
         if (mana > 0) {
             description += " M:" + mana;
         }
         
         //HEALTH_COST
         int healthCost = SkillConfigManager.getUseSetting(hero, this, Setting.HEALTH_COST, 0, false) - 
-                (SkillConfigManager.getUseSetting(hero, this, Setting.HEALTH_COST_REDUCE, mana, true) * hero.getLevel());
+                (SkillConfigManager.getUseSetting(hero, this, Setting.HEALTH_COST_REDUCE, mana, true) * hero.getSkillLevel(this));
         if (healthCost > 0) {
             description += " HP:" + healthCost;
         }
         
         //STAMINA
         int staminaCost = SkillConfigManager.getUseSetting(hero, this, Setting.STAMINA.node(), 0, false)
-                - (SkillConfigManager.getUseSetting(hero, this, Setting.STAMINA_REDUCE.node(), 0, false) * hero.getLevel());
+                - (SkillConfigManager.getUseSetting(hero, this, Setting.STAMINA_REDUCE.node(), 0, false) * hero.getSkillLevel(this));
         if (staminaCost > 0) {
             description += " FP:" + staminaCost;
         }
@@ -103,7 +103,7 @@ public class SkillGlassshield extends ActiveSkill {
     @Override
     public SkillResult use(Hero hero, String[] args) {
         Player player = hero.getPlayer();
-        long addDur = SkillConfigManager.getUseSetting(hero, this, "duration-increase", 0, false) * hero.getLevel();
+        long addDur = SkillConfigManager.getUseSetting(hero, this, "duration-increase", 0, false) * hero.getSkillLevel(this);
         long minDuration = SkillConfigManager.getUseSetting(hero, this, "min_duration", 20000,false) + addDur;
         if (minDuration < 1000 || minDuration > 60000) {
             minDuration = 20000;

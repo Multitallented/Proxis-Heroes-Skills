@@ -1,17 +1,17 @@
-package com.herocraftonline.dev.heroes.skill.skills;
+package com.herocraftonline.heroes.characters.skill.skills;
 
+import com.herocraftonline.heroes.Heroes;
+import com.herocraftonline.heroes.api.SkillResult;
+import com.herocraftonline.heroes.api.SkillResult.ResultType;
+import com.herocraftonline.heroes.characters.Hero;
+import com.herocraftonline.heroes.characters.skill.ActiveSkill;
+import com.herocraftonline.heroes.characters.skill.Skill;
+import com.herocraftonline.heroes.characters.skill.SkillConfigManager;
+import com.herocraftonline.heroes.characters.skill.SkillType;
+import com.herocraftonline.heroes.util.Messaging;
+import com.herocraftonline.heroes.util.Setting;
 import org.bukkit.entity.Player;
 
-import com.herocraftonline.dev.heroes.Heroes;
-import com.herocraftonline.dev.heroes.api.SkillResult;
-import com.herocraftonline.dev.heroes.api.SkillResult.ResultType;
-import com.herocraftonline.dev.heroes.hero.Hero;
-import com.herocraftonline.dev.heroes.skill.ActiveSkill;
-import com.herocraftonline.dev.heroes.skill.Skill;
-import com.herocraftonline.dev.heroes.skill.SkillConfigManager;
-import com.herocraftonline.dev.heroes.skill.SkillType;
-import com.herocraftonline.dev.heroes.util.Messaging;
-import com.herocraftonline.dev.heroes.util.Setting;
 import java.util.HashMap;
 import java.util.Map;
 import org.bukkit.Material;
@@ -35,37 +35,37 @@ public class SkillArrowstorm extends ActiveSkill {
     @Override
     public String getDescription(Hero hero) {
         int maxArrows = SkillConfigManager.getUseSetting(hero, this, "max_arrows", 30, false)
-                + (SkillConfigManager.getUseSetting(hero, this, "arrows-per-level", 0, false) * hero.getLevel());
+                + (SkillConfigManager.getUseSetting(hero, this, "arrows-per-level", 0, false) * hero.getSkillLevel(this));
         int minArrows = SkillConfigManager.getUseSetting(hero, this, "min_arrows", 15, false)
-                + (SkillConfigManager.getUseSetting(hero, this, "arrows-per-level", 0, false) * hero.getLevel());
+                + (SkillConfigManager.getUseSetting(hero, this, "arrows-per-level", 0, false) * hero.getSkillLevel(this));
         int maxRate = SkillConfigManager.getUseSetting(hero, this, "max_arrows", 20, false);
         int minRate = SkillConfigManager.getUseSetting(hero, this, "max_arrows", 2, false);
         String description = getDescription().replace("$1", maxArrows + "").replace("$2", minArrows + "").replace("$3", maxRate + "").replace("$4", minRate + "");
         
         //COOLDOWN
         int cooldown = (SkillConfigManager.getUseSetting(hero, this, Setting.COOLDOWN.node(), 0, false)
-                - SkillConfigManager.getUseSetting(hero, this, Setting.COOLDOWN_REDUCE.node(), 0, false) * hero.getLevel()) / 1000;
+                - SkillConfigManager.getUseSetting(hero, this, Setting.COOLDOWN_REDUCE.node(), 0, false) * hero.getSkillLevel(this)) / 1000;
         if (cooldown > 0) {
             description += " CD:" + cooldown + "s";
         }
         
         //MANA
         int mana = SkillConfigManager.getUseSetting(hero, this, Setting.MANA.node(), 10, false)
-                - (SkillConfigManager.getUseSetting(hero, this, Setting.MANA_REDUCE.node(), 0, false) * hero.getLevel());
+                - (SkillConfigManager.getUseSetting(hero, this, Setting.MANA_REDUCE.node(), 0, false) * hero.getSkillLevel(this));
         if (mana > 0) {
             description += " M:" + mana;
         }
         
         //HEALTH_COST
         int healthCost = SkillConfigManager.getUseSetting(hero, this, Setting.HEALTH_COST, 0, false) - 
-                (SkillConfigManager.getUseSetting(hero, this, Setting.HEALTH_COST_REDUCE, mana, true) * hero.getLevel());
+                (SkillConfigManager.getUseSetting(hero, this, Setting.HEALTH_COST_REDUCE, mana, true) * hero.getSkillLevel(this));
         if (healthCost > 0) {
             description += " HP:" + healthCost;
         }
         
         //STAMINA
         int staminaCost = SkillConfigManager.getUseSetting(hero, this, Setting.STAMINA.node(), 0, false)
-                - (SkillConfigManager.getUseSetting(hero, this, Setting.STAMINA_REDUCE.node(), 0, false) * hero.getLevel());
+                - (SkillConfigManager.getUseSetting(hero, this, Setting.STAMINA_REDUCE.node(), 0, false) * hero.getSkillLevel(this));
         if (staminaCost > 0) {
             description += " FP:" + staminaCost;
         }
@@ -110,14 +110,14 @@ public class SkillArrowstorm extends ActiveSkill {
         final Player player = hero.getPlayer();
         PlayerInventory inv = player.getInventory();
         int minArrows = (int) SkillConfigManager.getUseSetting(hero, this, "min_arrows", 15, false)
-                + (SkillConfigManager.getUseSetting(hero, this, "arrows-per-level", 0, false)* hero.getLevel());
+                + (SkillConfigManager.getUseSetting(hero, this, "arrows-per-level", 0, false)* hero.getSkillLevel(this));
         if (minArrows <= 0) {
             minArrows = 1;
         } else if (minArrows > 64) {
             minArrows = 64;
         }
         int maxArrows = (int) SkillConfigManager.getUseSetting(hero, this, "max_arrows", 30, false)
-                + (SkillConfigManager.getUseSetting(hero, this, "arrows-per-level", 0, false)* hero.getLevel());
+                + (SkillConfigManager.getUseSetting(hero, this, "arrows-per-level", 0, false)* hero.getSkillLevel(this));
         if (maxArrows < minArrows) {
             maxArrows = minArrows;
         } else if (maxArrows > 64) {

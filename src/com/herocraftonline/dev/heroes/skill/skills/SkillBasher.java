@@ -1,15 +1,15 @@
-package com.herocraftonline.dev.heroes.skill.skills;
+package com.herocraftonline.heroes.characters.skill.skills;
 
 
-import com.herocraftonline.dev.heroes.Heroes;
-import com.herocraftonline.dev.heroes.classes.HeroClass.ExperienceType;
-import com.herocraftonline.dev.heroes.effects.common.StunEffect;
-import com.herocraftonline.dev.heroes.hero.Hero;
-import com.herocraftonline.dev.heroes.skill.PassiveSkill;
-import com.herocraftonline.dev.heroes.skill.Skill;
-import com.herocraftonline.dev.heroes.skill.SkillConfigManager;
-import com.herocraftonline.dev.heroes.skill.SkillType;
-import com.herocraftonline.dev.heroes.util.Setting;
+import com.herocraftonline.heroes.Heroes;
+import com.herocraftonline.heroes.characters.Hero;
+import com.herocraftonline.heroes.characters.classes.HeroClass.ExperienceType;
+import com.herocraftonline.heroes.characters.effects.common.StunEffect;
+import com.herocraftonline.heroes.characters.skill.PassiveSkill;
+import com.herocraftonline.heroes.characters.skill.Skill;
+import com.herocraftonline.heroes.characters.skill.SkillConfigManager;
+import com.herocraftonline.heroes.characters.skill.SkillType;
+import com.herocraftonline.heroes.util.Setting;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -34,7 +34,7 @@ public class SkillBasher extends PassiveSkill {
     
     @Override
     public String getDescription(Hero hero) {
-        int level = hero.getLevel();
+        int level = hero.getSkillLevel(this);
         double chance = (SkillConfigManager.getUseSetting(hero, this, Setting.CHANCE.node(), 0.2, false) + 
                 (SkillConfigManager.getUseSetting(hero, this, Setting.CHANCE_LEVEL.node(), 0.2, false) * level)) * 100;
         chance = chance > 0 ? chance : 0;
@@ -45,7 +45,7 @@ public class SkillBasher extends PassiveSkill {
         
         //COOLDOWN
         int cooldown = (SkillConfigManager.getUseSetting(hero, this, Setting.COOLDOWN.node(), 0, false)
-                - SkillConfigManager.getUseSetting(hero, this, Setting.COOLDOWN_REDUCE.node(), 0, false) * hero.getLevel()) / 1000;
+                - SkillConfigManager.getUseSetting(hero, this, Setting.COOLDOWN_REDUCE.node(), 0, false) * hero.getSkillLevel(this)) / 1000;
         if (cooldown > 0) {
             description += " CD:" + cooldown + "s";
         }
@@ -90,15 +90,15 @@ public class SkillBasher extends PassiveSkill {
                 if (hero.hasEffect("Basher")) {
                     if (hero.getCooldown("Basher") == null || hero.getCooldown("Basher") <= System.currentTimeMillis()) {
                         double chance = (double) SkillConfigManager.getUseSetting(hero, skill, Setting.CHANCE.node(), 0.2, false) + 
-                                (hero.getLevel() * SkillConfigManager.getUseSetting(hero, skill, Setting.CHANCE_LEVEL.node(), 0.0, false));
+                                (hero.getSkillLevel(skill) * SkillConfigManager.getUseSetting(hero, skill, Setting.CHANCE_LEVEL.node(), 0.0, false));
                         chance = chance > 0 ? chance : 0;
                         long cooldown = (long) (SkillConfigManager.getUseSetting(hero, skill, Setting.COOLDOWN.node(), 0, false)
-                                - SkillConfigManager.getUseSetting(hero, skill, Setting.COOLDOWN_REDUCE.node(), 0, false) * hero.getLevel());
+                                - SkillConfigManager.getUseSetting(hero, skill, Setting.COOLDOWN_REDUCE.node(), 0, false) * hero.getSkillLevel(skill));
                         cooldown = cooldown > 0 ? cooldown : 0;
                         hero.setCooldown("Basher", cooldown + System.currentTimeMillis());
                         if (Math.random() <= chance) {
                             long duration = (long) (SkillConfigManager.getUseSetting(hero, skill, Setting.DURATION.node(), 2000, false) 
-                                    + (hero.getLevel() * SkillConfigManager.getUseSetting(hero, skill, "duration-increase", 0, false)));
+                                    + (hero.getSkillLevel(skill) * SkillConfigManager.getUseSetting(hero, skill, "duration-increase", 0, false)));
                             duration = duration > 0 ? duration : 0;
                             plugin.getHeroManager().getHero(tPlayer).addEffect(new StunEffect(basher, duration));
                             double exp = SkillConfigManager.getUseSetting(hero, skill, "exp-per-stun", 0, false);
@@ -121,15 +121,15 @@ public class SkillBasher extends PassiveSkill {
                     if (hero.hasEffect("Basher")) {
                         if (hero.getCooldown("Basher") == null || hero.getCooldown("Basher") <= System.currentTimeMillis()) {
                             double chance = (double) SkillConfigManager.getUseSetting(hero, skill, Setting.CHANCE.node(), 0.2, false) + 
-                                    (hero.getLevel() * SkillConfigManager.getUseSetting(hero, skill, Setting.CHANCE_LEVEL.node(), 0.0, false));
+                                    (hero.getSkillLevel(skill) * SkillConfigManager.getUseSetting(hero, skill, Setting.CHANCE_LEVEL.node(), 0.0, false));
                             chance = chance > 0 ? chance : 0;
                             long cooldown = (long) (SkillConfigManager.getUseSetting(hero, skill, Setting.COOLDOWN.node(), 0, false)
-                                    - SkillConfigManager.getUseSetting(hero, skill, Setting.COOLDOWN_REDUCE.node(), 0, false) * hero.getLevel());
+                                    - SkillConfigManager.getUseSetting(hero, skill, Setting.COOLDOWN_REDUCE.node(), 0, false) * hero.getSkillLevel(skill));
                             cooldown = cooldown > 0 ? cooldown : 0;
                             hero.setCooldown("Basher", cooldown + System.currentTimeMillis());
                             if (Math.random() <= chance) {
                                 long duration = (long) (SkillConfigManager.getUseSetting(hero, skill, Setting.DURATION.node(), 2000, false) 
-                                        + (hero.getLevel() * SkillConfigManager.getUseSetting(hero, skill, "duration-increase", 0, false)));
+                                        + (hero.getSkillLevel(skill) * SkillConfigManager.getUseSetting(hero, skill, "duration-increase", 0, false)));
                                 duration = duration > 0 ? duration : 0;
                                 plugin.getHeroManager().getHero(tPlayer).addEffect(new StunEffect(basher, duration));
                                 double exp = SkillConfigManager.getUseSetting(hero, skill, "exp-per-stun", 0, false);

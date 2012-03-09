@@ -1,18 +1,17 @@
-package com.herocraftonline.dev.heroes.skill.skills;
+package com.herocraftonline.heroes.characters.skill.skills;
 
-
-import com.herocraftonline.dev.heroes.Heroes;
-import com.herocraftonline.dev.heroes.api.HeroRegainHealthEvent;
-import com.herocraftonline.dev.heroes.api.SkillResult;
-import com.herocraftonline.dev.heroes.effects.EffectType;
-import com.herocraftonline.dev.heroes.effects.PeriodicHealEffect;
-import com.herocraftonline.dev.heroes.hero.Hero;
-import com.herocraftonline.dev.heroes.skill.ActiveSkill;
-import com.herocraftonline.dev.heroes.skill.Skill;
-import com.herocraftonline.dev.heroes.skill.SkillConfigManager;
-import com.herocraftonline.dev.heroes.skill.SkillType;
-import com.herocraftonline.dev.heroes.util.Messaging;
-import com.herocraftonline.dev.heroes.util.Setting;
+import com.herocraftonline.heroes.Heroes;
+import com.herocraftonline.heroes.api.SkillResult;
+import com.herocraftonline.heroes.api.events.HeroRegainHealthEvent;
+import com.herocraftonline.heroes.characters.Hero;
+import com.herocraftonline.heroes.characters.effects.EffectType;
+import com.herocraftonline.heroes.characters.effects.PeriodicHealEffect;
+import com.herocraftonline.heroes.characters.skill.ActiveSkill;
+import com.herocraftonline.heroes.characters.skill.Skill;
+import com.herocraftonline.heroes.characters.skill.SkillConfigManager;
+import com.herocraftonline.heroes.characters.skill.SkillType;
+import com.herocraftonline.heroes.util.Messaging;
+import com.herocraftonline.heroes.util.Setting;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
@@ -33,16 +32,16 @@ public class SkillVitalize extends ActiveSkill {
     @Override
     public String getDescription(Hero hero) {
         int manaTick = (int) (SkillConfigManager.getUseSetting(hero, this, "mana-tick", 4, false) +
-                (SkillConfigManager.getUseSetting(hero, this, "mana-tick-increase", 0.0, false) * hero.getLevel()));
+                (SkillConfigManager.getUseSetting(hero, this, "mana-tick-increase", 0.0, false) * hero.getSkillLevel(this)));
         manaTick = manaTick > 0 ? manaTick : 0;
         int healthTick = (int) (SkillConfigManager.getUseSetting(hero, this, Setting.HEALTH_TICK.node(), 2, false) +
-                (SkillConfigManager.getUseSetting(hero, this, "health-tick-increase", 0.0, false) * hero.getLevel()));
+                (SkillConfigManager.getUseSetting(hero, this, "health-tick-increase", 0.0, false) * hero.getSkillLevel(this)));
         healthTick = healthTick > 0 ? healthTick : 0;
         int radius = (int) (SkillConfigManager.getUseSetting(hero, this, Setting.RADIUS.node(), 10, false) +
-                (SkillConfigManager.getUseSetting(hero, this, "radius-increase", 0.0, false) * hero.getLevel()));
+                (SkillConfigManager.getUseSetting(hero, this, "radius-increase", 0.0, false) * hero.getSkillLevel(this)));
         radius = radius > 0 ? radius : 0;
         long duration = (long) (SkillConfigManager.getUseSetting(hero, this, Setting.DURATION.node(), 12000, false) +
-                (SkillConfigManager.getUseSetting(hero, this, "duration-increase", 0.0, false) * hero.getLevel()));
+                (SkillConfigManager.getUseSetting(hero, this, "duration-increase", 0.0, false) * hero.getSkillLevel(this)));
         duration = duration > 0 ? duration : 0;
         long period = (long) SkillConfigManager.getUseSetting(hero, this, Setting.PERIOD.node(), 3000, false);
         int ticks = (int) (duration / period);
@@ -50,28 +49,28 @@ public class SkillVitalize extends ActiveSkill {
         
         //COOLDOWN
         int cooldown = (SkillConfigManager.getUseSetting(hero, this, Setting.COOLDOWN.node(), 0, false)
-                - SkillConfigManager.getUseSetting(hero, this, Setting.COOLDOWN_REDUCE.node(), 0, false) * hero.getLevel()) / 1000;
+                - SkillConfigManager.getUseSetting(hero, this, Setting.COOLDOWN_REDUCE.node(), 0, false) * hero.getSkillLevel(this)) / 1000;
         if (cooldown > 0) {
             description += " CD:" + cooldown + "s";
         }
         
         //MANA
         int mana = SkillConfigManager.getUseSetting(hero, this, Setting.MANA.node(), 10, false)
-                - (SkillConfigManager.getUseSetting(hero, this, Setting.MANA_REDUCE.node(), 0, false) * hero.getLevel());
+                - (SkillConfigManager.getUseSetting(hero, this, Setting.MANA_REDUCE.node(), 0, false) * hero.getSkillLevel(this));
         if (mana > 0) {
             description += " M:" + mana;
         }
         
         //HEALTH_COST
         int healthCost = SkillConfigManager.getUseSetting(hero, this, Setting.HEALTH_COST, 0, false) - 
-                (SkillConfigManager.getUseSetting(hero, this, Setting.HEALTH_COST_REDUCE, mana, true) * hero.getLevel());
+                (SkillConfigManager.getUseSetting(hero, this, Setting.HEALTH_COST_REDUCE, mana, true) * hero.getSkillLevel(this));
         if (healthCost > 0) {
             description += " HP:" + healthCost;
         }
         
         //STAMINA
         int staminaCost = SkillConfigManager.getUseSetting(hero, this, Setting.STAMINA.node(), 0, false)
-                - (SkillConfigManager.getUseSetting(hero, this, Setting.STAMINA_REDUCE.node(), 0, false) * hero.getLevel());
+                - (SkillConfigManager.getUseSetting(hero, this, Setting.STAMINA_REDUCE.node(), 0, false) * hero.getSkillLevel(this));
         if (staminaCost > 0) {
             description += " FP:" + staminaCost;
         }
@@ -116,27 +115,22 @@ public class SkillVitalize extends ActiveSkill {
     public SkillResult use(Hero hero, String[] args) {
         Player player = hero.getPlayer();
         long duration = (long) (SkillConfigManager.getUseSetting(hero, this, Setting.DURATION.node(), 12000, false) +
-                (SkillConfigManager.getUseSetting(hero, this, "duration-increase", 0.0, false) * hero.getLevel()));
+                (SkillConfigManager.getUseSetting(hero, this, "duration-increase", 0.0, false) * hero.getSkillLevel(this)));
         duration = duration > 0 ? duration : 0;
         int manaTick = (int) (SkillConfigManager.getUseSetting(hero, this, "mana-tick", 4, false) +
-                (SkillConfigManager.getUseSetting(hero, this, "mana-tick-increase", 0.0, false) * hero.getLevel()));
+                (SkillConfigManager.getUseSetting(hero, this, "mana-tick-increase", 0.0, false) * hero.getSkillLevel(this)));
         manaTick = manaTick > 0 ? manaTick : 0;
         int healthTick = (int) (SkillConfigManager.getUseSetting(hero, this, Setting.HEALTH_TICK.node(), 2, false) +
-                (SkillConfigManager.getUseSetting(hero, this, "health-tick-increase", 0.0, false) * hero.getLevel()));
+                (SkillConfigManager.getUseSetting(hero, this, "health-tick-increase", 0.0, false) * hero.getSkillLevel(this)));
         healthTick = healthTick > 0 ? healthTick : 0;
         long period = SkillConfigManager.getUseSetting(hero, this, Setting.PERIOD.node(), 3000, false);
 
         WisdomEffect mEffect = new WisdomEffect(this, period, duration, healthTick, player, manaTick);
         if (!hero.hasParty()) {
-            if (hero.hasEffect("Vitalize")) {
-                if (((WisdomEffect) hero.getEffect("Wisdom")).getManaMultiplier() > mEffect.getManaMultiplier()) {
-                    Messaging.send(player, "You have a more powerful effect already!");
-                }
-            }
             hero.addEffect(mEffect);
         } else {
             int radius = (int) (SkillConfigManager.getUseSetting(hero, this, Setting.RADIUS.node(), 10, false) +
-                    (SkillConfigManager.getUseSetting(hero, this, "radius-increase", 0.0, false) * hero.getLevel()));
+                    (SkillConfigManager.getUseSetting(hero, this, "radius-increase", 0.0, false) * hero.getSkillLevel(this)));
             radius = radius > 0 ? radius : 0;
             int rangeSquared = (int) Math.pow(radius, 2);
             for (Hero pHero : hero.getParty().getMembers()) {
@@ -147,11 +141,6 @@ public class SkillVitalize extends ActiveSkill {
                 if (pPlayer.getLocation().distanceSquared(player.getLocation()) > rangeSquared) {
                     continue;
                 }
-                if (pHero.hasEffect("Vitalize")) {
-                    if (((WisdomEffect) pHero.getEffect("Vitalize")).getManaMultiplier() > mEffect.getManaMultiplier()) {
-                        continue;
-                    }
-                }
                 pHero.addEffect(mEffect);
             }
         }
@@ -161,12 +150,13 @@ public class SkillVitalize extends ActiveSkill {
     }
 
     public class WisdomEffect extends PeriodicHealEffect {
-
+        private final int amount;
         private final int manaMultiplier;
 
         public WisdomEffect(Skill skill, long period, long duration, int amount, Player applier, int manaMultiplier) {
             super(skill, "Vitalize", period, duration, amount, applier);
             this.manaMultiplier = manaMultiplier;
+            this.amount=amount;
             this.types.add(EffectType.DISPELLABLE);
             this.types.add(EffectType.BENEFICIAL);
             this.types.add(EffectType.HEAL);
@@ -182,19 +172,10 @@ public class SkillVitalize extends ActiveSkill {
         @Override
         public void tick(Hero hero) {
             super.tick(hero);
-            HeroRegainHealthEvent hrhEvent = new HeroRegainHealthEvent(hero, super.getTickDamage(), skill);
+            HeroRegainHealthEvent hrhEvent = new HeroRegainHealthEvent(hero, amount, skill);
             plugin.getServer().getPluginManager().callEvent(hrhEvent);
-            if (hrhEvent.isCancelled())
-                return;
-            
             int addMana = hero.getMana() + manaMultiplier > 100 ? 100 - hero.getMana() : manaMultiplier;
             hero.setMana(addMana + hero.getMana());
-            hero.setHealth(hero.getHealth() + hrhEvent.getAmount());
-            hero.syncHealth();
-        }
-        
-        public double getManaMultiplier() {
-            return manaMultiplier;
         }
 
         @Override

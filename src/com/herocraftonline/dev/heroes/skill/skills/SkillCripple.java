@@ -1,17 +1,17 @@
-package com.herocraftonline.dev.heroes.skill.skills;
+package com.herocraftonline.heroes.characters.skill.skills;
 
 import org.bukkit.entity.LivingEntity;
 
-import com.herocraftonline.dev.heroes.Heroes;
-import com.herocraftonline.dev.heroes.api.SkillResult;
-import com.herocraftonline.dev.heroes.effects.EffectType;
-import com.herocraftonline.dev.heroes.effects.PeriodicExpirableEffect;
-import com.herocraftonline.dev.heroes.hero.Hero;
-import com.herocraftonline.dev.heroes.skill.Skill;
-import com.herocraftonline.dev.heroes.skill.SkillConfigManager;
-import com.herocraftonline.dev.heroes.skill.SkillType;
-import com.herocraftonline.dev.heroes.skill.TargettedSkill;
-import com.herocraftonline.dev.heroes.util.Setting;
+import com.herocraftonline.heroes.Heroes;
+import com.herocraftonline.heroes.api.SkillResult;
+import com.herocraftonline.heroes.characters.Hero;
+import com.herocraftonline.heroes.characters.effects.EffectType;
+import com.herocraftonline.heroes.characters.effects.PeriodicExpirableEffect;
+import com.herocraftonline.heroes.characters.skill.Skill;
+import com.herocraftonline.heroes.characters.skill.SkillConfigManager;
+import com.herocraftonline.heroes.characters.skill.SkillType;
+import com.herocraftonline.heroes.characters.skill.TargettedSkill;
+import com.herocraftonline.heroes.util.Setting;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -33,43 +33,43 @@ public class SkillCripple extends TargettedSkill {
     @Override
     public String getDescription(Hero hero) {
         long duration = (long) (SkillConfigManager.getUseSetting(hero, this, Setting.DURATION.node(), 10000, false) +
-                (SkillConfigManager.getUseSetting(hero, this, "duration-increase", 0.0, false) * hero.getLevel())) / 1000;
+                (SkillConfigManager.getUseSetting(hero, this, "duration-increase", 0.0, false) * hero.getSkillLevel(this))) / 1000;
         duration = duration > 0 ? duration : 0;
         int damage = (int) (SkillConfigManager.getUseSetting(hero, this, Setting.DAMAGE.node(), 5, false) +
-                (SkillConfigManager.getUseSetting(hero, this, "damage-increase", 0.0, false) * hero.getLevel()));
+                (SkillConfigManager.getUseSetting(hero, this, "damage-increase", 0.0, false) * hero.getSkillLevel(this)));
         damage = damage > 0 ? damage : 0;
         int tickDamage = (int) (SkillConfigManager.getUseSetting(hero, this, Setting.DAMAGE_TICK.node(), 2, false) +
-                (SkillConfigManager.getUseSetting(hero, this, "tick-damage-increase", 0.0, false) * hero.getLevel()));
+                (SkillConfigManager.getUseSetting(hero, this, "tick-damage-increase", 0.0, false) * hero.getSkillLevel(this)));
         tickDamage = tickDamage > 0 ? tickDamage : 0;
         int maxDistance = (int) (SkillConfigManager.getUseSetting(hero, this, Setting.MAX_DISTANCE.node(), 2, false) +
-                (SkillConfigManager.getUseSetting(hero, this, Setting.MAX_DISTANCE_INCREASE.node(), 0.0, false) * hero.getLevel()));
+                (SkillConfigManager.getUseSetting(hero, this, Setting.MAX_DISTANCE_INCREASE.node(), 0.0, false) * hero.getSkillLevel(this)));
         maxDistance = maxDistance > 0 ? maxDistance : 0;
         String description = getDescription().replace("$1", duration + "").replace("$2", damage + "").replace("$3", tickDamage + "");
         
         //COOLDOWN
         int cooldown = (SkillConfigManager.getUseSetting(hero, this, Setting.COOLDOWN.node(), 0, false)
-                - SkillConfigManager.getUseSetting(hero, this, Setting.COOLDOWN_REDUCE.node(), 0, false) * hero.getLevel()) / 1000;
+                - SkillConfigManager.getUseSetting(hero, this, Setting.COOLDOWN_REDUCE.node(), 0, false) * hero.getSkillLevel(this)) / 1000;
         if (cooldown > 0) {
             description += " CD:" + cooldown + "s";
         }
         
         //MANA
         int mana = SkillConfigManager.getUseSetting(hero, this, Setting.MANA.node(), 10, false)
-                - (SkillConfigManager.getUseSetting(hero, this, Setting.MANA_REDUCE.node(), 0, false) * hero.getLevel());
+                - (SkillConfigManager.getUseSetting(hero, this, Setting.MANA_REDUCE.node(), 0, false) * hero.getSkillLevel(this));
         if (mana > 0) {
             description += " M:" + mana;
         }
         
         //HEALTH_COST
         int healthCost = SkillConfigManager.getUseSetting(hero, this, Setting.HEALTH_COST, 0, false) - 
-                (SkillConfigManager.getUseSetting(hero, this, Setting.HEALTH_COST_REDUCE, mana, true) * hero.getLevel());
+                (SkillConfigManager.getUseSetting(hero, this, Setting.HEALTH_COST_REDUCE, mana, true) * hero.getSkillLevel(this));
         if (healthCost > 0) {
             description += " HP:" + healthCost;
         }
         
         //STAMINA
         int staminaCost = SkillConfigManager.getUseSetting(hero, this, Setting.STAMINA.node(), 0, false)
-                - (SkillConfigManager.getUseSetting(hero, this, Setting.STAMINA_REDUCE.node(), 0, false) * hero.getLevel());
+                - (SkillConfigManager.getUseSetting(hero, this, Setting.STAMINA_REDUCE.node(), 0, false) * hero.getSkillLevel(this));
         if (staminaCost > 0) {
             description += " FP:" + staminaCost;
         }
@@ -121,16 +121,16 @@ public class SkillCripple extends TargettedSkill {
                 if (damageCheck(player, tHero.getPlayer())) {
                     broadcastExecuteText(hero, le);
                     int damage = (int) (SkillConfigManager.getUseSetting(hero, this, Setting.DAMAGE.node(), 5, false) +
-                            (SkillConfigManager.getUseSetting(hero, this, "damage-increase", 0.0, false) * hero.getLevel()));
+                            (SkillConfigManager.getUseSetting(hero, this, "damage-increase", 0.0, false) * hero.getSkillLevel(this)));
                     damage = damage > 0 ? damage : 0;
-                    damageEntity(tHero.getPlayer(), player, damage, DamageCause.MAGIC);
+                    damageEntity(tHero.getPlayer(), player, damage, DamageCause.ENTITY_ATTACK);
                     //tHero.getPlayer().damage(damage, player);
                     long duration = (long) (SkillConfigManager.getUseSetting(hero, this, Setting.DURATION.node(), 10000, false) +
-                            (SkillConfigManager.getUseSetting(hero, this, "duration-increase", 0.0, false) * hero.getLevel()));
+                            (SkillConfigManager.getUseSetting(hero, this, "duration-increase", 0.0, false) * hero.getSkillLevel(this)));
                     duration = duration > 0 ? duration : 0;
                     long period = SkillConfigManager.getUseSetting(hero, this, Setting.PERIOD.node(), 1000, false);
                     int tickDamage = (int) (SkillConfigManager.getUseSetting(hero, this, Setting.DAMAGE_TICK.node(), 2, false) +
-                            (SkillConfigManager.getUseSetting(hero, this, "tick-damage-increase", 0.0, false) * hero.getLevel()));
+                            (SkillConfigManager.getUseSetting(hero, this, "tick-damage-increase", 0.0, false) * hero.getSkillLevel(this)));
                     tickDamage = tickDamage > 0 ? tickDamage : 0;
                     CrippleEffect cEffect = new CrippleEffect(this, period, duration, tickDamage, player);
                     tHero.addEffect(cEffect);
@@ -160,7 +160,7 @@ public class SkillCripple extends TargettedSkill {
             if (prevLocation != null
                     && Math.abs(hero.getPlayer().getLocation().getX() - prevLocation.getX()) >= 1
                     && Math.abs(hero.getPlayer().getLocation().getZ() - prevLocation.getZ()) >= 1) {
-                damageEntity(hero.getPlayer(), caster, damageTick, DamageCause.MAGIC);
+                damageEntity(hero.getPlayer(), caster, damageTick, DamageCause.ENTITY_ATTACK);
                 //hero.getPlayer().damage(damageTick, caster);
             }
             prevLocation = hero.getPlayer().getLocation();

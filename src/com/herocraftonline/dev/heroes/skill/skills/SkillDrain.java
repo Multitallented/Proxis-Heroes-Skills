@@ -1,15 +1,14 @@
-package com.herocraftonline.dev.heroes.skill.skills;
+package com.herocraftonline.heroes.characters.skill.skills;
 
-
-import com.herocraftonline.dev.heroes.Heroes;
-import com.herocraftonline.dev.heroes.api.WeaponDamageEvent;
-import com.herocraftonline.dev.heroes.classes.HeroClass.ExperienceType;
-import com.herocraftonline.dev.heroes.hero.Hero;
-import com.herocraftonline.dev.heroes.skill.PassiveSkill;
-import com.herocraftonline.dev.heroes.skill.Skill;
-import com.herocraftonline.dev.heroes.skill.SkillConfigManager;
-import com.herocraftonline.dev.heroes.skill.SkillType;
-import com.herocraftonline.dev.heroes.util.Setting;
+import com.herocraftonline.heroes.Heroes;
+import com.herocraftonline.heroes.api.events.WeaponDamageEvent;
+import com.herocraftonline.heroes.characters.Hero;
+import com.herocraftonline.heroes.characters.classes.HeroClass.ExperienceType;
+import com.herocraftonline.heroes.characters.skill.PassiveSkill;
+import com.herocraftonline.heroes.characters.skill.Skill;
+import com.herocraftonline.heroes.characters.skill.SkillConfigManager;
+import com.herocraftonline.heroes.characters.skill.SkillType;
+import com.herocraftonline.heroes.util.Setting;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -31,10 +30,10 @@ public class SkillDrain extends PassiveSkill {
     @Override
     public String getDescription(Hero hero) {
         int drain = (int) (SkillConfigManager.getUseSetting(hero, this, "mana-drain-per-attack", 4, false) +
-                (SkillConfigManager.getUseSetting(hero, this, "drain-increase", 0.0, false) * hero.getLevel()));
+                (SkillConfigManager.getUseSetting(hero, this, "drain-increase", 0.0, false) * hero.getSkillLevel(this)));
         drain = drain > 0 ? drain : 0;
         int cooldown = (int) (SkillConfigManager.getUseSetting(hero, this, Setting.COOLDOWN.node(), 500, false) -
-                (SkillConfigManager.getUseSetting(hero, this, "cooldown-decrease", 0.0, false) * hero.getLevel())) / 1000;
+                (SkillConfigManager.getUseSetting(hero, this, "cooldown-decrease", 0.0, false) * hero.getSkillLevel(this))) / 1000;
         cooldown = cooldown > 0 ? cooldown : 0;
         String description = getDescription().replace("$1", drain + "").replace("$2", cooldown + "");
         return description;
@@ -68,10 +67,10 @@ public class SkillDrain extends PassiveSkill {
                     if (hero.getCooldown("Drain") == null || hero.getCooldown("Drain") <= System.currentTimeMillis()) {
                         Hero tHero = plugin.getHeroManager().getHero((Player) event.getEntity());
                         int drain = (int) (SkillConfigManager.getUseSetting(hero, skill, "mana-drain-per-attack", 4, false) +
-                                (SkillConfigManager.getUseSetting(hero, skill, "drain-increase", 0.0, false) * hero.getLevel()));
+                                (SkillConfigManager.getUseSetting(hero, skill, "drain-increase", 0.0, false) * hero.getSkillLevel(skill)));
                         drain = drain > 0 ? drain : 0;
                         int cooldown = (int) (SkillConfigManager.getUseSetting(hero, skill, Setting.COOLDOWN.node(), 500, false) -
-                                (SkillConfigManager.getUseSetting(hero, skill, "cooldown-decrease", 0.0, false) * hero.getLevel()));
+                                (SkillConfigManager.getUseSetting(hero, skill, "cooldown-decrease", 0.0, false) * hero.getSkillLevel(skill)));
                         cooldown = cooldown > 0 ? cooldown : 0;
                         hero.setCooldown("Drain", cooldown + System.currentTimeMillis());
                         if (tHero.getMana() - drain <= 0) {
@@ -99,10 +98,10 @@ public class SkillDrain extends PassiveSkill {
                         if (hero.getCooldown("Drain") == null || hero.getCooldown("Drain") <= System.currentTimeMillis()) {
                             Hero tHero = plugin.getHeroManager().getHero((Player) event.getEntity());
                             int drain = (int) (SkillConfigManager.getUseSetting(hero, skill, "mana-drain-per-attack", 4, false) +
-                                    (SkillConfigManager.getUseSetting(hero, skill, "drain-increase", 0.0, false) * hero.getLevel()));
+                                    (SkillConfigManager.getUseSetting(hero, skill, "drain-increase", 0.0, false) * hero.getSkillLevel(skill)));
                             drain = drain > 0 ? drain : 0;
                             int cooldown = (int) (SkillConfigManager.getUseSetting(hero, skill, Setting.COOLDOWN.node(), 500, false) -
-                                    (SkillConfigManager.getUseSetting(hero, skill, "cooldown-decrease", 0.0, false) * hero.getLevel()));
+                                    (SkillConfigManager.getUseSetting(hero, skill, "cooldown-decrease", 0.0, false) * hero.getSkillLevel(skill)));
                             cooldown = cooldown > 0 ? cooldown : 0;
                             hero.setCooldown("Drain", cooldown + System.currentTimeMillis());
                             if (tHero.getMana() - drain <= 0) {

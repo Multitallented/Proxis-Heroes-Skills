@@ -1,13 +1,12 @@
-package com.herocraftonline.dev.heroes.skill.skills;
+package com.herocraftonline.heroes.characters.skill.skills;
 
-
-import com.herocraftonline.dev.heroes.Heroes;
-import com.herocraftonline.dev.heroes.api.HeroRegainManaEvent;
-import com.herocraftonline.dev.heroes.hero.Hero;
-import com.herocraftonline.dev.heroes.skill.PassiveSkill;
-import com.herocraftonline.dev.heroes.skill.Skill;
-import com.herocraftonline.dev.heroes.skill.SkillConfigManager;
-import com.herocraftonline.dev.heroes.skill.SkillType;
+import com.herocraftonline.heroes.Heroes;
+import com.herocraftonline.heroes.api.events.HeroRegainManaEvent;
+import com.herocraftonline.heroes.characters.Hero;
+import com.herocraftonline.heroes.characters.skill.PassiveSkill;
+import com.herocraftonline.heroes.characters.skill.Skill;
+import com.herocraftonline.heroes.characters.skill.SkillConfigManager;
+import com.herocraftonline.heroes.characters.skill.SkillType;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.EventHandler;
@@ -34,7 +33,7 @@ public class SkillRegenMana extends PassiveSkill {
     @Override
     public String getDescription(Hero hero) {
         int regen = (int) (SkillConfigManager.getUseSetting(hero, this, "regen-amount", 1.0, false)
-                + (SkillConfigManager.getUseSetting(hero, this, "regen-increase", 0.0, false) * hero.getLevel()));
+                + (SkillConfigManager.getUseSetting(hero, this, "regen-increase", 0.0, false) * hero.getSkillLevel(this)));
         String description = getDescription().replace("$1", regen + "");
         return description;
     }
@@ -51,7 +50,7 @@ public class SkillRegenMana extends PassiveSkill {
             Hero hero = event.getHero();
             if (hero.hasEffect("RegenMana")) {
                 event.setAmount((int) (event.getAmount() + (int) (SkillConfigManager.getUseSetting(hero, skill, "regen-amount", 1.0, false)
-                + (SkillConfigManager.getUseSetting(hero, skill, "regen-increase", 0.0, false) * hero.getLevel()))));
+                + (SkillConfigManager.getUseSetting(hero, skill, "regen-increase", 0.0, false) * hero.getSkillLevel(skill)))));
             }
         }
     }

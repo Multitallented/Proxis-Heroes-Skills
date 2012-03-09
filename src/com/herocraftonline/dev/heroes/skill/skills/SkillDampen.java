@@ -1,13 +1,13 @@
-package com.herocraftonline.dev.heroes.skill.skills;
+package com.herocraftonline.heroes.characters.skill.skills;
 
+import com.herocraftonline.heroes.Heroes;
+import com.herocraftonline.heroes.characters.Hero;
+import com.herocraftonline.heroes.characters.skill.PassiveSkill;
+import com.herocraftonline.heroes.characters.skill.Skill;
+import com.herocraftonline.heroes.characters.skill.SkillConfigManager;
+import com.herocraftonline.heroes.characters.skill.SkillType;
 import org.bukkit.entity.Player;
 
-import com.herocraftonline.dev.heroes.Heroes;
-import com.herocraftonline.dev.heroes.hero.Hero;
-import com.herocraftonline.dev.heroes.skill.PassiveSkill;
-import com.herocraftonline.dev.heroes.skill.Skill;
-import com.herocraftonline.dev.heroes.skill.SkillConfigManager;
-import com.herocraftonline.dev.heroes.skill.SkillType;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -35,10 +35,10 @@ public class SkillDampen extends PassiveSkill {
     @Override
     public String getDescription(Hero hero) {
         int manaReq = (int) (SkillConfigManager.getUseSetting(hero, this, "block-if-mana-below", 15, false) +
-                (SkillConfigManager.getUseSetting(hero, this, "block-increase", 0.0, false) * hero.getLevel()));
+                (SkillConfigManager.getUseSetting(hero, this, "block-increase", 0.0, false) * hero.getSkillLevel(this)));
         manaReq = manaReq > 0 ? manaReq : 0;
         int minMana = (int) (SkillConfigManager.getUseSetting(hero, this, "mana-required", 20, false) -
-                (SkillConfigManager.getUseSetting(hero, this, "mana-required-decrease", 0.0, false) * hero.getLevel()));
+                (SkillConfigManager.getUseSetting(hero, this, "mana-required-decrease", 0.0, false) * hero.getSkillLevel(this)));
         minMana = minMana > 0 ? minMana : 0;
         String description = getDescription().replace("$1", manaReq + "").replace("$2", minMana + "");
         return description;
@@ -83,10 +83,10 @@ public class SkillDampen extends PassiveSkill {
                     }
                     Hero hero = plugin.getHeroManager().getHero((Player) damager);
                     int manaReq = (int) (SkillConfigManager.getUseSetting(hero, skill, "block-if-mana-below", 15, false) +
-                            (SkillConfigManager.getUseSetting(hero, skill, "block-increase", 0.0, false) * hero.getLevel()));
+                            (SkillConfigManager.getUseSetting(hero, skill, "block-increase", 0.0, false) * hero.getSkillLevel(skill)));
                     manaReq = manaReq > 0 ? manaReq : 0;
                     int minMana = (int) (SkillConfigManager.getUseSetting(hero, skill, "mana-required", 20, false) -
-                            (SkillConfigManager.getUseSetting(hero, skill, "mana-required-decrease", 0.0, false) * hero.getLevel()));
+                            (SkillConfigManager.getUseSetting(hero, skill, "mana-required-decrease", 0.0, false) * hero.getSkillLevel(skill)));
                     minMana = minMana > 0 ? minMana : 0;
                     if (tHero.hasEffect("Dampen") && tHero.getMana() >= manaReq && hero.getMana() <= minMana) {
                         event.setDamage(0);

@@ -2,40 +2,36 @@ package com.herocraftonline.heroes.characters.skill.skills;
 
 import com.herocraftonline.heroes.Heroes;
 import com.herocraftonline.heroes.api.SkillResult;
+import com.herocraftonline.heroes.api.events.HeroRegainHealthEvent;
 import com.herocraftonline.heroes.characters.Hero;
 import com.herocraftonline.heroes.characters.effects.EffectType;
-import com.herocraftonline.heroes.characters.effects.ExpirableEffect;
+import com.herocraftonline.heroes.characters.effects.PeriodicHealEffect;
 import com.herocraftonline.heroes.characters.skill.ActiveSkill;
 import com.herocraftonline.heroes.characters.skill.Skill;
 import com.herocraftonline.heroes.characters.skill.SkillConfigManager;
 import com.herocraftonline.heroes.characters.skill.SkillType;
 import com.herocraftonline.heroes.util.Setting;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityDamageEvent;
+
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.event.entity.EntityDamageEvent;
 
-public class SkillVoid extends ActiveSkill {
-
+public class SkillFullHeal extends ActiveSkill {
     private String applyText;
     private String expireText;
 
-    public SkillVoid(Heroes plugin) {
-        super(plugin, "Void");
-        setDescription("Your pvp gets disabled for $1s.");
-        setUsage("/skill void");
+    public SkillFullHeal(Heroes plugin) {
+        super(plugin, "FullHeal");
+        setDescription("Completely heals you over $1 if you dont take damage.");
+        setUsage("/skill fullheal");
         setArgumentRange(0, 0);
-        setIdentifiers(new String[] { "skill void" });
+        setIdentifiers(new String[]{"skill fullheal"});
         Bukkit.getServer().getPluginManager().registerEvents(new SkillEntityListener(), plugin);
-        //registerEvent(Type.ENTITY_DAMAGE, new SkillEntityListener(), Priority.Normal);
         
-        setTypes(SkillType.COUNTER, SkillType.BUFF, SkillType.DARK);
+        setTypes(SkillType.HEAL, SkillType.SILENCABLE);
     }
 
     @Override
@@ -90,77 +86,89 @@ public class SkillVoid extends ActiveSkill {
     @Override
     public ConfigurationSection getDefaultConfig() {
         ConfigurationSection node = super.getDefaultConfig();
-        node.set(Setting.DURATION.node(), 5000);
+        node.set(Setting.DURATION.node(), 10000);
         node.set("duration-increase", 0);
-        node.set(Setting.APPLY_TEXT.node(), "%hero% became intangible!");
-        node.set(Setting.EXPIRE_TEXT.node(), "%hero% became tangible again!");
+        node.set(Setting.PERIOD.node(), 1000);
+        node.set(Setting.APPLY_TEXT.node(), "%hero% begins healing!");
+        node.set(Setting.EXPIRE_TEXT.node(), "%hero% is completely healed!");
         return node;
     }
 
     @Override
     public void init() {
         super.init();
-        applyText = SkillConfigManager.getUseSetting(null, this, Setting.APPLY_TEXT.node(), "%hero% became intangible!").replace("%hero%", "$1");
-        expireText = SkillConfigManager.getUseSetting(null, this, Setting.EXPIRE_TEXT.node(), "%hero% became tangible again!").replace("%hero%", "$1");
+        applyText = SkillConfigManager.getUseSetting(null, this, Setting.APPLY_TEXT.node(), "%hero% begins healing!").replace("%hero%", "$1");
+        expireText = SkillConfigManager.getUseSetting(null, this, Setting.EXPIRE_TEXT.node(), "%hero% is completely healed!").replace("%hero%", "$1");
     }
 
     @Override
     public SkillResult use(Hero hero, String[] args) {
-        broadcastExecuteText(hero);
-
         long duration = (long) (SkillConfigManager.getUseSetting(hero, this, Setting.DURATION.node(), 10000, false) +
                 (SkillConfigManager.getUseSetting(hero, this, "duration-increase", 0.0, false) * hero.getSkillLevel(this)));
         duration = duration > 0 ? duration : 0;
-        hero.addEffect(new VoidEffect(this, duration));
-
-        return SkillResult.NORMAL;
+        long period = (long) (SkillConfigManager.getUseSetting(hero, this, Setting.PERIOD.node(), 1000, false));
+        double multiplier = duration / period;
+        int amount = (int) ((hero.getMaxHealth() - hero.getHealth()) / multiplier);
+        amount = amount * multiplier < hero.getMaxHealth() - hero.getHealth() ? amount + 1 : amount;
+        if (amount > 0) {
+            FullHealEffect cEffect = new FullHealEffect(this, period, duration, amount, hero.getPlayer());
+            hero.addEffect(cEffect);
+            return SkillResult.NORMAL;
+        } else {
+            return SkillResult.INVALID_TARGET;
+        }
     }
 
-    public class VoidEffect extends ExpirableEffect {
-
-        public VoidEffect(Skill skill, long duration) {
-            super(skill, "Void", duration);
-            this.types.add(EffectType.INVULNERABILITY);
+    public class FullHealEffect extends PeriodicHealEffect {
+        private final int amount;
+        
+        public FullHealEffect(Skill skill, long period, long duration, int amount, Player caster) {
+            super(skill, "FullHeal", period, duration, amount, caster);
+            this.types.add(EffectType.HEAL);
+            this.types.add(EffectType.BENEFICIAL);
+            this.amount = amount;
         }
-
+        
         @Override
         public void apply(Hero hero) {
             super.apply(hero);
-            Player player = hero.getPlayer();
-            broadcast(player.getLocation(), applyText, player.getDisplayName());
+            broadcast(hero.getPlayer().getLocation(), applyText, hero.getPlayer().getDisplayName());
         }
+        
+        @Override
+        public void tick(Hero hero) {
+            super.tick(hero);
+            HeroRegainHealthEvent hrhEvent = new HeroRegainHealthEvent(hero, amount, skill);
+            plugin.getServer().getPluginManager().callEvent(hrhEvent);
+            if (hrhEvent.isCancelled()) {
+                return;
+            }
 
+            hero.setHealth(hero.getHealth() + hrhEvent.getAmount());
+            hero.syncHealth();
+        }
+        
         @Override
         public void remove(Hero hero) {
-            Player player = hero.getPlayer();
-            broadcast(player.getLocation(), expireText, player.getDisplayName());
+            super.remove(hero);
+            broadcast(hero.getPlayer().getLocation(), expireText, hero.getPlayer().getDisplayName());
         }
-
     }
 
     public class SkillEntityListener implements Listener {
 
         @EventHandler
         public void onEntityDamage(EntityDamageEvent event) {
-            if (event.isCancelled())
+            if (event.isCancelled() || event.getDamage() < 1 || !(event.getEntity() instanceof Player)) {
                 return;
-            Entity defender = event.getEntity();
-            if (defender instanceof Player) {
-                if (event instanceof EntityDamageByEntityEvent) {
-                    EntityDamageByEntityEvent edby = (EntityDamageByEntityEvent) event;
-                    Entity damager = edby.getDamager(); 
-                    if (event.getCause() == DamageCause.PROJECTILE) {
-                        damager = ((Projectile)damager).getShooter();
-                    }
-                    if (!(damager instanceof Player)) {
-                        return;
-                    }
-                    Hero tHero = plugin.getHeroManager().getHero((Player) damager);
-                    if (tHero.hasEffect("Void")) {
-                        event.setCancelled(true);
-                    }
-                }
             }
+            Hero hero = plugin.getHeroManager().getHero((Player) event.getEntity());
+            if (hero.hasEffect("FullHeal")) {
+                hero.removeEffect(hero.getEffect("FullHeal"));
+            }
+            
         }
     }
+    
+
 }

@@ -3,21 +3,26 @@ package com.herocraftonline.heroes.characters.skill.skills;
 import com.herocraftonline.heroes.Heroes;
 import com.herocraftonline.heroes.api.SkillResult;
 import com.herocraftonline.heroes.characters.Hero;
-import com.herocraftonline.heroes.characters.skill.ActiveSkill;
 import com.herocraftonline.heroes.characters.skill.SkillConfigManager;
 import com.herocraftonline.heroes.characters.skill.SkillType;
+import com.herocraftonline.heroes.characters.skill.TargettedSkill;
 import com.herocraftonline.heroes.util.Setting;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.event.entity.EntityRegainHealthEvent;
+import org.bukkit.event.entity.EntityRegainHealthEvent.RegainReason;
 
-public class SkillReagent extends ActiveSkill {
+public class SkillEqualize extends TargettedSkill {
 
-    public SkillReagent(Heroes plugin) {
-        super(plugin, "Reagent");
-        setDescription("");
-        setUsage("/skill reagent");
-        setArgumentRange(0, 0);
-        setIdentifiers(new String[]{"skill reagent"});
-
-        setTypes(SkillType.ITEM);
+    public SkillEqualize(Heroes plugin) {
+        super(plugin, "Equalize");
+        setDescription("Heal you or your target until your hp is equal.");
+        setUsage("/skill equalize [target]");
+        setArgumentRange(0, 1);
+        setIdentifiers(new String[] { "skill equalize" });
+        
+        setTypes(SkillType.LIGHT, SkillType.HEAL, SkillType.SILENCABLE);
     }
 
     @Override
@@ -67,10 +72,32 @@ public class SkillReagent extends ActiveSkill {
     }
 
     @Override
-    public SkillResult use(Hero hero, String[] args) {
-        broadcastExecuteText(hero);
+    public ConfigurationSection getDefaultConfig() {
+        ConfigurationSection node = super.getDefaultConfig();
+        return node;
+    }
+
+    @Override
+    public SkillResult use(Hero hero, LivingEntity target, String[] args) {
+        Player player = hero.getPlayer();
+        if (target.equals(player)) {
+            return SkillResult.INVALID_TARGET;
+        }
+        if (!(target instanceof Player)) {
+            return SkillResult.INVALID_TARGET;
+        }
+        Hero tHero = plugin.getHeroManager().getHero((Player) target);
+        if (target instanceof Player && !damageCheck(player, target)) {
+            return SkillResult.CANCELLED;
+        }
+        if (hero.getHealth() > tHero.getHealth()) {
+            plugin.getServer().getPluginManager().callEvent(new EntityRegainHealthEvent(target, (int) (hero.getHealth() - tHero.getHealth()), RegainReason.CUSTOM));
+        } else {
+            plugin.getServer().getPluginManager().callEvent(new EntityRegainHealthEvent(player, (int) (tHero.getHealth() - hero.getHealth()), RegainReason.CUSTOM));
+        }
+        
+        broadcastExecuteText(hero, target);
         return SkillResult.NORMAL;
     }
-    
 
 }
