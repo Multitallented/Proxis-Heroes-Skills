@@ -113,7 +113,7 @@ public class SkillTackle extends TargettedSkill {
         for (Entity e : ((Entity) hero.getPlayer()).getNearbyEntities(radius, radius, radius)) {
             if (e instanceof Player) {
                 Player tPlayer = (Player) e;
-                Hero tHero = plugin.getHeroManager().getHero(tPlayer);
+                Hero tHero = plugin.getCharacterManager().getHero(tPlayer);
                 if (damageCheck(player, tPlayer)) {
                     if (duration > 0) {
                         tHero.addEffect(new StunEffect(this, duration));

@@ -88,7 +88,7 @@ public class SkillInversion extends TargettedSkill {
             return SkillResult.INVALID_TARGET;
         }
         Player player = hero.getPlayer();
-        Hero enemy = plugin.getHeroManager().getHero((Player) target);
+        Hero enemy = plugin.getCharacterManager().getHero((Player) target);
         if (target.equals(player)) {
             return SkillResult.INVALID_TARGET;
         }

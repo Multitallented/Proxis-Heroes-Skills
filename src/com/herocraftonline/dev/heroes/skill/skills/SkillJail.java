@@ -135,7 +135,7 @@ public class SkillJail extends TargettedSkill {
         if (target.equals(player)) {
             return SkillResult.INVALID_TARGET;
         } else if (target instanceof Player && damageCheck((Player) target, player)) {
-            Hero tHero = plugin.getHeroManager().getHero((Player) target);
+            Hero tHero = plugin.getCharacterManager().getHero((Player) target);
             long duration = (long) (SkillConfigManager.getUseSetting(hero, this, Setting.DURATION.node(), 60000, false) +
                     (SkillConfigManager.getUseSetting(hero, this, "duration-increase", 0.0, false) * hero.getSkillLevel(this)));
             duration = duration > 0 ? duration : 0;
@@ -156,11 +156,11 @@ public class SkillJail extends TargettedSkill {
         @EventHandler
         public void onEntityDamage(EntityDamageEvent event) {
             if (event.isCancelled() || !(event.getEntity() instanceof Player) || event.getDamage() == 0 || jailLocations.isEmpty() ||
-                    event.getDamage() < plugin.getHeroManager().getHero((Player) event.getEntity()).getHealth()) {
+                    event.getDamage() < plugin.getCharacterManager().getHero((Player) event.getEntity()).getHealth()) {
                 return;
             }
             Player player = (Player) event.getEntity();
-            Hero hero = plugin.getHeroManager().getHero(player);
+            Hero hero = plugin.getCharacterManager().getHero(player);
             if (hero.hasEffect("Jail")) {
                 broadcast(player.getLocation(),jailText,player.getDisplayName());
                 Location tempLocation = null;

@@ -127,7 +127,7 @@ public class SkillPandemic extends ActiveSkill {
                 //m.damage(damage, player);
             } else if (e instanceof Player) {
                 Player p = (Player) e;
-                plugin.getHeroManager().getHero(p).addEffect(pe);
+                plugin.getCharacterManager().getHero(p).addEffect(pe);
             }
         }
         broadcastExecuteText(hero);
@@ -145,25 +145,33 @@ public class SkillPandemic extends ActiveSkill {
         }
         
         @Override
-        public void apply(Hero hero) {
+        public void applyToHero(Hero hero) {
             super.apply(hero);
             Player p = hero.getPlayer();
             broadcast(p.getLocation(), applyText, caster.getDisplayName(), p.getDisplayName(), "Pandemic");
         }
         
         @Override
-        public void remove(Hero hero) {
+        public void removeFromHero(Hero hero) {
             super.remove(hero);
             Player p = hero.getPlayer();
             broadcast(p.getLocation(), expireText, caster.getDisplayName(), p.getDisplayName(), "Pandemic");
         }
         
         @Override
-        public void tick(Hero hero) {
+        public void tickHero(Hero hero) {
             super.tick(hero);
             if (hero.getHealth() - damage > 1) {
                 damageEntity(hero.getPlayer(), caster, damage, DamageCause.MAGIC);
                 //hero.getPlayer().damage(damage, caster);
+            }
+        }
+
+        @Override
+        public void tickMonster(com.herocraftonline.heroes.characters.Monster mnstr) {
+            super.tick(mnstr);
+            if (mnstr.getHealth() - damage > 1) {
+                damageEntity(mnstr.getEntity(), caster, damage, DamageCause.MAGIC);
             }
         }
     }

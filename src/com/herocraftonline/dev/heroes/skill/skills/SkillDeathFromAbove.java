@@ -133,13 +133,13 @@ public class SkillDeathFromAbove extends ActiveSkill {
             this.types.add(EffectType.PHYSICAL);
         }
         @Override
-        public void apply(Hero hero) {
+        public void applyToHero(Hero hero) {
             super.apply(hero);
             broadcast(hero.getPlayer().getLocation(), applyText, hero.getPlayer().getDisplayName());
         }
         
         @Override
-        public void remove(Hero hero) {
+        public void removeFromHero(Hero hero) {
             super.remove(hero);
             broadcast(hero.getPlayer().getLocation(), removeText, hero.getPlayer().getDisplayName());
         }
@@ -156,7 +156,7 @@ public class SkillDeathFromAbove extends ActiveSkill {
                     || event.getCause() != DamageCause.FALL)
                 return;
             Player player = (Player) event.getEntity();
-            Hero hero = plugin.getHeroManager().getHero(player);
+            Hero hero = plugin.getCharacterManager().getHero(player);
             if (!hero.hasEffect("DeathFromAbove")) {
                 return;
             }

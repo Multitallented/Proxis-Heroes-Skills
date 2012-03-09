@@ -86,7 +86,7 @@ public class SkillEqualize extends TargettedSkill {
         if (!(target instanceof Player)) {
             return SkillResult.INVALID_TARGET;
         }
-        Hero tHero = plugin.getHeroManager().getHero((Player) target);
+        Hero tHero = plugin.getCharacterManager().getHero((Player) target);
         if (target instanceof Player && !damageCheck(player, target)) {
             return SkillResult.CANCELLED;
         }

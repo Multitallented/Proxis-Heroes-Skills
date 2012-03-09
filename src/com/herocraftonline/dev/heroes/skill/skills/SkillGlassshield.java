@@ -3,6 +3,7 @@ package com.herocraftonline.heroes.characters.skill.skills;
 import com.herocraftonline.heroes.Heroes;
 import com.herocraftonline.heroes.api.SkillResult;
 import com.herocraftonline.heroes.characters.Hero;
+import com.herocraftonline.heroes.characters.Monster;
 import com.herocraftonline.heroes.characters.effects.EffectType;
 import com.herocraftonline.heroes.characters.effects.PeriodicExpirableEffect;
 import com.herocraftonline.heroes.characters.skill.ActiveSkill;
@@ -139,14 +140,14 @@ public class SkillGlassshield extends ActiveSkill {
         }
         
         @Override
-        public void apply(Hero hero) {
+        public void applyToHero(Hero hero) {
             super.apply(hero);
             Player player = hero.getPlayer();
             broadcast(player.getLocation(), applyText, player.getDisplayName(), "Glassshield");
         }
         
         @Override
-        public void remove(Hero hero) {
+        public void removeFromHero(Hero hero) {
             super.remove(hero);
             Player player = hero.getPlayer();
             broadcast(player.getLocation(), expireText, player.getDisplayName(), "Glassshield");
@@ -154,10 +155,15 @@ public class SkillGlassshield extends ActiveSkill {
         }
         
         @Override
-        public void tick(Hero hero) {
+        public void tickHero(Hero hero) {
             super.tick(hero);
             updateShield(hero.getPlayer().getLocation().getBlock(), seed);
             seed = !seed;
+        }
+        
+        @Override
+        public void tickMonster(Monster mnstr) {
+            //:P I'm really tired
         }
 
         private void updateShield(Block refBlock, boolean seed) {

@@ -106,7 +106,7 @@ public class SkillHealBomb extends TargettedSkill {
             broadcastExecuteText(hero, player);
             healBomb(hero, hero);
         } else if (le instanceof Player) {
-            Hero tHero = plugin.getHeroManager().getHero((Player) le);
+            Hero tHero = plugin.getCharacterManager().getHero((Player) le);
             if (hero.getParty() != null && hero.getParty().getMembers().contains(tHero)) {
                 broadcastExecuteText(hero, le);
                 healBomb(hero, tHero);
@@ -143,7 +143,7 @@ public class SkillHealBomb extends TargettedSkill {
                     totalExp += exp;
                 } else if (e instanceof Player) {
                     Player p = (Player) e;
-                    if (hero.getParty() == null || !hero.getParty().getMembers().contains(plugin.getHeroManager().getHero(p))) {
+                    if (hero.getParty() == null || !hero.getParty().getMembers().contains(plugin.getCharacterManager().getHero(p))) {
                         damageEntity(p, player, damage, DamageCause.MAGIC);
                         //p.damage(damage, player);
                     }

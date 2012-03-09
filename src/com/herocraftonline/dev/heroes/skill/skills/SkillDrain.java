@@ -61,11 +61,11 @@ public class SkillDrain extends PassiveSkill {
                 return;
             if (event.getDamager() instanceof Player && event.getEntity() instanceof Player) {
                 Player player = (Player) event.getDamager();
-                Hero hero = plugin.getHeroManager().getHero(player);
+                Hero hero = plugin.getCharacterManager().getHero(player);
 
                 if (hero.hasEffect("Drain")) {
                     if (hero.getCooldown("Drain") == null || hero.getCooldown("Drain") <= System.currentTimeMillis()) {
-                        Hero tHero = plugin.getHeroManager().getHero((Player) event.getEntity());
+                        Hero tHero = plugin.getCharacterManager().getHero((Player) event.getEntity());
                         int drain = (int) (SkillConfigManager.getUseSetting(hero, skill, "mana-drain-per-attack", 4, false) +
                                 (SkillConfigManager.getUseSetting(hero, skill, "drain-increase", 0.0, false) * hero.getSkillLevel(skill)));
                         drain = drain > 0 ? drain : 0;
@@ -92,11 +92,11 @@ public class SkillDrain extends PassiveSkill {
             } else if (event.getDamager() instanceof Projectile) {
                 if (((Projectile) event.getDamager()).getShooter() instanceof Player) {
                     Player player = (Player) ((Projectile) event.getDamager()).getShooter();
-                    Hero hero = plugin.getHeroManager().getHero(player);
+                    Hero hero = plugin.getCharacterManager().getHero(player);
 
                     if (hero.hasEffect("Drain")) {
                         if (hero.getCooldown("Drain") == null || hero.getCooldown("Drain") <= System.currentTimeMillis()) {
-                            Hero tHero = plugin.getHeroManager().getHero((Player) event.getEntity());
+                            Hero tHero = plugin.getCharacterManager().getHero((Player) event.getEntity());
                             int drain = (int) (SkillConfigManager.getUseSetting(hero, skill, "mana-drain-per-attack", 4, false) +
                                     (SkillConfigManager.getUseSetting(hero, skill, "drain-increase", 0.0, false) * hero.getSkillLevel(skill)));
                             drain = drain > 0 ? drain : 0;

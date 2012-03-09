@@ -127,7 +127,7 @@ public class SkillCreepingPain extends TargettedSkill {
         duration = duration > 0 ? duration : 0;
         CurseEffect cEffect = new CurseEffect(this, duration, player);
         if (target instanceof Player) {
-            Hero tHero = plugin.getHeroManager().getHero((Player) target);
+            Hero tHero = plugin.getCharacterManager().getHero((Player) target);
             tHero.addEffect(cEffect);
             return SkillResult.NORMAL;
         }
@@ -147,7 +147,7 @@ public class SkillCreepingPain extends TargettedSkill {
         }
 
         @Override
-        public void apply(Hero hero) {
+        public void applyToHero(Hero hero) {
             super.apply(hero);
             Player player = hero.getPlayer();
             affectedPlayers.put(player, 0);
@@ -155,7 +155,7 @@ public class SkillCreepingPain extends TargettedSkill {
         }
 
         @Override
-        public void remove(Hero hero) {
+        public void removeFromHero(Hero hero) {
             super.remove(hero);
 
             Player player = hero.getPlayer();
@@ -178,7 +178,7 @@ public class SkillCreepingPain extends TargettedSkill {
         @EventHandler
         public void onEntityDamage(EntityDamageEvent event) {
             if (event.getEntity() instanceof Player) {
-                Hero hero = plugin.getHeroManager().getHero((Player) event.getEntity());
+                Hero hero = plugin.getCharacterManager().getHero((Player) event.getEntity());
                 Player player = hero.getPlayer();
                 if (hero.hasEffect("CreepingPain")) {
                     int damage = event.getDamage();

@@ -127,7 +127,7 @@ public class SkillSlow extends TargettedSkill {
             multiplier = 20;
         }
         SlowEffect effect = new SlowEffect(this, duration, multiplier);
-        plugin.getHeroManager().getHero((Player) target).addEffect(effect);
+        plugin.getCharacterManager().getHero((Player) target).addEffect(effect);
         broadcastExecuteText(hero, target);
         return SkillResult.NORMAL;
     }
@@ -144,14 +144,14 @@ public class SkillSlow extends TargettedSkill {
         }
 
         @Override
-        public void apply(Hero hero) {
+        public void applyToHero(Hero hero) {
             super.apply(hero);
             Player player = hero.getPlayer();
             broadcast(player.getLocation(), applyText, player.getDisplayName());
         }
 
         @Override
-        public void remove(Hero hero) {
+        public void removeFromHero(Hero hero) {
             super.remove(hero);
             Player player = hero.getPlayer();
             broadcast(player.getLocation(), expireText, player.getDisplayName());

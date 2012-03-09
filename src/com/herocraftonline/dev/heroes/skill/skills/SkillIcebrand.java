@@ -80,7 +80,7 @@ public class SkillIcebrand extends PassiveSkill {
             Player tPlayer = (Player) event.getEntity();
             if (event.getDamager() instanceof Player) {
                 Player player = (Player) event.getDamager();
-                Hero hero = plugin.getHeroManager().getHero(player);
+                Hero hero = plugin.getCharacterManager().getHero(player);
                 
                 if (hero.hasEffect("Icebrand")) {
                     if (hero.getCooldown("Icebrand") == null || hero.getCooldown("Icebrand") <= System.currentTimeMillis()) {
@@ -94,7 +94,7 @@ public class SkillIcebrand extends PassiveSkill {
                             long duration = (long) (SkillConfigManager.getUseSetting(hero, skill, Setting.DURATION.node(), 2000, false) 
                                     + (hero.getSkillLevel(skill) * SkillConfigManager.getUseSetting(hero, skill, "duration-increase", 0, false)));
                             duration = duration > 0 ? duration : 0;
-                            plugin.getHeroManager().getHero(tPlayer).addEffect(new SlowEffect(icebrand, duration, 2, false,"","",hero));
+                            plugin.getCharacterManager().getHero(tPlayer).addEffect(new SlowEffect(icebrand, duration, 2, false,"","",hero));
                             double exp = SkillConfigManager.getUseSetting(hero, skill, "exp-per-slow", 0, false);
                             if (exp > 0) {
                                 if (hero.hasParty()) {
@@ -110,7 +110,7 @@ public class SkillIcebrand extends PassiveSkill {
             } else if (event.getDamager() instanceof Projectile) {
                 if (((Projectile) event.getDamager()).getShooter() instanceof Player) {
                     Player player = (Player) ((Projectile) event.getDamager()).getShooter();
-                    Hero hero = plugin.getHeroManager().getHero(player);
+                    Hero hero = plugin.getCharacterManager().getHero(player);
 
                     if (hero.hasEffect("Icebrand")) {
                         if (hero.getCooldown("Icebrand") == null || hero.getCooldown("Icebrand") <= System.currentTimeMillis()) {
@@ -125,7 +125,7 @@ public class SkillIcebrand extends PassiveSkill {
                                 long duration = (long) (SkillConfigManager.getUseSetting(hero, skill, Setting.DURATION.node(), 2000, false) 
                                         + (hero.getSkillLevel(skill) * SkillConfigManager.getUseSetting(hero, skill, "duration-increase", 0, false)));
                                 duration = duration > 0 ? duration : 0;
-                                plugin.getHeroManager().getHero(tPlayer).addEffect(new SlowEffect(icebrand, duration, 2, false,"","",hero));
+                                plugin.getCharacterManager().getHero(tPlayer).addEffect(new SlowEffect(icebrand, duration, 2, false,"","",hero));
                                 double exp = SkillConfigManager.getUseSetting(hero, skill, "exp-per-slow", 0, false);
                                 if (exp > 0) {
                                     if (hero.hasParty()) {

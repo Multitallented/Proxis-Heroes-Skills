@@ -210,7 +210,7 @@ public class SkillPounce extends ActiveSkill
         return;
       }
       Player localPlayer1 = (Player)paramEntityDamageEvent.getEntity();
-      Hero localHero1 = plugin.getHeroManager().getHero(localPlayer1);
+      Hero localHero1 = plugin.getCharacterManager().getHero(localPlayer1);
       chargingPlayers.remove(localPlayer1);
       paramEntityDamageEvent.setDamage(0);
       paramEntityDamageEvent.setCancelled(true);
@@ -260,7 +260,7 @@ public class SkillPounce extends ActiveSkill
         if ((localEntity instanceof Player))
         {
           Player localPlayer2 = (Player)localEntity;
-          Hero localHero2 = plugin.getHeroManager().getHero(localPlayer2);
+          Hero localHero2 = plugin.getCharacterManager().getHero(localPlayer2);
           if (l1 > 0L)
             localHero2.addEffect(new StunEffect(this.skill, l1));
           if (l2 > 0L)
@@ -271,13 +271,6 @@ public class SkillPounce extends ActiveSkill
             localHero2.addEffect(new SilenceEffect(this.skill, l4));
           if (j > 0)
             damageEntity(localLivingEntity, localPlayer1, j, EntityDamageEvent.DamageCause.ENTITY_ATTACK);
-        }
-        else if ((localEntity instanceof LivingEntity))
-        {
-          if (l2 > 0L)
-            plugin.getEffectManager().addEntityEffect(localLivingEntity, new SlowEffect(this.skill, l2, 2, true, Messaging.getLivingEntityName(localLivingEntity) + " has been slowed by " + localPlayer1.getDisplayName(), Messaging.getLivingEntityName(localLivingEntity) + " is no longer slowed by " + localPlayer1.getDisplayName(), localHero1));
-          if (l3 > 0L)
-            plugin.getEffectManager().addEntityEffect(localLivingEntity, new RootEffect(this.skill, l3));
         }
         if (j > 0) {
             damageEntity(localLivingEntity, localPlayer1, j, DamageCause.MAGIC);

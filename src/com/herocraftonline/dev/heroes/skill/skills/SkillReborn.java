@@ -61,11 +61,11 @@ public class SkillReborn extends PassiveSkill {
         @EventHandler
         public void onEntityDamage(EntityDamageEvent event) {
             if (event.isCancelled() || !(event.getEntity() instanceof Player) || event.getDamage() == 0 ||
-                    event.getDamage() < plugin.getHeroManager().getHero((Player) event.getEntity()).getHealth()) {
+                    event.getDamage() < plugin.getCharacterManager().getHero((Player) event.getEntity()).getHealth()) {
                 return;
             }
             Player player = (Player) event.getEntity();
-            Hero hero = plugin.getHeroManager().getHero(player);
+            Hero hero = plugin.getCharacterManager().getHero(player);
             if (hero.hasEffect("Reborn")) {
                 if (hero.getCooldown("Reborn") == null || hero.getCooldown("Reborn") <= System.currentTimeMillis()) {
                     event.setDamage(0);

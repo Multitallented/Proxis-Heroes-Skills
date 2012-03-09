@@ -59,7 +59,7 @@ public class SkillMagicArmor extends PassiveSkill {
                 return;
             }
             Player player = (Player) event.getEntity();
-            Hero hero = plugin.getHeroManager().getHero(player);
+            Hero hero = plugin.getCharacterManager().getHero(player);
             if (!hero.hasEffect("MagicArmor")) {
                 return;
             }

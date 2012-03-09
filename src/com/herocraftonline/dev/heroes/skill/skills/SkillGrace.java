@@ -71,7 +71,7 @@ public class SkillGrace extends PassiveSkill {
         if (hasDiedRecently.containsKey(player)) {
             return (int) ((new Date().getTime() - hasDiedRecently.get(player).getTime())/1000);
         } else {
-            return SkillConfigManager.getUseSetting(plugin.getHeroManager().getHero(player), this, Setting.DURATION.node(), 300000, false) / 1000;
+            return SkillConfigManager.getUseSetting(plugin.getCharacterManager().getHero(player), this, Setting.DURATION.node(), 300000, false) / 1000;
         }
     }
     public class EntityDeathListener implements Listener {
@@ -85,7 +85,7 @@ public class SkillGrace extends PassiveSkill {
             if (event.getEntity() instanceof Player) {
                 Player player = (Player) event.getEntity();
                 hasDiedRecently.put(player, new Date());
-                int duration = (int) SkillConfigManager.getUseSetting(plugin.getHeroManager().getHero(player), skill, Setting.DURATION.node(), 300000, false)/1000;
+                int duration = (int) SkillConfigManager.getUseSetting(plugin.getCharacterManager().getHero(player), skill, Setting.DURATION.node(), 300000, false)/1000;
                 Messaging.send(player, deathText, duration + " seconds");
             }
         }
@@ -110,12 +110,12 @@ public class SkillGrace extends PassiveSkill {
                         return;
                     }
                     Player tPlayer = (Player) damager;
-                    Hero hero = plugin.getHeroManager().getHero(player);
-                    Hero tHero = plugin.getHeroManager().getHero(tPlayer);
+                    Hero hero = plugin.getCharacterManager().getHero(player);
+                    Hero tHero = plugin.getCharacterManager().getHero(tPlayer);
                     if (hero.hasEffect("Grace") || tHero.hasEffect("Grace")) {
                         int targetDuration = pvpEnabled(player);
                         int damagerDuration = pvpEnabled(tPlayer);
-                        int duration = (int) SkillConfigManager.getUseSetting(plugin.getHeroManager().getHero(player), skill, Setting.DURATION.node(), 300000, false)/1000;
+                        int duration = (int) SkillConfigManager.getUseSetting(plugin.getCharacterManager().getHero(player), skill, Setting.DURATION.node(), 300000, false)/1000;
                         if (damagerDuration < duration || targetDuration < duration) {
                             if (targetDuration < duration){
                                Messaging.send((Player) damager, skillBlockText, player.getDisplayName(), duration - targetDuration + " seconds");

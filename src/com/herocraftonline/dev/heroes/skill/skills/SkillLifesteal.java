@@ -61,7 +61,7 @@ public class SkillLifesteal extends PassiveSkill {
                 return;
             if (event.getDamager() instanceof Player) {
                 Player player = (Player) event.getDamager();
-                Hero hero = plugin.getHeroManager().getHero(player);
+                Hero hero = plugin.getCharacterManager().getHero(player);
 
                 if (hero.hasEffect("Lifesteal")) {
                     if (hero.getCooldown("Lifesteal") == null || hero.getCooldown("Lifesteal") <= System.currentTimeMillis()) {
@@ -92,7 +92,7 @@ public class SkillLifesteal extends PassiveSkill {
             } else if (event.getDamager() instanceof Projectile) {
                 if (((Projectile) event.getDamager()).getShooter() instanceof Player) {
                     Player player = (Player) ((Projectile) event.getDamager()).getShooter();
-                    Hero hero = plugin.getHeroManager().getHero(player);
+                    Hero hero = plugin.getCharacterManager().getHero(player);
 
                     if (hero.hasEffect("Lifesteal")) {
                         if (hero.getCooldown("Lifesteal") == null || hero.getCooldown("Lifesteal") <= System.currentTimeMillis()) {

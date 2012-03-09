@@ -3,6 +3,7 @@ package com.herocraftonline.heroes.characters.skill.skills;
 import com.herocraftonline.heroes.Heroes;
 import com.herocraftonline.heroes.api.SkillResult;
 import com.herocraftonline.heroes.characters.Hero;
+import com.herocraftonline.heroes.characters.Monster;
 import com.herocraftonline.heroes.characters.effects.EffectType;
 import com.herocraftonline.heroes.characters.effects.PeriodicExpirableEffect;
 import com.herocraftonline.heroes.characters.skill.Skill;
@@ -116,7 +117,7 @@ public class SkillChaser extends TargettedSkill {
     public SkillResult use(Hero hero, LivingEntity le, String[] strings) {
         Player player = hero.getPlayer();
         if (!(le.equals(player)) && le instanceof Player) {
-            Hero tHero = plugin.getHeroManager().getHero((Player) le);
+            Hero tHero = plugin.getCharacterManager().getHero((Player) le);
             if (hero.getParty() == null || !(hero.getParty().getMembers().contains(tHero))) {
                 if (damageCheck(player, tHero.getPlayer())) {
                     broadcastExecuteText(hero, le);
@@ -155,7 +156,7 @@ public class SkillChaser extends TargettedSkill {
         }
         
         @Override
-        public void tick(Hero hero) {
+        public void tickHero(Hero hero) {
             super.tick(hero);
             if (prevLocation != null
                     && Math.abs(hero.getPlayer().getLocation().getX() - prevLocation.getX()) < 1
@@ -167,16 +168,22 @@ public class SkillChaser extends TargettedSkill {
         }
         
         @Override
-        public void apply(Hero hero) {
+        public void applyToHero(Hero hero) {
             super.apply(hero);
             broadcast(hero.getPlayer().getLocation(), applyText, hero.getPlayer().getDisplayName(), caster.getDisplayName());
             this.prevLocation = hero.getPlayer().getLocation();
         }
         
         @Override
-        public void remove(Hero hero) {
+        public void removeFromHero(Hero hero) {
             super.remove(hero);
             broadcast(hero.getPlayer().getLocation(), removeText, hero.getPlayer().getDisplayName(), caster.getDisplayName());
+        }
+
+        @Override
+        public void tickMonster(Monster mnstr) {
+            super.tick(mnstr);
+            damageEntity(mnstr.getEntity(), caster, damageTick, DamageCause.ENTITY_ATTACK);
         }
     }
 }

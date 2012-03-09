@@ -51,7 +51,7 @@ public class SkillDodge extends PassiveSkill {
             if (event.isCancelled() || !(event.getEntity() instanceof Player))
                 return;
             Player player = (Player) event.getEntity();
-            Hero hero = plugin.getHeroManager().getHero(player);
+            Hero hero = plugin.getCharacterManager().getHero(player);
             if (hero.hasEffect("Dodge")) {
                 double chance = (SkillConfigManager.getUseSetting(hero, skill, Setting.CHANCE.node(), 0.2, false) +
                         (SkillConfigManager.getUseSetting(hero, skill, Setting.CHANCE_LEVEL.node(), 0.0, false) * hero.getSkillLevel(skill)));

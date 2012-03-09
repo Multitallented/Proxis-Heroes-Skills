@@ -96,7 +96,7 @@ public class SkillTrack extends ActiveSkill {
         int y = location.getBlockY() + random.nextInt(randomness / 10);
         y = y < 1 ? 1 : y;
         int z = location.getBlockZ() + random.nextInt(randomness);
-        Hero tHero = plugin.getHeroManager().getHero((Player) target);
+        Hero tHero = plugin.getCharacterManager().getHero((Player) target);
         Messaging.send(player, "$1 is a level $2 $3 with $4 health!", tHero.getPlayer().getDisplayName(), tHero.getTieredLevel(tHero.getHeroClass()), tHero.getHeroClass().getName(), tHero.getHealth());
         Messaging.send(player, "$5 pos: $1: $2,$3,$4", location.getWorld().getName(), x, y, z, tHero.getPlayer().getDisplayName());
         Location hLoc = hero.getPlayer().getLocation();

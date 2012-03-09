@@ -71,14 +71,14 @@ public class SkillMercy extends ActiveSkill {
         }
         
         @Override
-        public void apply(Hero hero) {
+        public void applyToHero(Hero hero) {
             super.apply(hero);
             Player player = hero.getPlayer();
             broadcast(player.getLocation(), "$1 has disabled Mercy", player.getDisplayName());
         }
 
         @Override
-        public void remove(Hero hero) {
+        public void removeFromHero(Hero hero) {
             super.remove(hero);
             Player player = hero.getPlayer();
             broadcast(player.getLocation(), "$1 has enabled Mercy", player.getDisplayName());
@@ -98,7 +98,7 @@ public class SkillMercy extends ActiveSkill {
             if (event instanceof EntityDamageByEntityEvent) {
                 EntityDamageByEntityEvent edBy = (EntityDamageByEntityEvent) event;
                 if (event.getEntity() instanceof Player) {
-                    Hero tHero = plugin.getHeroManager().getHero((Player) event.getEntity());
+                    Hero tHero = plugin.getCharacterManager().getHero((Player) event.getEntity());
                     Entity damager = edBy.getDamager(); 
                     if (event.getCause() == DamageCause.PROJECTILE) {
                         damager = ((Projectile)damager).getShooter();
@@ -106,7 +106,7 @@ public class SkillMercy extends ActiveSkill {
                     if (!(damager instanceof Player)) {
                         return;
                     }
-                    Hero hero = plugin.getHeroManager().getHero((Player) damager);
+                    Hero hero = plugin.getCharacterManager().getHero((Player) damager);
                     //debug message
                     //Messaging.send(hero.getPlayer(), "$1, $2, $3, $4", !hero.hasEffect("Mercy"), hero.hasSkill("Mercy"), !tHero.hasEffect("Mercy"), tHero.hasSkill("Mercy"));
                     if ((!hero.hasEffect("Mercy") && hero.canUseSkill("Mercy")) || (!tHero.hasEffect("Mercy") && tHero.canUseSkill("Mercy"))) {

@@ -62,7 +62,7 @@ public class SkillCritical extends PassiveSkill {
                 return;
             if (event.getDamager() instanceof Player) {
                 Player player = (Player) event.getDamager();
-                Hero hero = plugin.getHeroManager().getHero(player);
+                Hero hero = plugin.getCharacterManager().getHero(player);
 
                 if (hero.hasEffect("Critical")) {
                     double chance = (SkillConfigManager.getUseSetting(hero, skill, Setting.CHANCE.node(), 0.2, false) +
@@ -78,7 +78,7 @@ public class SkillCritical extends PassiveSkill {
             } else if (event.getDamager() instanceof Projectile) {
                 if (((Projectile) event.getDamager()).getShooter() instanceof Player) {
                     Player player = (Player) ((Projectile) event.getDamager()).getShooter();
-                    Hero hero = plugin.getHeroManager().getHero(player);
+                    Hero hero = plugin.getCharacterManager().getHero(player);
 
                     if (hero.hasEffect("Critical")) {
                         double chance = (SkillConfigManager.getUseSetting(hero, skill, Setting.CHANCE.node(), 0.2, false) +

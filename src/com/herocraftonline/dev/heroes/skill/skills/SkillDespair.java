@@ -126,7 +126,7 @@ public class SkillDespair extends ActiveSkill {
             if (e instanceof Player) {
                 Player p = (Player) e;
                 if (!p.equals(player) && (!hero.hasParty() || !hero.getParty().isPartyMember(p)) && damageCheck(p, player)) {
-                    Hero dHero = plugin.getHeroManager().getHero(p);
+                    Hero dHero = plugin.getCharacterManager().getHero(p);
                     dHero.addEffect(new DespairEffect(this, duration, player));
                     if (damage > 0) {
                         damageEntity(p, player, damage, DamageCause.MAGIC);
@@ -159,7 +159,7 @@ public class SkillDespair extends ActiveSkill {
         }
         
         @Override
-        public void apply(Hero hero) {
+        public void applyToHero(Hero hero) {
             super.apply(hero);
             CraftPlayer p = (CraftPlayer) hero.getPlayer();
             p.getHandle().addEffect(new MobEffect(15, time, 3));
@@ -167,7 +167,7 @@ public class SkillDespair extends ActiveSkill {
         }
         
         @Override
-        public void remove(Hero hero) {
+        public void removeFromHero(Hero hero) {
             super.remove(hero);
             CraftPlayer p = (CraftPlayer) hero.getPlayer();
             p.getHandle().addEffect(new MobEffect(15, 0, 0));

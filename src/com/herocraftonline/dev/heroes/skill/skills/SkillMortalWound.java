@@ -125,7 +125,7 @@ public class SkillMortalWound extends TargettedSkill {
             }
         }
         if (target instanceof Player) {
-            Hero tHero = plugin.getHeroManager().getHero((Player) target);
+            Hero tHero = plugin.getCharacterManager().getHero((Player) target);
             long duration = (long) (SkillConfigManager.getUseSetting(hero, this, Setting.DURATION.node(), 10000, false) +
                     (SkillConfigManager.getUseSetting(hero, this, "duration-increase", 0.0, false) * hero.getSkillLevel(this)));
             duration = duration > 0 ? duration : 0;
@@ -150,7 +150,7 @@ public class SkillMortalWound extends TargettedSkill {
         }
 
         @Override
-        public void apply(Hero hero) {
+        public void applyToHero(Hero hero) {
             super.apply(hero);
             Player player = hero.getPlayer();
             hero.syncHealth();
@@ -158,7 +158,7 @@ public class SkillMortalWound extends TargettedSkill {
         }
 
         @Override
-        public void remove(Hero hero) {
+        public void removeFromHero(Hero hero) {
             super.remove(hero);
 
             Player player = hero.getPlayer();
@@ -170,7 +170,7 @@ public class SkillMortalWound extends TargettedSkill {
 
         @EventHandler
         public void onEntityRegainHealth(EntityRegainHealthEvent event) {
-            Hero hero = plugin.getHeroManager().getHero((Player) event.getEntity());
+            Hero hero = plugin.getCharacterManager().getHero((Player) event.getEntity());
             if (hero.hasEffect("MortalWound")) {
                 event.setAmount(0);
                 event.setCancelled(true);

@@ -122,7 +122,7 @@ public class SkillTether extends ActiveSkill {
                 exp += expCreature;
             } else if (n instanceof Player && n != player && damageCheck(player, (LivingEntity) n)) {
                 CurseEffect cEffect = new CurseEffect(this, duration, hero.getPlayer());
-                Hero tHero = plugin.getHeroManager().getHero((Player) n);
+                Hero tHero = plugin.getCharacterManager().getHero((Player) n);
                 tHero.addEffect(cEffect);
                 exp += expPlayer;
             }
@@ -155,7 +155,7 @@ public class SkillTether extends ActiveSkill {
         }
 
         @Override
-        public void apply(Hero hero) {
+        public void applyToHero(Hero hero) {
             super.apply(hero);
             Player player = hero.getPlayer();
             affectedPlayers.put(player, caster);
@@ -163,7 +163,7 @@ public class SkillTether extends ActiveSkill {
         }
 
         @Override
-        public void remove(Hero hero) {
+        public void removeFromHero(Hero hero) {
             super.remove(hero);
 
             Player player = hero.getPlayer();
@@ -174,7 +174,7 @@ public class SkillTether extends ActiveSkill {
         }
         
         @Override
-        public void tick(Hero hero) {
+        public void tickHero(Hero hero) {
             super.tick(hero);
             Player player = hero.getPlayer();
             try {
@@ -184,6 +184,11 @@ public class SkillTether extends ActiveSkill {
             } catch (IllegalArgumentException iae) {
                 
             }
+        }
+
+        @Override
+        public void tickMonster(com.herocraftonline.heroes.characters.Monster mnstr) {
+            //throw new UnsupportedOperationException("Not supported yet.");
         }
     }
 

@@ -131,7 +131,7 @@ public class SkillInvertDamage extends ActiveSkill
       }
       Entity localEntity = paramEntityDamageEvent.getEntity();
       if (localEntity instanceof Player) {
-        Hero localHero = plugin.getHeroManager().getHero((Player) localEntity);
+        Hero localHero = plugin.getCharacterManager().getHero((Player) localEntity);
         if (localHero.hasEffect("InvertDamage"))
         {
             Bukkit.getServer().getPluginManager().callEvent(new EntityRegainHealthEvent(localHero.getPlayer(), paramEntityDamageEvent.getDamage(), RegainReason.CUSTOM));
@@ -151,7 +151,7 @@ public class SkillInvertDamage extends ActiveSkill
     }
 
     @Override
-    public void apply(Hero paramHero)
+    public void applyToHero(Hero paramHero)
     {
       super.apply(paramHero);
       Player localPlayer = paramHero.getPlayer();
@@ -159,7 +159,7 @@ public class SkillInvertDamage extends ActiveSkill
     }
 
     @Override
-    public void remove(Hero paramHero)
+    public void removeFromHero(Hero paramHero)
     {
       super.remove(paramHero);
       Player localPlayer = paramHero.getPlayer();

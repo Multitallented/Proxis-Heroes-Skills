@@ -113,7 +113,7 @@ public class SkillWrestle extends ActiveSkill {
         for (Entity n : entities) {
             if (n instanceof Player && damageCheck(player, (Player) n)) {
                 Player p = (Player) n;
-                Hero tHero = plugin.getHeroManager().getHero(p);
+                Hero tHero = plugin.getCharacterManager().getHero(p);
                 tHero.addEffect(cEffect);
                 if (damage > 0) {
                     damageEntity(p, player, damage, DamageCause.MAGIC);

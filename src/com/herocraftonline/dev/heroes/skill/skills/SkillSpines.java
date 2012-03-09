@@ -58,7 +58,7 @@ public class SkillSpines extends PassiveSkill {
             if (event.isCancelled() || event.getDamage() == 0 || event.getCause() != DamageCause.ENTITY_ATTACK || !(event.getEntity() instanceof Player))
                 return;
             Player player = (Player) event.getEntity();
-            Hero hero = plugin.getHeroManager().getHero(player);
+            Hero hero = plugin.getCharacterManager().getHero(player);
             if (hero.hasEffect("Spines")) {
                 if (hero.getCooldown("Spines") == null || hero.getCooldown("Spines") <= System.currentTimeMillis()) {
                     double chance = (SkillConfigManager.getUseSetting(hero, this.skill, Setting.CHANCE.node(), 0.1, false) +

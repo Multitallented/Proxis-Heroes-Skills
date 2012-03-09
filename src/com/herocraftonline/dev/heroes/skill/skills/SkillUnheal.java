@@ -131,7 +131,7 @@ public class SkillUnheal extends TargettedSkill {
                 (SkillConfigManager.getUseSetting(hero, this, "duration-reduce", 0, false) * hero.getSkillLevel(this));
         CurseEffect cEffect = new CurseEffect(this, duration, player);
         if (target instanceof Player) {
-            Hero tHero = plugin.getHeroManager().getHero((Player) target);
+            Hero tHero = plugin.getCharacterManager().getHero((Player) target);
             tHero.addEffect(cEffect);
             return SkillResult.NORMAL;
         }
@@ -151,7 +151,7 @@ public class SkillUnheal extends TargettedSkill {
         }
 
         @Override
-        public void apply(Hero hero) {
+        public void applyToHero(Hero hero) {
             super.apply(hero);
             Player player = hero.getPlayer();
             affectedPlayers.put(hero, caster);
@@ -159,7 +159,7 @@ public class SkillUnheal extends TargettedSkill {
         }
 
         @Override
-        public void remove(Hero hero) {
+        public void removeFromHero(Hero hero) {
             super.remove(hero);
 
             Player player = hero.getPlayer();
@@ -173,7 +173,7 @@ public class SkillUnheal extends TargettedSkill {
         public void onEntityRegainHealth(EntityRegainHealthEvent event) {
             if (!(event.getEntity() instanceof Player))
                 return;
-            Hero hero = plugin.getHeroManager().getHero((Player) event.getEntity());
+            Hero hero = plugin.getCharacterManager().getHero((Player) event.getEntity());
             if (hero.hasEffect("Unheal")) {
                 int damage = event.getAmount();
                 event.setAmount(0);

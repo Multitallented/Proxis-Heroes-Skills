@@ -85,7 +85,7 @@ public class SkillBasher extends PassiveSkill {
             Player tPlayer = (Player) event.getEntity();
             if (edby.getDamager() instanceof Player) {
                 Player player = (Player) edby.getDamager();
-                Hero hero = plugin.getHeroManager().getHero(player);
+                Hero hero = plugin.getCharacterManager().getHero(player);
                 
                 if (hero.hasEffect("Basher")) {
                     if (hero.getCooldown("Basher") == null || hero.getCooldown("Basher") <= System.currentTimeMillis()) {
@@ -100,7 +100,7 @@ public class SkillBasher extends PassiveSkill {
                             long duration = (long) (SkillConfigManager.getUseSetting(hero, skill, Setting.DURATION.node(), 2000, false) 
                                     + (hero.getSkillLevel(skill) * SkillConfigManager.getUseSetting(hero, skill, "duration-increase", 0, false)));
                             duration = duration > 0 ? duration : 0;
-                            plugin.getHeroManager().getHero(tPlayer).addEffect(new StunEffect(basher, duration));
+                            plugin.getCharacterManager().getHero(tPlayer).addEffect(new StunEffect(basher, duration));
                             double exp = SkillConfigManager.getUseSetting(hero, skill, "exp-per-stun", 0, false);
                             if (exp > 0) {
                                 if (hero.hasParty()) {
@@ -116,7 +116,7 @@ public class SkillBasher extends PassiveSkill {
             } else if (edby.getDamager() instanceof Projectile) {
                 if (((Projectile) edby.getDamager()).getShooter() instanceof Player) {
                     Player player = (Player) ((Projectile) edby.getDamager()).getShooter();
-                    Hero hero = plugin.getHeroManager().getHero(player);
+                    Hero hero = plugin.getCharacterManager().getHero(player);
 
                     if (hero.hasEffect("Basher")) {
                         if (hero.getCooldown("Basher") == null || hero.getCooldown("Basher") <= System.currentTimeMillis()) {
@@ -131,7 +131,7 @@ public class SkillBasher extends PassiveSkill {
                                 long duration = (long) (SkillConfigManager.getUseSetting(hero, skill, Setting.DURATION.node(), 2000, false) 
                                         + (hero.getSkillLevel(skill) * SkillConfigManager.getUseSetting(hero, skill, "duration-increase", 0, false)));
                                 duration = duration > 0 ? duration : 0;
-                                plugin.getHeroManager().getHero(tPlayer).addEffect(new StunEffect(basher, duration));
+                                plugin.getCharacterManager().getHero(tPlayer).addEffect(new StunEffect(basher, duration));
                                 double exp = SkillConfigManager.getUseSetting(hero, skill, "exp-per-stun", 0, false);
                                 if (exp > 0) {
                                     if (hero.hasParty()) {

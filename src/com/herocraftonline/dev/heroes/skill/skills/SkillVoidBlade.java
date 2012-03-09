@@ -80,7 +80,7 @@ public class SkillVoidBlade extends PassiveSkill {
             Player tPlayer = (Player) event.getEntity();
             if (event.getDamager() instanceof Player) {
                 Player player = (Player) event.getDamager();
-                Hero hero = plugin.getHeroManager().getHero(player);
+                Hero hero = plugin.getCharacterManager().getHero(player);
                 
                 if (hero.hasEffect("VoidBlade")) {
                     if (hero.getCooldown("VoidBlade") == null || hero.getCooldown("VoidBlade") <= System.currentTimeMillis()) {
@@ -94,7 +94,7 @@ public class SkillVoidBlade extends PassiveSkill {
                             long duration = (long) (SkillConfigManager.getUseSetting(hero, skill, Setting.DURATION.node(), 2000, false) 
                                     + (hero.getSkillLevel(skill) * SkillConfigManager.getUseSetting(hero, skill, "duration-increase", 0, false)));
                             duration = duration > 0 ? duration : 0;
-                            plugin.getHeroManager().getHero(tPlayer).addEffect(new SilenceEffect(voidblade, duration));
+                            plugin.getCharacterManager().getHero(tPlayer).addEffect(new SilenceEffect(voidblade, duration));
                             double exp = SkillConfigManager.getUseSetting(hero, skill, "exp-per-silence", 0, false);
                             if (exp > 0) {
                                 if (hero.hasParty()) {
@@ -110,7 +110,7 @@ public class SkillVoidBlade extends PassiveSkill {
             } else if (event.getDamager() instanceof Projectile) {
                 if (((Projectile) event.getDamager()).getShooter() instanceof Player) {
                     Player player = (Player) ((Projectile) event.getDamager()).getShooter();
-                    Hero hero = plugin.getHeroManager().getHero(player);
+                    Hero hero = plugin.getCharacterManager().getHero(player);
 
                     if (hero.hasEffect("VoidBlade")) {
                         if (hero.getCooldown("VoidBlade") == null || hero.getCooldown("VoidBlade") <= System.currentTimeMillis()) {
@@ -125,7 +125,7 @@ public class SkillVoidBlade extends PassiveSkill {
                                 long duration = (long) (SkillConfigManager.getUseSetting(hero, skill, Setting.DURATION.node(), 2000, false) 
                                         + (hero.getSkillLevel(skill) * SkillConfigManager.getUseSetting(hero, skill, "duration-increase", 0, false)));
                                 duration = duration > 0 ? duration : 0;
-                                plugin.getHeroManager().getHero(tPlayer).addEffect(new SilenceEffect(voidblade, duration));
+                                plugin.getCharacterManager().getHero(tPlayer).addEffect(new SilenceEffect(voidblade, duration));
                                 double exp = SkillConfigManager.getUseSetting(hero, skill, "exp-per-silence", 0, false);
                                 if (exp > 0) {
                                     if (hero.hasParty()) {

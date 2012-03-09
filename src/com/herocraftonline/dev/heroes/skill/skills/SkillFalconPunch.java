@@ -106,7 +106,7 @@ public class SkillFalconPunch extends TargettedSkill {
             Messaging.send(player, "You can't harm that target");
             return SkillResult.INVALID_TARGET_NO_MSG;
         }
-        Hero tHero = plugin.getHeroManager().getHero(tPlayer);
+        Hero tHero = plugin.getCharacterManager().getHero(tPlayer);
         broadcastExecuteText(hero, target);
         long duration = (long) (SkillConfigManager.getUseSetting(hero, this, Setting.DURATION.node(), 5000, false) +
                 (SkillConfigManager.getUseSetting(hero, this, "duration-increase", 0.0, false) * hero.getSkillLevel(this)));

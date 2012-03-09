@@ -73,7 +73,7 @@ public class SkillDampen extends PassiveSkill {
             if (event instanceof EntityDamageByEntityEvent) {
                 EntityDamageByEntityEvent edBy = (EntityDamageByEntityEvent) event;
                 if (event.getEntity() instanceof Player) {
-                    Hero tHero = plugin.getHeroManager().getHero((Player) event.getEntity());
+                    Hero tHero = plugin.getCharacterManager().getHero((Player) event.getEntity());
                     Entity damager = edBy.getDamager();
                     if (edBy.getCause() == DamageCause.PROJECTILE) {
                         damager = ((Projectile)damager).getShooter();
@@ -81,7 +81,7 @@ public class SkillDampen extends PassiveSkill {
                     if (!(damager instanceof Player)) {
                         return;
                     }
-                    Hero hero = plugin.getHeroManager().getHero((Player) damager);
+                    Hero hero = plugin.getCharacterManager().getHero((Player) damager);
                     int manaReq = (int) (SkillConfigManager.getUseSetting(hero, skill, "block-if-mana-below", 15, false) +
                             (SkillConfigManager.getUseSetting(hero, skill, "block-increase", 0.0, false) * hero.getSkillLevel(skill)));
                     manaReq = manaReq > 0 ? manaReq : 0;

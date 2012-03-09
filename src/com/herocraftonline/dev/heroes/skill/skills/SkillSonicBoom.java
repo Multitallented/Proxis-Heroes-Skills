@@ -106,10 +106,13 @@ public class SkillSonicBoom extends ActiveSkill {
                 //c.damage(damage, player);
             } else if (e instanceof Player) {
                 Player p = (Player) e;
+                if (hero.hasParty() && hero.getParty().isPartyMember(plugin.getCharacterManager().getHero(p))) {
+                    continue;
+                }
                 if (damageCheck(player, p)) {
                     damageEntity(p, player, damage, DamageCause.MAGIC);
                     //p.damage(damage, player);
-                    Hero tHero = plugin.getHeroManager().getHero(p);
+                    Hero tHero = plugin.getCharacterManager().getHero(p);
                     tHero.addEffect(new SilenceEffect(this, duration));
                 }
             }

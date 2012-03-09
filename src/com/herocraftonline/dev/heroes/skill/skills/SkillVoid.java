@@ -124,14 +124,14 @@ public class SkillVoid extends ActiveSkill {
         }
 
         @Override
-        public void apply(Hero hero) {
+        public void applyToHero(Hero hero) {
             super.apply(hero);
             Player player = hero.getPlayer();
             broadcast(player.getLocation(), applyText, player.getDisplayName());
         }
 
         @Override
-        public void remove(Hero hero) {
+        public void removeFromHero(Hero hero) {
             Player player = hero.getPlayer();
             broadcast(player.getLocation(), expireText, player.getDisplayName());
         }
@@ -155,7 +155,7 @@ public class SkillVoid extends ActiveSkill {
                     if (!(damager instanceof Player)) {
                         return;
                     }
-                    Hero tHero = plugin.getHeroManager().getHero((Player) damager);
+                    Hero tHero = plugin.getCharacterManager().getHero((Player) damager);
                     if (tHero.hasEffect("Void")) {
                         event.setCancelled(true);
                     }

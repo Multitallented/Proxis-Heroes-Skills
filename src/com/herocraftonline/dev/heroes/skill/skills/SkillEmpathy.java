@@ -112,9 +112,7 @@ public class SkillEmpathy extends TargettedSkill {
         slowDuration = slowDuration > 0 ? slowDuration : 0;
         if (slowDuration > 0) {
             if (target instanceof Player) {
-                plugin.getHeroManager().getHero((Player) target).addEffect(new SlowEffect(this, slowDuration, 2, false, "", "", hero));
-            } else {
-                plugin.getEffectManager().addEntityEffect(target, new SlowEffect(this, slowDuration, 2, false, "", "", hero));
+                plugin.getCharacterManager().getHero((Player) target).addEffect(new SlowEffect(this, slowDuration, 2, false, "", "", hero));
             }
         }
         damage = (int) Math.round(damage * damageMod);
