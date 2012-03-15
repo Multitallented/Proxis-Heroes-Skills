@@ -148,7 +148,7 @@ public class SkillCreepingPain extends TargettedSkill {
 
         @Override
         public void applyToHero(Hero hero) {
-            super.apply(hero);
+            super.applyToHero(hero);
             Player player = hero.getPlayer();
             affectedPlayers.put(player, 0);
             broadcast(player.getLocation(), applyText, player.getDisplayName());
@@ -156,7 +156,7 @@ public class SkillCreepingPain extends TargettedSkill {
 
         @Override
         public void removeFromHero(Hero hero) {
-            super.remove(hero);
+            super.removeFromHero(hero);
 
             Player player = hero.getPlayer();
             if (affectedPlayers.containsKey(player)&& affectedPlayers.get(player) > 0) {

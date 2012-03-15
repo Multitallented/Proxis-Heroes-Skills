@@ -153,7 +153,7 @@ public class SkillInvertDamage extends ActiveSkill
     @Override
     public void applyToHero(Hero paramHero)
     {
-      super.apply(paramHero);
+      super.applyToHero(paramHero);
       Player localPlayer = paramHero.getPlayer();
       broadcast(localPlayer.getLocation(), applyText, paramHero.getPlayer().getDisplayName());
     }
@@ -161,7 +161,7 @@ public class SkillInvertDamage extends ActiveSkill
     @Override
     public void removeFromHero(Hero paramHero)
     {
-      super.remove(paramHero);
+      super.removeFromHero(paramHero);
       Player localPlayer = paramHero.getPlayer();
       broadcast(localPlayer.getLocation(), expireText, paramHero.getPlayer().getDisplayName());
     }

@@ -141,14 +141,14 @@ public class SkillGlassshield extends ActiveSkill {
         
         @Override
         public void applyToHero(Hero hero) {
-            super.apply(hero);
+            super.applyToHero(hero);
             Player player = hero.getPlayer();
             broadcast(player.getLocation(), applyText, player.getDisplayName(), "Glassshield");
         }
         
         @Override
         public void removeFromHero(Hero hero) {
-            super.remove(hero);
+            super.removeFromHero(hero);
             Player player = hero.getPlayer();
             broadcast(player.getLocation(), expireText, player.getDisplayName(), "Glassshield");
             updateShield(null, seed);
@@ -156,7 +156,9 @@ public class SkillGlassshield extends ActiveSkill {
         
         @Override
         public void tickHero(Hero hero) {
-            super.tick(hero);
+            if (!hero.hasEffect("Glassshield")) {
+                return;
+            }
             updateShield(hero.getPlayer().getLocation().getBlock(), seed);
             seed = !seed;
         }

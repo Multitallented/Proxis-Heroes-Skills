@@ -106,21 +106,21 @@ public class SkillIceAura extends ActiveSkill {
 
         @Override
         public void applyToHero(Hero hero) {
-            super.apply(hero);
+            super.applyToHero(hero);
             Player player = hero.getPlayer();
             broadcast(player.getLocation(), applyText, player.getDisplayName());
         }
 
         @Override
         public void removeFromHero(Hero hero) {
-            super.remove(hero);
+            super.removeFromHero(hero);
             Player player = hero.getPlayer();
             broadcast(player.getLocation(), expireText, player.getDisplayName());
         }
 
         @Override
         public void tickHero(Hero hero) {
-            super.tick(hero);
+            super.tickHero(hero);
 
             Player player = hero.getPlayer();
 

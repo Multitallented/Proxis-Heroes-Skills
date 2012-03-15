@@ -152,7 +152,7 @@ public class SkillUnheal extends TargettedSkill {
 
         @Override
         public void applyToHero(Hero hero) {
-            super.apply(hero);
+            super.applyToHero(hero);
             Player player = hero.getPlayer();
             affectedPlayers.put(hero, caster);
             broadcast(player.getLocation(), applyText, player.getDisplayName());
@@ -160,7 +160,7 @@ public class SkillUnheal extends TargettedSkill {
 
         @Override
         public void removeFromHero(Hero hero) {
-            super.remove(hero);
+            super.removeFromHero(hero);
 
             Player player = hero.getPlayer();
             affectedPlayers.remove(hero);

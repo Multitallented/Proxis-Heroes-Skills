@@ -157,7 +157,6 @@ public class SkillChaser extends TargettedSkill {
         
         @Override
         public void tickHero(Hero hero) {
-            super.tick(hero);
             if (prevLocation != null
                     && Math.abs(hero.getPlayer().getLocation().getX() - prevLocation.getX()) < 1
                     && Math.abs(hero.getPlayer().getLocation().getZ() - prevLocation.getZ()) < 1) {
@@ -169,20 +168,19 @@ public class SkillChaser extends TargettedSkill {
         
         @Override
         public void applyToHero(Hero hero) {
-            super.apply(hero);
+            super.applyToHero(hero);
             broadcast(hero.getPlayer().getLocation(), applyText, hero.getPlayer().getDisplayName(), caster.getDisplayName());
             this.prevLocation = hero.getPlayer().getLocation();
         }
         
         @Override
         public void removeFromHero(Hero hero) {
-            super.remove(hero);
+            super.removeFromHero(hero);
             broadcast(hero.getPlayer().getLocation(), removeText, hero.getPlayer().getDisplayName(), caster.getDisplayName());
         }
 
         @Override
         public void tickMonster(Monster mnstr) {
-            super.tick(mnstr);
             damageEntity(mnstr.getEntity(), caster, damageTick, DamageCause.ENTITY_ATTACK);
         }
     }

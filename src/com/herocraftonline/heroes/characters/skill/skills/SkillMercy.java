@@ -72,14 +72,14 @@ public class SkillMercy extends ActiveSkill {
         
         @Override
         public void applyToHero(Hero hero) {
-            super.apply(hero);
+            super.applyToHero(hero);
             Player player = hero.getPlayer();
             broadcast(player.getLocation(), "$1 has disabled Mercy", player.getDisplayName());
         }
 
         @Override
         public void removeFromHero(Hero hero) {
-            super.remove(hero);
+            super.removeFromHero(hero);
             Player player = hero.getPlayer();
             broadcast(player.getLocation(), "$1 has enabled Mercy", player.getDisplayName());
         }

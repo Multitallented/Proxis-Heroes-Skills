@@ -164,14 +164,14 @@ public class SkillVitalize extends ActiveSkill {
 
         @Override
         public void applyToHero(Hero hero) {
-            super.apply(hero);
+            super.applyToHero(hero);
             Player player = hero.getPlayer();
             Messaging.send(player, applyText);
         }
         
         @Override
         public void tickHero(Hero hero) {
-            super.tick(hero);
+            super.tickHero(hero);
             HeroRegainHealthEvent hrhEvent = new HeroRegainHealthEvent(hero, amount, skill);
             plugin.getServer().getPluginManager().callEvent(hrhEvent);
             int addMana = hero.getMana() + manaMultiplier > 100 ? 100 - hero.getMana() : manaMultiplier;
@@ -180,7 +180,7 @@ public class SkillVitalize extends ActiveSkill {
 
         @Override
         public void removeFromHero(Hero hero) {
-            super.remove(hero);
+            super.removeFromHero(hero);
             Player player = hero.getPlayer();
             Messaging.send(player, expireText);
         }

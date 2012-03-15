@@ -151,7 +151,7 @@ public class SkillMortalWound extends TargettedSkill {
 
         @Override
         public void applyToHero(Hero hero) {
-            super.apply(hero);
+            super.applyToHero(hero);
             Player player = hero.getPlayer();
             hero.syncHealth();
             broadcast(player.getLocation(), applyText, player.getDisplayName());
@@ -159,7 +159,7 @@ public class SkillMortalWound extends TargettedSkill {
 
         @Override
         public void removeFromHero(Hero hero) {
-            super.remove(hero);
+            super.removeFromHero(hero);
 
             Player player = hero.getPlayer();
             broadcast(player.getLocation(), expireText, player.getDisplayName());

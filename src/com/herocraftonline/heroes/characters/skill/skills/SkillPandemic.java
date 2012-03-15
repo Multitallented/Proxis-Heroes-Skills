@@ -146,21 +146,20 @@ public class SkillPandemic extends ActiveSkill {
         
         @Override
         public void applyToHero(Hero hero) {
-            super.apply(hero);
+            super.applyToHero(hero);
             Player p = hero.getPlayer();
             broadcast(p.getLocation(), applyText, caster.getDisplayName(), p.getDisplayName(), "Pandemic");
         }
         
         @Override
         public void removeFromHero(Hero hero) {
-            super.remove(hero);
+            super.removeFromHero(hero);
             Player p = hero.getPlayer();
             broadcast(p.getLocation(), expireText, caster.getDisplayName(), p.getDisplayName(), "Pandemic");
         }
         
         @Override
         public void tickHero(Hero hero) {
-            super.tick(hero);
             if (hero.getHealth() - damage > 1) {
                 damageEntity(hero.getPlayer(), caster, damage, DamageCause.MAGIC);
                 //hero.getPlayer().damage(damage, caster);

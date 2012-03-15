@@ -131,13 +131,13 @@ public class SkillFullHeal extends ActiveSkill {
         
         @Override
         public void applyToHero(Hero hero) {
-            super.apply(hero);
+            super.applyToHero(hero);
             broadcast(hero.getPlayer().getLocation(), applyText, hero.getPlayer().getDisplayName());
         }
         
         @Override
         public void tickHero(Hero hero) {
-            super.tick(hero);
+            super.tickHero(hero);
             HeroRegainHealthEvent hrhEvent = new HeroRegainHealthEvent(hero, amount, skill);
             plugin.getServer().getPluginManager().callEvent(hrhEvent);
             if (hrhEvent.isCancelled()) {
@@ -150,7 +150,7 @@ public class SkillFullHeal extends ActiveSkill {
         
         @Override
         public void removeFromHero(Hero hero) {
-            super.remove(hero);
+            super.removeFromHero(hero);
             broadcast(hero.getPlayer().getLocation(), expireText, hero.getPlayer().getDisplayName());
         }
     }

@@ -160,7 +160,7 @@ public class SkillDespair extends ActiveSkill {
         
         @Override
         public void applyToHero(Hero hero) {
-            super.apply(hero);
+            super.applyToHero(hero);
             CraftPlayer p = (CraftPlayer) hero.getPlayer();
             p.getHandle().addEffect(new MobEffect(15, time, 3));
             broadcast(hero.getPlayer().getLocation(), applyText, player.getDisplayName(), hero.getPlayer().getDisplayName(), "Despair");
@@ -168,7 +168,7 @@ public class SkillDespair extends ActiveSkill {
         
         @Override
         public void removeFromHero(Hero hero) {
-            super.remove(hero);
+            super.removeFromHero(hero);
             CraftPlayer p = (CraftPlayer) hero.getPlayer();
             p.getHandle().addEffect(new MobEffect(15, 0, 0));
             broadcast(hero.getPlayer().getLocation(), expireText, player.getDisplayName(), hero.getPlayer().getDisplayName(), "Despair");
