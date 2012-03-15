@@ -139,7 +139,7 @@ public class SkillArrowblast extends ActiveSkill {
         float rate = 20/sleepTime;
         final Skill skill = this;
         Messaging.send(player, "Casting $1 at a rate of $2 per second", preTotalArrows, rate);
-        shootingPlayers.put(hero, plugin.getServer().getScheduler().scheduleAsyncRepeatingTask(plugin, new Runnable() {
+        shootingPlayers.put(hero, plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
             @Override
             public void run() {
                 player.shootArrow();
