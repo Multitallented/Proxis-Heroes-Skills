@@ -115,7 +115,7 @@ public class SkillMegabolt extends ActiveSkill {
             if (hero.hasParty()) {
                 hero.getParty().gainExp(exp, ExperienceType.SKILL, player.getLocation());
             } else {
-                hero.gainExp(exp, ExperienceType.SKILL);
+                hero.gainExp(exp, ExperienceType.SKILL, player.getLocation());
             }
         }
         broadcastExecuteText(hero);

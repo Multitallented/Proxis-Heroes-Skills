@@ -120,7 +120,7 @@ public class SkillTether extends ActiveSkill {
             if (n instanceof Monster) {
                 ((Monster) n).setTarget(hero.getPlayer());
                 exp += expCreature;
-            } else if (n instanceof Player && n != player && damageCheck(player, (LivingEntity) n)) {
+            } else if (n instanceof Player && n != player && Skill.damageCheck(player, (LivingEntity) n)) {
                 CurseEffect cEffect = new CurseEffect(this, duration, hero.getPlayer());
                 Hero tHero = plugin.getCharacterManager().getHero((Player) n);
                 tHero.addEffect(cEffect);
@@ -131,7 +131,7 @@ public class SkillTether extends ActiveSkill {
             if (hero.hasParty()) {
                 hero.getParty().gainExp(exp, ExperienceType.SKILL, player.getLocation());
             } else {
-                hero.gainExp(exp, ExperienceType.SKILL);
+                hero.gainExp(exp, ExperienceType.SKILL, player.getLocation());
             }
         }
         for (Effect e : hero.getEffects()) {

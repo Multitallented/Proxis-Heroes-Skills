@@ -15,6 +15,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
 public class SkillCritical extends PassiveSkill {
@@ -56,12 +58,13 @@ public class SkillCritical extends PassiveSkill {
         }
         
         @EventHandler
-        public void onWeaponDamage(WeaponDamageEvent event) {
+        public void onEntityDamage(EntityDamageEvent event) {
             if (event.isCancelled() ||event.getCause() != DamageCause.ENTITY_ATTACK || !(event.getEntity() instanceof Player) ||
-                    event.getDamage() == 0)
+                    event.getDamage() == 0 || !(event instanceof EntityDamageByEntityEvent))
                 return;
-            if (event.getDamager() instanceof Player) {
-                Player player = (Player) event.getDamager();
+            EntityDamageByEntityEvent edby = (EntityDamageByEntityEvent) event;
+            if (edby.getDamager() instanceof Player) {
+                Player player = (Player) edby.getDamager();
                 Hero hero = plugin.getCharacterManager().getHero(player);
 
                 if (hero.hasEffect("Critical")) {
@@ -75,9 +78,9 @@ public class SkillCritical extends PassiveSkill {
                         event.setDamage((int) (event.getDamage() * damageMod));
                     }
                 }
-            } else if (event.getDamager() instanceof Projectile) {
-                if (((Projectile) event.getDamager()).getShooter() instanceof Player) {
-                    Player player = (Player) ((Projectile) event.getDamager()).getShooter();
+            } else if (edby.getDamager() instanceof Projectile) {
+                if (((Projectile) edby.getDamager()).getShooter() instanceof Player) {
+                    Player player = (Player) ((Projectile) edby.getDamager()).getShooter();
                     Hero hero = plugin.getCharacterManager().getHero(player);
 
                     if (hero.hasEffect("Critical")) {

@@ -192,7 +192,7 @@ public class SkillDeathFromAbove extends ActiveSkill {
                 if (hero.hasParty()) {
                     hero.getParty().gainExp(exp, ExperienceType.SKILL, player.getLocation());
                 } else {
-                    hero.gainExp(exp, ExperienceType.SKILL);
+                    hero.gainExp(exp, ExperienceType.SKILL, player.getLocation());
                 }
             }
             if (SkillConfigManager.getUseSetting(hero, skill, "safefall", "true").equals("true")) {

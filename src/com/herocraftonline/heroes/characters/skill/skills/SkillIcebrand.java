@@ -1,7 +1,6 @@
 package com.herocraftonline.heroes.characters.skill.skills;
 
 import com.herocraftonline.heroes.Heroes;
-import com.herocraftonline.heroes.api.events.WeaponDamageEvent;
 import com.herocraftonline.heroes.characters.Hero;
 import com.herocraftonline.heroes.characters.classes.HeroClass.ExperienceType;
 import com.herocraftonline.heroes.characters.effects.common.SlowEffect;
@@ -16,6 +15,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
 public class SkillIcebrand extends PassiveSkill {
@@ -74,12 +75,13 @@ public class SkillIcebrand extends PassiveSkill {
         }
         
         @EventHandler
-        public void onWeaponDamage(WeaponDamageEvent event) {
-            if (event.isCancelled() || event.getDamage() == 0 || event.getCause() != DamageCause.ENTITY_ATTACK || !(event.getEntity() instanceof Player))
+        public void onEntityDamage(EntityDamageEvent event) {
+            if (event.isCancelled() || event.getDamage() == 0 || event.getCause() != DamageCause.ENTITY_ATTACK || !(event.getEntity() instanceof Player) || !(event instanceof EntityDamageByEntityEvent))
                 return;
+            EntityDamageByEntityEvent edby = (EntityDamageByEntityEvent) event;
             Player tPlayer = (Player) event.getEntity();
-            if (event.getDamager() instanceof Player) {
-                Player player = (Player) event.getDamager();
+            if (edby.getDamager() instanceof Player) {
+                Player player = (Player) edby.getDamager();
                 Hero hero = plugin.getCharacterManager().getHero(player);
                 
                 if (hero.hasEffect("Icebrand")) {
@@ -100,16 +102,16 @@ public class SkillIcebrand extends PassiveSkill {
                                 if (hero.hasParty()) {
                                     hero.getParty().gainExp(exp, ExperienceType.SKILL, player.getLocation());
                                 } else {
-                                    hero.gainExp(exp, ExperienceType.SKILL);
+                                    hero.gainExp(exp, ExperienceType.SKILL, player.getLocation());
                                 }
                             }
                             return;
                         }
                     }
                 }
-            } else if (event.getDamager() instanceof Projectile) {
-                if (((Projectile) event.getDamager()).getShooter() instanceof Player) {
-                    Player player = (Player) ((Projectile) event.getDamager()).getShooter();
+            } else if (edby.getDamager() instanceof Projectile) {
+                if (((Projectile) edby.getDamager()).getShooter() instanceof Player) {
+                    Player player = (Player) ((Projectile) edby.getDamager()).getShooter();
                     Hero hero = plugin.getCharacterManager().getHero(player);
 
                     if (hero.hasEffect("Icebrand")) {
@@ -131,7 +133,7 @@ public class SkillIcebrand extends PassiveSkill {
                                     if (hero.hasParty()) {
                                         hero.getParty().gainExp(exp, ExperienceType.SKILL, player.getLocation());
                                     } else {
-                                        hero.gainExp(exp, ExperienceType.SKILL);
+                                        hero.gainExp(exp, ExperienceType.SKILL, player.getLocation());
                                     }
                                 }
                                 return;

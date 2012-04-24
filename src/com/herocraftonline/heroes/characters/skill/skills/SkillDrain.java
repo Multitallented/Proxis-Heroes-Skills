@@ -15,6 +15,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
 public class SkillDrain extends PassiveSkill {
@@ -56,11 +58,12 @@ public class SkillDrain extends PassiveSkill {
             this.skill = skill;
         }
         @EventHandler
-        public void onWeaponDamage(WeaponDamageEvent event) {
-            if (event.getCause() != DamageCause.ENTITY_ATTACK || event.isCancelled() || event.getDamage() == 0)
+        public void onEntityDamage(EntityDamageEvent event) {
+            if (event.getCause() != DamageCause.ENTITY_ATTACK || event.isCancelled() || event.getDamage() == 0 || !(event instanceof EntityDamageByEntityEvent))
                 return;
-            if (event.getDamager() instanceof Player && event.getEntity() instanceof Player) {
-                Player player = (Player) event.getDamager();
+            EntityDamageByEntityEvent edby = (EntityDamageByEntityEvent) event;
+            if (edby.getDamager() instanceof Player && event.getEntity() instanceof Player) {
+                Player player = (Player) edby.getDamager();
                 Hero hero = plugin.getCharacterManager().getHero(player);
 
                 if (hero.hasEffect("Drain")) {
@@ -83,15 +86,15 @@ public class SkillDrain extends PassiveSkill {
                             if (hero.hasParty()) {
                                 hero.getParty().gainExp(exp, ExperienceType.SKILL, player.getLocation());
                             } else {
-                                hero.gainExp(exp, ExperienceType.SKILL);
+                                hero.gainExp(exp, ExperienceType.SKILL, player.getLocation());
                             }
                         }
                         return;
                     }
                 }
-            } else if (event.getDamager() instanceof Projectile) {
-                if (((Projectile) event.getDamager()).getShooter() instanceof Player) {
-                    Player player = (Player) ((Projectile) event.getDamager()).getShooter();
+            } else if (edby.getDamager() instanceof Projectile) {
+                if (((Projectile) edby.getDamager()).getShooter() instanceof Player) {
+                    Player player = (Player) ((Projectile) edby.getDamager()).getShooter();
                     Hero hero = plugin.getCharacterManager().getHero(player);
 
                     if (hero.hasEffect("Drain")) {
@@ -114,7 +117,7 @@ public class SkillDrain extends PassiveSkill {
                                 if (hero.hasParty()) {
                                     hero.getParty().gainExp(exp, ExperienceType.SKILL, player.getLocation());
                                 } else {
-                                    hero.gainExp(exp, ExperienceType.SKILL);
+                                    hero.gainExp(exp, ExperienceType.SKILL, player.getLocation());
                                 }
                             }
                             return;

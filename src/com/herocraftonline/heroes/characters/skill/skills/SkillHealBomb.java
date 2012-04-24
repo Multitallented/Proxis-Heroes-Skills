@@ -155,7 +155,7 @@ public class SkillHealBomb extends TargettedSkill {
             if (hero.hasParty()) {
                 hero.getParty().gainExp(totalExp, ExperienceType.SKILL, player.getLocation());
             } else {
-                hero.gainExp(totalExp, ExperienceType.SKILL);
+                hero.gainExp(totalExp, ExperienceType.SKILL, player.getLocation());
             }
         }
     }

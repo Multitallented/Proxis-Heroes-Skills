@@ -169,11 +169,21 @@ public class SkillLaunch extends ActiveSkill
     int distance = (int) (SkillConfigManager.getUseSetting(paramHero, this, Setting.MAX_DISTANCE.node(), 15, false) +
              (SkillConfigManager.getUseSetting(paramHero, this, Setting.MAX_DISTANCE_INCREASE.node(), 0.0, false) * paramHero.getSkillLevel(this)));
     distance = distance > 0 ? distance : 0;
-    Location localLocation2 = localPlayer.getTargetBlock(null, distance).getLocation();
+    Location localLocation2 = null;
+    try {
+        localLocation2 = localPlayer.getTargetBlock(null, distance).getLocation();
+    } catch (IllegalArgumentException iae) {
+        return SkillResult.INVALID_TARGET_NO_MSG;
+    }
     double d1 = localLocation2.getX() - localLocation1.getX();
     double d2 = localLocation2.getZ() - localLocation1.getZ();
     double d3 = Math.sqrt(d1 * d1 + d2 * d2);
-    double d4 = localLocation2.distance(localLocation1) / 8.0D;
+    double d4 = 0;
+    try {
+        d4 = localLocation2.distance(localLocation1) / 8.0D;
+    } catch (IllegalArgumentException iae) {
+        return SkillResult.INVALID_TARGET_NO_MSG;
+    }
     d1 = d1 / d3 * d4;
     d2 = d2 / d3 * d4;
     localPlayer.setVelocity(new Vector(d1, 1.0D, d2));

@@ -106,7 +106,7 @@ public class SkillBasher extends PassiveSkill {
                                 if (hero.hasParty()) {
                                     hero.getParty().gainExp(exp, ExperienceType.SKILL, player.getLocation());
                                 } else {
-                                    hero.gainExp(exp, ExperienceType.SKILL);
+                                    hero.gainExp(exp, ExperienceType.SKILL, player.getLocation());
                                 }
                             }
                             return;
@@ -137,7 +137,7 @@ public class SkillBasher extends PassiveSkill {
                                     if (hero.hasParty()) {
                                         hero.getParty().gainExp(exp, ExperienceType.SKILL, player.getLocation());
                                     } else {
-                                        hero.gainExp(exp, ExperienceType.SKILL);
+                                        hero.gainExp(exp, ExperienceType.SKILL, player.getLocation());
                                     }
                                 }
                                 return;
