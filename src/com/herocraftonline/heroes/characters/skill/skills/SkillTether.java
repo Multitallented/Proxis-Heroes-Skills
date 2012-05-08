@@ -2,6 +2,7 @@ package com.herocraftonline.heroes.characters.skill.skills;
 
 import com.herocraftonline.heroes.Heroes;
 import com.herocraftonline.heroes.api.SkillResult;
+import com.herocraftonline.heroes.characters.CharacterTemplate;
 import com.herocraftonline.heroes.characters.Hero;
 import com.herocraftonline.heroes.characters.classes.HeroClass.ExperienceType;
 import com.herocraftonline.heroes.characters.effects.Effect;
@@ -175,7 +176,6 @@ public class SkillTether extends ActiveSkill {
         
         @Override
         public void tickHero(Hero hero) {
-            super.tick(hero);
             Player player = hero.getPlayer();
             try {
                 if (player.getLocation().distance(caster.getLocation()) > 5) {
