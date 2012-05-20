@@ -100,6 +100,11 @@ public class SkillDisguise extends ActiveSkill {
     @Override
     public SkillResult use(Hero hero, String[] args) {
         Player player = hero.getPlayer();
+        if (hero.hasEffect("Disguise")) {
+            hero.removeEffect(hero.getEffect("Disguise"));
+            player.sendMessage("You have returned to human form.");
+            return SkillResult.NORMAL;
+        }
         
         long duration = (long) (SkillConfigManager.getUseSetting(hero, this, Setting.DURATION.node(), 10000, false) +
                 (SkillConfigManager.getUseSetting(hero, this, "duration-increase", 0.0, false) * hero.getSkillLevel(this)));
@@ -127,7 +132,7 @@ public class SkillDisguise extends ActiveSkill {
         
         CurseEffect cEffect = new CurseEffect(this, duration, args[0]);
         hero.addEffect(cEffect);
-        return SkillResult.NORMAL;
+        return SkillResult.INVALID_TARGET_NO_MSG;
     }
 
     public class CurseEffect extends ExpirableEffect {
@@ -181,9 +186,6 @@ public class SkillDisguise extends ActiveSkill {
                 event.setCancelled(true);
                 event.getHero().getPlayer().sendMessage(ChatColor.GRAY + "You can't use skills while disguised!");
                 event.getHero().getPlayer().sendMessage(ChatColor.GRAY + "use /skill disguise to undisguise");
-            } else {
-                Hero hero = event.getHero();
-                hero.removeEffect(hero.getEffect("Disguise"));
             }
         }
     }
