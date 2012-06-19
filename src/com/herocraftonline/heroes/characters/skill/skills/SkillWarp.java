@@ -94,6 +94,7 @@ public class SkillWarp extends ActiveSkill {
             player.sendMessage(ChatColor.GRAY + "SkillWarp has an invalid config.");
             return SkillResult.INVALID_TARGET_NO_MSG;
         }
+        broadcastExecuteText(hero);
         
         return SkillResult.NORMAL;
     }
