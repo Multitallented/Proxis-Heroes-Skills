@@ -121,13 +121,15 @@ public class SkillBurningPresence extends ActiveSkill {
         @Override
         public void tickHero(Hero hero) {
             super.tickHero(hero);
+            if (hero.getMana() < mana) {
+                removeFromHero(hero);
+            }
             Player player = hero.getPlayer();
 
             for (Entity entity : player.getNearbyEntities(range, range, range)) {
                 if (entity instanceof LivingEntity) {
                     LivingEntity lEntity = (LivingEntity) entity;
 
-                    //lEntity.damage(tickDamage, player);
                     damageEntity(lEntity, player, tickDamage, DamageCause.MAGIC);
                 }
             }
