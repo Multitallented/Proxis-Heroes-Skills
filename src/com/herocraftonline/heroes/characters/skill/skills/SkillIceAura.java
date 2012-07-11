@@ -93,6 +93,7 @@ public class SkillIceAura extends ActiveSkill {
         private int tickDamage;
         private int range;
         private int mana;
+        private boolean firstTime = true;
 
         public IcyAuraEffect(SkillIceAura skill, long period, int tickDamage, int range, int manaLoss) {
             super(skill, "IceAura", period);
@@ -106,6 +107,7 @@ public class SkillIceAura extends ActiveSkill {
 
         @Override
         public void applyToHero(Hero hero) {
+            firstTime = true;
             super.applyToHero(hero);
             Player player = hero.getPlayer();
             broadcast(player.getLocation(), applyText, player.getDisplayName());
@@ -121,9 +123,6 @@ public class SkillIceAura extends ActiveSkill {
         @Override
         public void tickHero(Hero hero) {
             super.tickHero(hero);
-            if (hero.getMana() < mana) {
-                removeFromHero(hero);
-            }
             Player player = hero.getPlayer();
 
             for (Entity entity : player.getNearbyEntities(range, range, range)) {
@@ -136,12 +135,18 @@ public class SkillIceAura extends ActiveSkill {
                     //lEntity.damage(tickDamage, player);
                 }
             }
-            if (mana > 0) {
+            if (mana > 0 && !firstTime) {
                 if (hero.getMana() - mana < 0) {
                     hero.setMana(0);
                 } else {
                     hero.setMana(hero.getMana() - mana);
                 }
+            } else if (firstTime) {
+                firstTime = false;
+            }
+            
+            if (hero.getMana() < mana) {
+                hero.removeEffect(this);
             }
         }
     }
