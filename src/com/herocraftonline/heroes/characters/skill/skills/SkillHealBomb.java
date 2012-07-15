@@ -105,12 +105,14 @@ public class SkillHealBomb extends TargettedSkill {
         if (le.equals(player)) {
             broadcastExecuteText(hero, player);
             healBomb(hero, hero);
+            le.getLocation().getWorld().createExplosion(le.getLocation(), 0.0F, false);
         } else if (le instanceof Player) {
             Hero tHero = plugin.getCharacterManager().getHero((Player) le);
             if (hero.getParty() != null && hero.getParty().getMembers().contains(tHero)) {
                 broadcastExecuteText(hero, le);
                 healBomb(hero, tHero);
             }
+            le.getLocation().getWorld().createExplosion(le.getLocation(), 0.0F, false);
         } else {
             return SkillResult.INVALID_TARGET;
         }

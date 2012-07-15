@@ -98,18 +98,24 @@ public class SkillBlaaze extends ActiveSkill {
         double rand = Math.random();
         LivingEntity le = player.getWorld().spawnCreature(wTargetBlock.getLocation(),
                         CreatureType.BLAZE);
-        le.getWorld().playEffect(le.getLocation(), Effect.SMOKE, 3);
+        for (int i = 0; i < 9; i++) {
+            le.getWorld().playEffect(le.getLocation(), Effect.SMOKE, i);
+        }
+        for (int i = 0; i < 9; i++) {
+            le.getWorld().playEffect(le.getLocation(), Effect.SMOKE, i);
+        }
+        for (int i = 0; i < 9; i++) {
+            le.getWorld().playEffect(le.getLocation(), Effect.SMOKE, i);
+        }
         int count = 1;
         if (rand > (1 - chance2x - chance3x)) {
             LivingEntity le1 = player.getWorld().spawnCreature(wTargetBlock.getLocation(),
                         CreatureType.BLAZE);
-            le1.getWorld().playEffect(le1.getLocation(), Effect.SMOKE, 3);
             count++;
         }
         if (rand > (1 - chance3x)) {
             LivingEntity le1 = player.getWorld().spawnCreature(wTargetBlock.getLocation(),
                         CreatureType.BLAZE);
-            le1.getWorld().playEffect(le1.getLocation(), Effect.SMOKE, 3);
             count++;
         }
         broadcast(player.getLocation(), "" + count + "x Multiplier!");

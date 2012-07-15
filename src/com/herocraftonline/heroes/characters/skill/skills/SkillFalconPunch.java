@@ -9,7 +9,9 @@ import com.herocraftonline.heroes.characters.skill.SkillType;
 import com.herocraftonline.heroes.characters.skill.TargettedSkill;
 import com.herocraftonline.heroes.util.Messaging;
 import com.herocraftonline.heroes.util.Setting;
+import org.bukkit.Effect;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
@@ -118,9 +120,12 @@ public class SkillFalconPunch extends TargettedSkill {
             tHero.addEffect(new StunEffect(this, duration));
         }
         if (damage > 0) {
+            addSpellTarget(tPlayer, hero);
             damageEntity(tPlayer, player, damage, DamageCause.ENTITY_ATTACK);
             //tPlayer.damage(damage, player);
         }
+        player.getWorld().createExplosion(player.getLocation(), 0.0F, false);
+        player.getWorld().playEffect(player.getLocation(), Effect.ZOMBIE_DESTROY_DOOR, 0);
         return SkillResult.NORMAL;
     }
 }

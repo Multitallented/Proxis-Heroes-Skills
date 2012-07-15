@@ -174,7 +174,7 @@ public class SkillVitalize extends ActiveSkill {
             super.tickHero(hero);
             HeroRegainHealthEvent hrhEvent = new HeroRegainHealthEvent(hero, amount, skill);
             plugin.getServer().getPluginManager().callEvent(hrhEvent);
-            int addMana = hero.getMana() + manaMultiplier > 100 ? 100 - hero.getMana() : manaMultiplier;
+            int addMana = hero.getMana() + manaMultiplier > hero.getMaxMana() ? hero.getMaxMana() - hero.getMana() : manaMultiplier;
             hero.setMana(addMana + hero.getMana());
         }
 

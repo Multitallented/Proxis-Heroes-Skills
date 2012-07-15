@@ -10,6 +10,7 @@ import com.herocraftonline.heroes.util.Setting;
 import org.bukkit.entity.Player;
 
 import org.bukkit.Effect;
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
@@ -99,7 +100,16 @@ public class SkillCaveSpider extends ActiveSkill {
         LivingEntity le = player.getWorld().spawnCreature(wTargetBlock.getLocation(),
                         CreatureType.CAVE_SPIDER);
         
-        le.getWorld().playEffect(le.getLocation(), Effect.SMOKE, 3);
+        Location le2 = le.getLocation();
+        for (int i = 0; i < 9; i++) {
+            le2.getWorld().playEffect(le2, Effect.SMOKE, i);
+        }
+        for (int i = 0; i < 9; i++) {
+            le2.getWorld().playEffect(le2, Effect.SMOKE, i);
+        }
+        for (int i = 0; i < 9; i++) {
+            le2.getWorld().playEffect(le2, Effect.SMOKE, i);
+        }
         int count = 1;
         if (rand > (1 - chance2x - chance3x)) {
             LivingEntity le1 = player.getWorld().spawnCreature(wTargetBlock.getLocation(),

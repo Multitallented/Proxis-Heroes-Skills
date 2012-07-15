@@ -9,6 +9,8 @@ import com.herocraftonline.heroes.characters.skill.ActiveSkill;
 import com.herocraftonline.heroes.characters.skill.SkillConfigManager;
 import com.herocraftonline.heroes.characters.skill.SkillType;
 import com.herocraftonline.heroes.util.Setting;
+import org.bukkit.Effect;
+import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -131,6 +133,16 @@ public class SkillBurningPresence extends ActiveSkill {
 
                     damageEntity(lEntity, player, tickDamage, DamageCause.MAGIC);
                 }
+            }
+            Location le = player.getLocation();
+            for (int i = 0; i < 9; i++) {
+                le.getWorld().playEffect(le, Effect.SMOKE, i);
+            }
+            for (int i = 0; i < 9; i++) {
+                le.getWorld().playEffect(le, Effect.SMOKE, i);
+            }
+            for (int i = 0; i < 9; i++) {
+                le.getWorld().playEffect(le, Effect.SMOKE, i);
             }
             if (mana > 0 && !firstTime) {
                 if (hero.getMana() - mana < 0) {
