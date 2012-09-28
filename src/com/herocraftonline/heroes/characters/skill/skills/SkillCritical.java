@@ -11,13 +11,8 @@ import com.herocraftonline.heroes.characters.skill.SkillType;
 import com.herocraftonline.heroes.util.Setting;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
 public class SkillCritical extends PassiveSkill {
 
@@ -58,18 +53,12 @@ public class SkillCritical extends PassiveSkill {
         }
         
         @EventHandler
-        public void onEntityDamage(EntityDamageEvent event) {
-            if (event.isCancelled() ||event.getCause() != DamageCause.ENTITY_ATTACK || !(event.getEntity() instanceof Player) ||
-                    event.getDamage() == 0 || !(event instanceof EntityDamageByEntityEvent))
-                return;
-            EntityDamageByEntityEvent edby = (EntityDamageByEntityEvent) event;
-            if (edby.getDamager() instanceof Player) {
-                Player player = (Player) edby.getDamager();
-                Hero hero = plugin.getCharacterManager().getHero(player);
-
-                if (hero.hasEffect("Critical")) {
+        public void onEntityDamage(WeaponDamageEvent event) {
+        	if(!(event.isCancelled())&&(event.getDamager() instanceof Hero)){
+        		Hero hero = (Hero) event.getDamager();
+           	  	if (hero.hasEffect("Critical")) {
                     double chance = (SkillConfigManager.getUseSetting(hero, skill, Setting.CHANCE.node(), 0.2, false) +
-                            (SkillConfigManager.getUseSetting(hero, skill, Setting.CHANCE_LEVEL.node(), 0.0, false) * hero.getSkillLevel(skill))) * 100;
+                            (SkillConfigManager.getUseSetting(hero, skill, Setting.CHANCE_LEVEL.node(), 0.0, false) * hero.getSkillLevel(skill)));
                     chance = chance > 0 ? chance : 0;
                     if (Math.random() <= chance) {
                         double damageMod = (SkillConfigManager.getUseSetting(hero, skill, "damage-multiplier", 0.2, false) +
@@ -77,26 +66,8 @@ public class SkillCritical extends PassiveSkill {
                         damageMod = damageMod > 0 ? damageMod : 0;
                         event.setDamage((int) (event.getDamage() * damageMod));
                     }
-                }
-            } else if (edby.getDamager() instanceof Projectile) {
-                if (((Projectile) edby.getDamager()).getShooter() instanceof Player) {
-                    Player player = (Player) ((Projectile) edby.getDamager()).getShooter();
-                    Hero hero = plugin.getCharacterManager().getHero(player);
-
-                    if (hero.hasEffect("Critical")) {
-                        double chance = (SkillConfigManager.getUseSetting(hero, skill, Setting.CHANCE.node(), 0.2, false) +
-                                (SkillConfigManager.getUseSetting(hero, skill, Setting.CHANCE_LEVEL.node(), 0.0, false) * hero.getSkillLevel(skill))) * 100;
-                        chance = chance > 0 ? chance : 0;
-                        if (Math.random() <= chance) {
-                            double damageMod = (SkillConfigManager.getUseSetting(hero, skill, "damage-multiplier", 0.2, false) +
-                                    (SkillConfigManager.getUseSetting(hero, skill, "damage-multiplier-increase", 0.0, false) * hero.getSkillLevel(skill)));
-                            damageMod = damageMod > 0 ? damageMod : 0;
-                            event.setDamage((int) (event.getDamage() * damageMod));
-                            
-                        }
-                    }
-                }
-            }
+           	  	}
+        	}
         }
     }
 }
