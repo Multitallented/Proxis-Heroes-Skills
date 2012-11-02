@@ -8,6 +8,7 @@ import com.herocraftonline.heroes.characters.skill.SkillConfigManager;
 import com.herocraftonline.heroes.characters.skill.SkillType;
 import com.herocraftonline.heroes.util.Messaging;
 import com.herocraftonline.heroes.util.Setting;
+import java.util.ArrayList;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import java.util.List;
@@ -84,6 +85,10 @@ public class SkillHunt extends ActiveSkill {
         node.set(Setting.RADIUS.node(), 200);
         node.set("radius-decrease", 0);
         node.set("hunter-nearby-text", "Someone is hunting players in your area");
+        ArrayList<String> tempList = new ArrayList<String>();
+        tempList.add("someworld");
+        tempList.add("someworld_nether");
+        node.set("disabled-worlds", tempList);
         return node;
     }
 
@@ -98,7 +103,12 @@ public class SkillHunt extends ActiveSkill {
         Player player = hero.getPlayer();
 
         Player target = plugin.getServer().getPlayer(args[0]);
-        if (target == null) {
+        List<String> disabledWorlds = SkillConfigManager.getUseSetting(hero, this, "disabled-worlds", new ArrayList<String>());
+        ArrayList<String> tempList = new ArrayList<String>();
+        for (String s : disabledWorlds) {
+            tempList.add(s.toLowerCase());
+        }
+        if (target == null || tempList.contains(target.getWorld().getName().toLowerCase())) {
             return SkillResult.INVALID_TARGET;
         }
 
