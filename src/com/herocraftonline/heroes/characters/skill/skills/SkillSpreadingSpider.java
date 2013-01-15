@@ -99,6 +99,7 @@ public class SkillSpreadingSpider extends ActiveSkill {
         multiplyTimes = multiplyTimes < 0 ? 0 : multiplyTimes;
         long multiplyDelay = (long) SkillConfigManager.getUseSetting(hero, this, "multiply-delay", 5000, false);
         multiplyDelay = multiplyDelay < 0 ? 0 : multiplyDelay;
+        multiplyDelay = multiplyDelay / 50;
         final HashSet<Spider> tempSet = new HashSet<Spider>();
         tempSet.add(le);
         for (int i=0; i<multiplyTimes; i++) {

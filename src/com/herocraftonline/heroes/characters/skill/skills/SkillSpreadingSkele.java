@@ -98,6 +98,7 @@ public class SkillSpreadingSkele extends ActiveSkill {
         multiplyTimes = multiplyTimes < 0 ? 0 : multiplyTimes;
         long multiplyDelay = (long) SkillConfigManager.getUseSetting(hero, this, "multiply-delay", 5000, false);
         multiplyDelay = multiplyDelay < 0 ? 0 : multiplyDelay;
+        multiplyDelay = multiplyDelay / 50;
         final HashSet<Skeleton> tempSet = new HashSet<Skeleton>();
         tempSet.add(le);
         for (int i=0; i<multiplyTimes; i++) {
