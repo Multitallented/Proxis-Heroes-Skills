@@ -2,7 +2,6 @@ package com.herocraftonline.heroes.characters.skill.skills;
 
 import com.herocraftonline.heroes.Heroes;
 import com.herocraftonline.heroes.characters.Hero;
-import com.herocraftonline.heroes.characters.classes.HeroClass.ExperienceType;
 import com.herocraftonline.heroes.characters.skill.PassiveSkill;
 import com.herocraftonline.heroes.characters.skill.Skill;
 import com.herocraftonline.heroes.characters.skill.SkillConfigManager;
@@ -16,8 +15,6 @@ import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityDeathEvent;
 
 public class SkillNecroFeed extends PassiveSkill {
@@ -58,10 +55,14 @@ public class SkillNecroFeed extends PassiveSkill {
                 return;
             }
             EntityDamageByEntityEvent edby = (EntityDamageByEntityEvent) event.getEntity().getLastDamageCause();
-            if (!edby.getDamager().getClass().equals(Player.class)) {
+            Player player;
+            if (edby.getDamager().getClass().equals(Player.class)) {
+                player = (Player) edby.getDamager();
+            } else if (edby.getDamager() instanceof Projectile) {
+                player = (Player) ((Projectile) edby.getDamager()).getShooter();
+            } else {
                 return;
             }
-            Player player = (Player) edby.getDamager();
             Hero hero = plugin.getCharacterManager().getHero(player);
             if (!hero.hasEffect("NecroFeed")) {
                 return;
