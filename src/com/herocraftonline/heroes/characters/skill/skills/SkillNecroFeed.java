@@ -9,6 +9,7 @@ import com.herocraftonline.heroes.characters.skill.SkillType;
 import com.herocraftonline.heroes.util.Setting;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -59,6 +60,10 @@ public class SkillNecroFeed extends PassiveSkill {
             if (edby.getDamager().getClass().equals(Player.class)) {
                 player = (Player) edby.getDamager();
             } else if (edby.getDamager() instanceof Projectile) {
+                Entity e = ((Projectile) edby.getDamager()).getShooter();
+                if (!(e instanceof Player)) {
+                    return;
+                }
                 player = (Player) ((Projectile) edby.getDamager()).getShooter();
             } else {
                 return;
