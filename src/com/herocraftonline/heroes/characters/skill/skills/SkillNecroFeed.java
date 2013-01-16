@@ -55,12 +55,15 @@ public class SkillNecroFeed extends PassiveSkill {
                 return;
             }
             EntityDamageByEntityEvent edby = (EntityDamageByEntityEvent) event.getEntity().getLastDamageCause();
-            Player player;
+            Player player = null;
             if (edby.getDamager().getClass().equals(Player.class)) {
                 player = (Player) edby.getDamager();
             } else if (edby.getDamager() instanceof Projectile) {
                 player = (Player) ((Projectile) edby.getDamager()).getShooter();
             } else {
+                return;
+            }
+            if (player == null) {
                 return;
             }
             Hero hero = plugin.getCharacterManager().getHero(player);
