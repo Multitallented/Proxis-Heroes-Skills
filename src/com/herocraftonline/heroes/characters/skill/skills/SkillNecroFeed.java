@@ -6,7 +6,7 @@ import com.herocraftonline.heroes.characters.skill.PassiveSkill;
 import com.herocraftonline.heroes.characters.skill.Skill;
 import com.herocraftonline.heroes.characters.skill.SkillConfigManager;
 import com.herocraftonline.heroes.characters.skill.SkillType;
-import com.herocraftonline.heroes.util.Setting;
+import com.herocraftonline.heroes.characters.skill.SkillSetting;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -92,7 +92,7 @@ public class SkillNecroFeed extends PassiveSkill {
             }
             hero.syncHealth();
             broadcast(player.getLocation(),
-                    SkillConfigManager.getUseSetting(hero, skill, Setting.USE_TEXT, "%hero% feeds on an enemies corpse").replace("%hero%", player.getDisplayName()));
+                    SkillConfigManager.getUseSetting(hero, skill, SkillSetting.USE_TEXT, "%hero% feeds on an enemies corpse").replace("%hero%", player.getDisplayName()));
         }
     }
 }

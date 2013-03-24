@@ -10,7 +10,7 @@ import com.herocraftonline.heroes.characters.skill.ActiveSkill;
 import com.herocraftonline.heroes.characters.skill.Skill;
 import com.herocraftonline.heroes.characters.skill.SkillConfigManager;
 import com.herocraftonline.heroes.characters.skill.SkillType;
-import com.herocraftonline.heroes.util.Setting;
+import com.herocraftonline.heroes.characters.skill.SkillSetting;
 import java.util.HashSet;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -47,8 +47,8 @@ public class SkillSpeed extends ActiveSkill {
     
     @Override
     public SkillResult use(Hero hero, String[] strings) {
-        long duration = SkillConfigManager.getUseSetting(hero, this, Setting.DURATION.node(), 600000, false);
-        int distance = SkillConfigManager.getUseSetting(hero, this, Setting.MAX_DISTANCE.node(), 5, false);
+        long duration = SkillConfigManager.getUseSetting(hero, this, SkillSetting.DURATION.node(), 600000, false);
+        int distance = SkillConfigManager.getUseSetting(hero, this, SkillSetting.MAX_DISTANCE.node(), 5, false);
         String block = SkillConfigManager.getUseSetting(hero, this, "terrain-type", "STATIONARY_WATER");
         Material mat = Material.getMaterial(block);
         if (mat == null) {

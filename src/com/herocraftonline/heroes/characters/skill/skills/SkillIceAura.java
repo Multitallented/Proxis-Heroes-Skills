@@ -8,7 +8,7 @@ import com.herocraftonline.heroes.characters.effects.PeriodicEffect;
 import com.herocraftonline.heroes.characters.skill.ActiveSkill;
 import com.herocraftonline.heroes.characters.skill.SkillConfigManager;
 import com.herocraftonline.heroes.characters.skill.SkillType;
-import com.herocraftonline.heroes.util.Setting;
+import com.herocraftonline.heroes.characters.skill.SkillSetting;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -33,11 +33,11 @@ public class SkillIceAura extends ActiveSkill {
         int damage = (int) (SkillConfigManager.getUseSetting(hero, this, "tick-damage", 1.0, false) +
                 (SkillConfigManager.getUseSetting(hero, this, "tick-damage-increase", 0.0, false) * hero.getSkillLevel(this)));
         damage = damage > 0 ? damage : 0;
-        int radius = (int) (SkillConfigManager.getUseSetting(hero, this, Setting.RADIUS.node(), 10, false) +
+        int radius = (int) (SkillConfigManager.getUseSetting(hero, this, SkillSetting.RADIUS.node(), 10, false) +
                 (SkillConfigManager.getUseSetting(hero, this, "radius-increase", 0.0, false) * hero.getSkillLevel(this)));
         radius = radius > 1 ? radius : 1;
-        int mana = (int) (SkillConfigManager.getUseSetting(hero, this, Setting.MANA.node(), 1, false) -
-                (SkillConfigManager.getUseSetting(hero, this, Setting.MANA_REDUCE.node(), 0.0, false) * hero.getSkillLevel(this)));
+        int mana = (int) (SkillConfigManager.getUseSetting(hero, this, SkillSetting.MANA.node(), 1, false) -
+                (SkillConfigManager.getUseSetting(hero, this, SkillSetting.MANA_REDUCE.node(), 0.0, false) * hero.getSkillLevel(this)));
         mana = mana > 0 ? mana : 0;
         String description = getDescription().replace("$1", damage + "").replace("$2", radius + "");
         if (mana > 0) {
@@ -73,15 +73,15 @@ public class SkillIceAura extends ActiveSkill {
         if (hero.hasEffect("IceAura")) {
             hero.removeEffect(hero.getEffect("IceAura"));
         } else {
-            long period = SkillConfigManager.getUseSetting(hero, this, Setting.PERIOD.node(), 5000, false);
+            long period = SkillConfigManager.getUseSetting(hero, this, SkillSetting.PERIOD.node(), 5000, false);
             int tickDamage = (int) (SkillConfigManager.getUseSetting(hero, this, "tick-damage", 1.0, false) +
                 (SkillConfigManager.getUseSetting(hero, this, "tick-damage-increase", 0.0, false) * hero.getSkillLevel(this)));
             tickDamage = tickDamage > 0 ? tickDamage : 0;
-            int range = (int) (SkillConfigManager.getUseSetting(hero, this, Setting.RADIUS.node(), 1.0, false) +
+            int range = (int) (SkillConfigManager.getUseSetting(hero, this, SkillSetting.RADIUS.node(), 1.0, false) +
                 (SkillConfigManager.getUseSetting(hero, this, "radius-increase", 0.0, false) * hero.getSkillLevel(this)));
             range = range > 1 ? range : 1;
-            int mana = (int) (SkillConfigManager.getUseSetting(hero, this, Setting.MANA.node(), 1, false) -
-                (SkillConfigManager.getUseSetting(hero, this, Setting.MANA_REDUCE.node(), 0.0, false) * hero.getSkillLevel(this)));
+            int mana = (int) (SkillConfigManager.getUseSetting(hero, this, SkillSetting.MANA.node(), 1, false) -
+                (SkillConfigManager.getUseSetting(hero, this, SkillSetting.MANA_REDUCE.node(), 0.0, false) * hero.getSkillLevel(this)));
             mana = mana > 0 ? mana : 0;
             hero.addEffect(new IcyAuraEffect(this, period, tickDamage, range, mana));
         }

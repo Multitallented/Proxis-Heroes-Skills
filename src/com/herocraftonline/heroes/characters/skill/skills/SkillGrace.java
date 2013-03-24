@@ -7,7 +7,7 @@ import com.herocraftonline.heroes.characters.skill.Skill;
 import com.herocraftonline.heroes.characters.skill.SkillConfigManager;
 import com.herocraftonline.heroes.characters.skill.SkillType;
 import com.herocraftonline.heroes.util.Messaging;
-import com.herocraftonline.heroes.util.Setting;
+import com.herocraftonline.heroes.characters.skill.SkillSetting;
 import java.util.Date;
 import java.util.HashMap;
 import org.bukkit.Bukkit;
@@ -44,7 +44,7 @@ public class SkillGrace extends PassiveSkill {
 
     @Override
     public String getDescription(Hero hero) {
-        long duration = SkillConfigManager.getUseSetting(hero, this, Setting.DURATION.node(), 300000, false) / 1000;
+        long duration = SkillConfigManager.getUseSetting(hero, this, SkillSetting.DURATION.node(), 300000, false) / 1000;
         String description = getDescription().replace("$1", duration + "");
         return description;
     }
@@ -71,7 +71,7 @@ public class SkillGrace extends PassiveSkill {
         if (hasDiedRecently.containsKey(player)) {
             return (int) ((new Date().getTime() - hasDiedRecently.get(player).getTime())/1000);
         } else {
-            return SkillConfigManager.getUseSetting(plugin.getCharacterManager().getHero(player), this, Setting.DURATION.node(), 300000, false) / 1000;
+            return SkillConfigManager.getUseSetting(plugin.getCharacterManager().getHero(player), this, SkillSetting.DURATION.node(), 300000, false) / 1000;
         }
     }
     public class EntityDeathListener implements Listener {
@@ -85,7 +85,7 @@ public class SkillGrace extends PassiveSkill {
             if (event.getEntity() instanceof Player) {
                 Player player = (Player) event.getEntity();
                 hasDiedRecently.put(player, new Date());
-                int duration = (int) SkillConfigManager.getUseSetting(plugin.getCharacterManager().getHero(player), skill, Setting.DURATION.node(), 300000, false)/1000;
+                int duration = (int) SkillConfigManager.getUseSetting(plugin.getCharacterManager().getHero(player), skill, SkillSetting.DURATION.node(), 300000, false)/1000;
                 Messaging.send(player, deathText, duration + " seconds");
             }
         }
@@ -115,7 +115,7 @@ public class SkillGrace extends PassiveSkill {
                     if (hero.hasEffect("Grace") || tHero.hasEffect("Grace")) {
                         int targetDuration = pvpEnabled(player);
                         int damagerDuration = pvpEnabled(tPlayer);
-                        int duration = (int) SkillConfigManager.getUseSetting(plugin.getCharacterManager().getHero(player), skill, Setting.DURATION.node(), 300000, false)/1000;
+                        int duration = (int) SkillConfigManager.getUseSetting(plugin.getCharacterManager().getHero(player), skill, SkillSetting.DURATION.node(), 300000, false)/1000;
                         if (damagerDuration < duration || targetDuration < duration) {
                             if (targetDuration < duration){
                                Messaging.send((Player) damager, skillBlockText, player.getDisplayName(), duration - targetDuration + " seconds");

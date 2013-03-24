@@ -8,7 +8,7 @@ import com.herocraftonline.heroes.characters.skill.PassiveSkill;
 import com.herocraftonline.heroes.characters.skill.Skill;
 import com.herocraftonline.heroes.characters.skill.SkillConfigManager;
 import com.herocraftonline.heroes.characters.skill.SkillType;
-import com.herocraftonline.heroes.util.Setting;
+import com.herocraftonline.heroes.characters.skill.SkillSetting;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
@@ -43,8 +43,8 @@ public class SkillReborn extends PassiveSkill {
     public String getDescription(Hero hero) {
         int health = (int) ((SkillConfigManager.getUseSetting(hero, this, "health-percent-on-rebirth", 0.5, false)
                 + (SkillConfigManager.getUseSetting(hero, this, "health-increase", 0.0, false) * hero.getSkillLevel(this))) * 100);
-        int cooldown = SkillConfigManager.getUseSetting(hero, this, Setting.COOLDOWN.node(), 600000, false)
-                + (SkillConfigManager.getUseSetting(hero, this, Setting.COOLDOWN_REDUCE.node(), 0, false) * hero.getSkillLevel(this));
+        int cooldown = SkillConfigManager.getUseSetting(hero, this, SkillSetting.COOLDOWN.node(), 600000, false)
+                + (SkillConfigManager.getUseSetting(hero, this, SkillSetting.COOLDOWN_REDUCE.node(), 0, false) * hero.getSkillLevel(this));
         String description = getDescription().replace("$1", health + "").replace("$2", cooldown + "");
         return description;
     }
@@ -81,8 +81,8 @@ public class SkillReborn extends PassiveSkill {
                     hero.setHealth((int) Math.round(hero.getMaxHealth() * (SkillConfigManager.getUseSetting(hero, skill, "health-percent-on-rebirth", 0.5, false)
                             + (SkillConfigManager.getUseSetting(hero, skill, "health-increase", 0.0, false) * hero.getSkillLevel(skill)))));
                     hero.syncHealth();
-                    long cooldown = (long) (SkillConfigManager.getUseSetting(hero, skill, Setting.COOLDOWN.node(), 600000, false)
-                            + (SkillConfigManager.getUseSetting(hero, skill, Setting.COOLDOWN_REDUCE.node(), 0, false) * hero.getSkillLevel(skill)));
+                    long cooldown = (long) (SkillConfigManager.getUseSetting(hero, skill, SkillSetting.COOLDOWN.node(), 600000, false)
+                            + (SkillConfigManager.getUseSetting(hero, skill, SkillSetting.COOLDOWN_REDUCE.node(), 0, false) * hero.getSkillLevel(skill)));
                     hero.setCooldown("Reborn", cooldown + System.currentTimeMillis());
                     broadcast(player.getLocation(),rebornText,player.getDisplayName());
                     Location le2 = player.getLocation();

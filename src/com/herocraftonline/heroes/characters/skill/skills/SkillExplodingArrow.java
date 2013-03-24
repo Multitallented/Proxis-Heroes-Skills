@@ -9,7 +9,7 @@ import com.herocraftonline.heroes.characters.skill.ActiveSkill;
 import com.herocraftonline.heroes.characters.skill.Skill;
 import com.herocraftonline.heroes.characters.skill.SkillConfigManager;
 import com.herocraftonline.heroes.characters.skill.SkillType;
-import com.herocraftonline.heroes.util.Setting;
+import com.herocraftonline.heroes.characters.skill.SkillSetting;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.*;
@@ -49,7 +49,7 @@ public class SkillExplodingArrow extends ActiveSkill
     @Override
   public SkillResult use(Hero hero, String[] args)
   {
-    long duration = SkillConfigManager.getUseSetting(hero, this, Setting.DURATION, 60000, false);
+    long duration = SkillConfigManager.getUseSetting(hero, this, SkillSetting.DURATION, 60000, false);
     int numAttacks = SkillConfigManager.getUseSetting(hero, this, "attacks", 1, false);
     hero.addEffect(new ExplodingArrowBuff(this, duration, numAttacks));
     broadcastExecuteText(hero);
