@@ -100,9 +100,9 @@ public class SkillJail extends TargettedSkill {
         String worldName = plugin.getServer().getWorlds().get(0).getName();
         node.set("jail-text", "%target% was jailed!");
         node.set("default", worldName + ":0:65:0");
-        node.set(Setting.MAX_DISTANCE.node(), 25);
-        node.set(Setting.MAX_DISTANCE_INCREASE.node(), 0);
-        node.set(Setting.DURATION.node(), 60000);
+        node.set(SkillSetting.MAX_DISTANCE.node(), 25);
+        node.set(SkillSetting.MAX_DISTANCE_INCREASE.node(), 0);
+        node.set(SkillSetting.DURATION.node(), 60000);
         node.set("duration-increase", 0);
         return node;
     }
@@ -156,7 +156,7 @@ public class SkillJail extends TargettedSkill {
         @EventHandler
         public void onEntityDamage(EntityDamageEvent event) {
             if (event.isCancelled() || !(event.getEntity() instanceof Player) || event.getDamage() == 0 || jailLocations.isEmpty() ||
-                    event.getDamage() < plugin.getCharacterManager().getHero((Player) event.getEntity()).getHealth()) {
+                    event.getDamage() < ((Player) event.getEntity()).getHealth()) {
                 return;
             }
             Player player = (Player) event.getEntity();
