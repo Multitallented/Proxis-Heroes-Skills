@@ -5,14 +5,13 @@ import com.herocraftonline.heroes.api.SkillResult;
 import com.herocraftonline.heroes.characters.Hero;
 import com.herocraftonline.heroes.characters.skill.ActiveSkill;
 import com.herocraftonline.heroes.characters.skill.SkillConfigManager;
+import com.herocraftonline.heroes.characters.skill.SkillSetting;
 import com.herocraftonline.heroes.characters.skill.SkillType;
 import com.herocraftonline.heroes.util.Messaging;
-import com.herocraftonline.heroes.characters.skill.SkillSetting;
 import java.util.Random;
-
 import org.bukkit.Location;
-import org.bukkit.entity.Player;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
 
 public class SkillTrack extends ActiveSkill {
 
@@ -97,7 +96,7 @@ public class SkillTrack extends ActiveSkill {
         y = y < 1 ? 1 : y;
         int z = location.getBlockZ() + random.nextInt(randomness);
         Hero tHero = plugin.getCharacterManager().getHero((Player) target);
-        Messaging.send(player, "$1 is a level $2 $3 with $4 health!", tHero.getPlayer().getDisplayName(), tHero.getTieredLevel(tHero.getHeroClass()), tHero.getHeroClass().getName(), target.getHealth());
+        Messaging.send(player, "$1 is a level $2 $3 with $4 health!", tHero.getPlayer().getDisplayName(), tHero.getTieredLevel(tHero.getHeroClass()), tHero.getHeroClass().getName(), target.getHealth()); 
         Messaging.send(player, "$5 pos: $1: $2,$3,$4", location.getWorld().getName(), x, y, z, tHero.getPlayer().getDisplayName());
         Location hLoc = hero.getPlayer().getLocation();
         int hX = hLoc.getBlockX();

@@ -11,9 +11,8 @@ import com.herocraftonline.heroes.characters.effects.common.StunEffect;
 import com.herocraftonline.heroes.characters.skill.ActiveSkill;
 import com.herocraftonline.heroes.characters.skill.Skill;
 import com.herocraftonline.heroes.characters.skill.SkillConfigManager;
-import com.herocraftonline.heroes.characters.skill.SkillType;
-import com.herocraftonline.heroes.util.Messaging;
 import com.herocraftonline.heroes.characters.skill.SkillSetting;
+import com.herocraftonline.heroes.characters.skill.SkillType;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -252,25 +251,32 @@ public class SkillPounce extends ActiveSkill
       while (localIterator.hasNext())
       {
         Entity localEntity = (Entity)localIterator.next();
-        if (!(localEntity instanceof LivingEntity))
-          continue;
+        if (!(localEntity instanceof LivingEntity)) {
+              continue;
+          }
         LivingEntity localLivingEntity = (LivingEntity)localEntity;
-        if (!damageCheck(localPlayer1, localLivingEntity))
-          continue;
+        if (!damageCheck(localPlayer1, localLivingEntity)) {
+              continue;
+          }
         if ((localEntity instanceof Player))
         {
           Player localPlayer2 = (Player)localEntity;
           Hero localHero2 = plugin.getCharacterManager().getHero(localPlayer2);
-          if (l1 > 0L)
-            localHero2.addEffect(new StunEffect(this.skill, l1));
-          if (l2 > 0L)
-            localHero2.addEffect(new SlowEffect(this.skill, l2, 2, true, localPlayer2.getDisplayName() + " has been slowed by " + localPlayer1.getDisplayName(), localPlayer2.getDisplayName() + " is no longer slowed by " + localPlayer1.getDisplayName(), localHero1));
-          if (l3 > 0L)
-            localHero2.addEffect(new RootEffect(this.skill, l3));
-          if (l4 > 0L)
-            localHero2.addEffect(new SilenceEffect(this.skill, l4));
-          if (j > 0)
-            damageEntity(localLivingEntity, localPlayer1, j, EntityDamageEvent.DamageCause.ENTITY_ATTACK);
+          if (l1 > 0L) {
+                localHero2.addEffect(new StunEffect(this.skill, l1));
+            }
+          if (l2 > 0L) {
+                localHero2.addEffect(new SlowEffect(this.skill, l2, 2, true, localPlayer2.getDisplayName() + " has been slowed by " + localPlayer1.getDisplayName(), localPlayer2.getDisplayName() + " is no longer slowed by " + localPlayer1.getDisplayName(), localHero1));
+            }
+          if (l3 > 0L) {
+                localHero2.addEffect(new RootEffect(this.skill, l3));
+            }
+          if (l4 > 0L) {
+                localHero2.addEffect(new SilenceEffect(this.skill, l4));
+            }
+          if (j > 0) {
+                damageEntity(localLivingEntity, localPlayer1, j, EntityDamageEvent.DamageCause.ENTITY_ATTACK);
+            }
         }
         if (j > 0) {
             damageEntity(localLivingEntity, localPlayer1, j, DamageCause.MAGIC);

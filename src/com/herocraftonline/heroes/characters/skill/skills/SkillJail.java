@@ -157,6 +157,7 @@ public class SkillJail extends TargettedSkill {
         public void onEntityDamage(EntityDamageEvent event) {
             if (event.isCancelled() || !(event.getEntity() instanceof Player) || event.getDamage() == 0 || jailLocations.isEmpty() ||
                     event.getDamage() < ((Player) event.getEntity()).getHealth()) {
+                
                 return;
             }
             Player player = (Player) event.getEntity();
