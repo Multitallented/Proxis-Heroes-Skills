@@ -36,8 +36,8 @@ public class SkillDodge extends PassiveSkill {
     @Override
     public ConfigurationSection getDefaultConfig() {
         ConfigurationSection node = super.getDefaultConfig();
-        node.set(Setting.CHANCE.node(), 0.1);
-        node.set(Setting.CHANCE_LEVEL.node(), 0);
+        node.set(SkillSetting.CHANCE.node(), 0.1);
+        node.set(SkillSetting.CHANCE_LEVEL.node(), 0);
         return node;
     }
     

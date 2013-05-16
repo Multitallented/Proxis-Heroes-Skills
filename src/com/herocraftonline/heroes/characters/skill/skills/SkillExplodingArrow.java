@@ -39,7 +39,7 @@ public class SkillExplodingArrow extends ActiveSkill
   public ConfigurationSection getDefaultConfig()
   {
     ConfigurationSection node = super.getDefaultConfig();
-    node.set(Setting.DAMAGE.node(), Integer.valueOf(5));
+    node.set(SkillSetting.DAMAGE.node(), Integer.valueOf(5));
     node.set("block-dmg", Integer.valueOf(0));
     node.set("mana-per-shot", Integer.valueOf(1));
     node.set("radius", Integer.valueOf(5));

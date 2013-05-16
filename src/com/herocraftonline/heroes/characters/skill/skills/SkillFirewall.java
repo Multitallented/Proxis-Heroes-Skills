@@ -81,8 +81,8 @@ public class SkillFirewall extends ActiveSkill {
     @Override
     public ConfigurationSection getDefaultConfig() {
         ConfigurationSection node = super.getDefaultConfig();
-        node.set(Setting.MAX_DISTANCE.node(), 25);
-        node.set(Setting.MAX_DISTANCE_INCREASE.node(), 0);
+        node.set(SkillSetting.MAX_DISTANCE.node(), 25);
+        node.set(SkillSetting.MAX_DISTANCE_INCREASE.node(), 0);
         node.set("max-duration", 10000);
         node.set("min-duration", 5000);
         node.set("max-length", 9);

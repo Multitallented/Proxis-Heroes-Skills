@@ -79,8 +79,8 @@ public class SkillTimebomb extends ActiveSkill {
     @Override
     public ConfigurationSection getDefaultConfig() {
         ConfigurationSection node = super.getDefaultConfig();
-        node.set(Setting.MAX_DISTANCE.node(), 40);
-        node.set(Setting.MAX_DISTANCE_INCREASE.node(), 0);
+        node.set(SkillSetting.MAX_DISTANCE.node(), 40);
+        node.set(SkillSetting.MAX_DISTANCE_INCREASE.node(), 0);
         node.set("max-tnt", 4);
         return node;
     }

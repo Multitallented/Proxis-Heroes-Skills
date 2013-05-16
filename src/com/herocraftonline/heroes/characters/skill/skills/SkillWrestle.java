@@ -6,12 +6,11 @@ import com.herocraftonline.heroes.characters.Hero;
 import com.herocraftonline.heroes.characters.effects.common.StunEffect;
 import com.herocraftonline.heroes.characters.skill.ActiveSkill;
 import com.herocraftonline.heroes.characters.skill.SkillConfigManager;
-import com.herocraftonline.heroes.characters.skill.SkillType;
 import com.herocraftonline.heroes.characters.skill.SkillSetting;
+import com.herocraftonline.heroes.characters.skill.SkillType;
 import java.util.List;
-
-import org.bukkit.entity.Entity;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
@@ -85,11 +84,11 @@ public class SkillWrestle extends ActiveSkill {
     @Override
     public ConfigurationSection getDefaultConfig() {
         ConfigurationSection node = super.getDefaultConfig();
-        node.set(Setting.DURATION.node(), 10000);
+        node.set(SkillSetting.DURATION.node(), 10000);
         node.set("duration-increase", 0);
-        node.set(Setting.RADIUS.node(), 3);
+        node.set(SkillSetting.RADIUS.node(), 3);
         node.set("radius-increase",0);
-        node.set(Setting.DAMAGE.node(), 0);
+        node.set(SkillSetting.DAMAGE.node(), 0);
         node.set("damage-increase", 0);
         return node;
     }

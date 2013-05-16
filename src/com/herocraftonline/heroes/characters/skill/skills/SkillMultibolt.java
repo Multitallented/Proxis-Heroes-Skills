@@ -86,13 +86,13 @@ public class SkillMultibolt extends ActiveSkill {
     @Override
     public ConfigurationSection getDefaultConfig() {
         ConfigurationSection node = super.getDefaultConfig();
-        node.set(Setting.MAX_DISTANCE.node(), 40);
-        node.set(Setting.MAX_DISTANCE_INCREASE.node(), 0);
+        node.set(SkillSetting.MAX_DISTANCE.node(), 40);
+        node.set(SkillSetting.MAX_DISTANCE_INCREASE.node(), 0);
         node.set("max-strikes", 4);
         node.set("max-strikes-increase", 0);
-        node.set(Setting.CHANCE.node(), 0.5);
-        node.set(Setting.CHANCE_LEVEL.node(), 0);
-        node.set(Setting.DAMAGE.node(), 14);
+        node.set(SkillSetting.CHANCE.node(), 0.5);
+        node.set(SkillSetting.CHANCE_LEVEL.node(), 0);
+        node.set(SkillSetting.DAMAGE.node(), 14);
         node.set("damage-increase", 0);
         return node;
     }

@@ -82,7 +82,7 @@ public class SkillHunt extends ActiveSkill {
     @Override
     public ConfigurationSection getDefaultConfig() {
         ConfigurationSection node = super.getDefaultConfig();
-        node.set(Setting.RADIUS.node(), 200);
+        node.set(SkillSetting.RADIUS.node(), 200);
         node.set("radius-decrease", 0);
         node.set("hunter-nearby-text", "Someone is hunting players in your area");
         ArrayList<String> tempList = new ArrayList<String>();

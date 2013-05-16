@@ -39,8 +39,8 @@ public class SkillCritical extends PassiveSkill {
     @Override
     public ConfigurationSection getDefaultConfig() {
         ConfigurationSection node = super.getDefaultConfig();
-        node.set(Setting.CHANCE.node(), 0.2);
-        node.set(Setting.CHANCE_LEVEL.node(), 0);
+        node.set(SkillSetting.CHANCE.node(), 0.2);
+        node.set(SkillSetting.CHANCE_LEVEL.node(), 0);
         node.set("damage-multiplier", 2.0);
         node.set("damage-multiplier-increase", 0);
         return node;

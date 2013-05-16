@@ -92,11 +92,11 @@ public class SkillCreepingPain extends TargettedSkill {
     @Override
     public ConfigurationSection getDefaultConfig() {
         ConfigurationSection node = super.getDefaultConfig();
-        node.set(Setting.DURATION.node(), 10000);
+        node.set(SkillSetting.DURATION.node(), 10000);
         node.set("duration-increase", 0);
         node.set("no_effect_expire_text", "%target%s urge to throw up passes!");
-        node.set(Setting.APPLY_TEXT.node(), "%target% feels a sudden urge to throw up!");
-        node.set(Setting.EXPIRE_TEXT.node(), "%target% falls to his knees and pukes blood!");
+        node.set(SkillSetting.APPLY_TEXT.node(), "%target% feels a sudden urge to throw up!");
+        node.set(SkillSetting.EXPIRE_TEXT.node(), "%target% falls to his knees and pukes blood!");
         return node;
     }
 

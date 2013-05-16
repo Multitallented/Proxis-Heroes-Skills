@@ -85,12 +85,12 @@ public class SkillFalconPunch extends TargettedSkill {
     @Override
     public ConfigurationSection getDefaultConfig() {
         ConfigurationSection node = super.getDefaultConfig();
-        node.set(Setting.DURATION.node(), 5000);
+        node.set(SkillSetting.DURATION.node(), 5000);
         node.set("duration-increase", 0);
-        node.set(Setting.DAMAGE.node(), 22);
+        node.set(SkillSetting.DAMAGE.node(), 22);
         node.set("damage-increase", 0);
-        node.set(Setting.MAX_DISTANCE.node(), 4);
-        node.set(Setting.MAX_DISTANCE_INCREASE.node(), 0);
+        node.set(SkillSetting.MAX_DISTANCE.node(), 4);
+        node.set(SkillSetting.MAX_DISTANCE_INCREASE.node(), 0);
         return node;
     }
     

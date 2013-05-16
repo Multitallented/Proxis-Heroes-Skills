@@ -29,11 +29,11 @@ public class SkillSonicBoom extends ActiveSkill {
     @Override
     public ConfigurationSection getDefaultConfig() {
         ConfigurationSection node = super.getDefaultConfig();
-        node.set(Setting.DURATION.node(), 10000);
+        node.set(SkillSetting.DURATION.node(), 10000);
         node.set("duration-increase", 0);
-        node.set(Setting.RADIUS.node(), 10);
+        node.set(SkillSetting.RADIUS.node(), 10);
         node.set("radius-increase", 0);
-        node.set(Setting.DAMAGE.node(), 0);
+        node.set(SkillSetting.DAMAGE.node(), 0);
         node.set("damage-increase", 0);
         return node;
     }

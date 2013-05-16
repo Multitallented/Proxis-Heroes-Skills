@@ -90,10 +90,10 @@ public class SkillInvertDamage extends ActiveSkill
   public ConfigurationSection getDefaultConfig()
   {
     ConfigurationSection localConfigurationNode = super.getDefaultConfig();
-    localConfigurationNode.set(Setting.DURATION.node(), 6000);
+    localConfigurationNode.set(SkillSetting.DURATION.node(), 6000);
     localConfigurationNode.set("duration-increase", 0);
-    localConfigurationNode.set(Setting.APPLY_TEXT.node(), "%target% is absorbing damage!");
-    localConfigurationNode.set(Setting.EXPIRE_TEXT.node(), "InvertDamage faded from %target%!");
+    localConfigurationNode.set(SkillSetting.APPLY_TEXT.node(), "%target% is absorbing damage!");
+    localConfigurationNode.set(SkillSetting.EXPIRE_TEXT.node(), "InvertDamage faded from %target%!");
     return localConfigurationNode;
   }
 

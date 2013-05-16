@@ -151,13 +151,13 @@ public class SkillPounce extends ActiveSkill
     localConfigurationSection.set("silence-duration", 0);
     localConfigurationSection.set("invuln-duration", 0);
     localConfigurationSection.set("duration-increase", 0);
-    localConfigurationSection.set(Setting.DAMAGE.node(), 0);
+    localConfigurationSection.set(SkillSetting.DAMAGE.node(), 0);
     localConfigurationSection.set("damage-increase", 0);
-    localConfigurationSection.set(Setting.RADIUS.node(), 2);
-    localConfigurationSection.set(Setting.RADIUS_INCREASE.node(), 0);
-    localConfigurationSection.set(Setting.MAX_DISTANCE.node(), 15);
-    localConfigurationSection.set(Setting.MAX_DISTANCE_INCREASE.node(), 0);
-    localConfigurationSection.set(Setting.USE_TEXT.node(), "%hero% used %skill%!");
+    localConfigurationSection.set(SkillSetting.RADIUS.node(), 2);
+    localConfigurationSection.set(SkillSetting.RADIUS_INCREASE.node(), 0);
+    localConfigurationSection.set(SkillSetting.MAX_DISTANCE.node(), 15);
+    localConfigurationSection.set(SkillSetting.MAX_DISTANCE_INCREASE.node(), 0);
+    localConfigurationSection.set(SkillSetting.USE_TEXT.node(), "%hero% used %skill%!");
     return localConfigurationSection;
   }
 

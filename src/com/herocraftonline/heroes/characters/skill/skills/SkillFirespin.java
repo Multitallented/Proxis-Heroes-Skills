@@ -79,8 +79,8 @@ public class SkillFirespin extends ActiveSkill {
     @Override
     public ConfigurationSection getDefaultConfig() {
         ConfigurationSection node = super.getDefaultConfig();
-        node.set(Setting.MAX_DISTANCE.node(), 30);
-        node.set(Setting.MAX_DISTANCE_INCREASE.node(), 0);
+        node.set(SkillSetting.MAX_DISTANCE.node(), 30);
+        node.set(SkillSetting.MAX_DISTANCE_INCREASE.node(), 0);
         return node;
     }
 

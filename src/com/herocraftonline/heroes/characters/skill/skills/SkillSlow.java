@@ -86,11 +86,11 @@ public class SkillSlow extends TargettedSkill {
     public ConfigurationSection getDefaultConfig() {
         ConfigurationSection node = super.getDefaultConfig();
         node.set("speed-multiplier", 2);
-        node.set(Setting.DURATION.node(), 15000);
+        node.set(SkillSetting.DURATION.node(), 15000);
         node.set("duration-increase",0);
         node.set("apply-text", "%hero% has been slowed!");
         node.set("expire-text", "%hero% returned to normal speed!");
-        node.set(Setting.DAMAGE.node(), 0);
+        node.set(SkillSetting.DAMAGE.node(), 0);
         node.set("damage-increase",0);
         return node;
     }

@@ -39,8 +39,8 @@ public class SkillSpeed extends ActiveSkill {
     @Override
     public ConfigurationSection getDefaultConfig() {
         ConfigurationSection node = super.getDefaultConfig();
-        node.set(Setting.DURATION.node(), 600000);
-        node.set(Setting.MAX_DISTANCE.node(), 5);
+        node.set(SkillSetting.DURATION.node(), 600000);
+        node.set(SkillSetting.MAX_DISTANCE.node(), 5);
         node.set("terrain-type", "STATIONARY_WATER");
         return node;
     }

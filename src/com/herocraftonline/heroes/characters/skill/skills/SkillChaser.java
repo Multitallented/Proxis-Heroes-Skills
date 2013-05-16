@@ -92,16 +92,16 @@ public class SkillChaser extends TargettedSkill {
     @Override
     public ConfigurationSection getDefaultConfig() {
         ConfigurationSection node = super.getDefaultConfig();
-        node.set(Setting.DURATION.node(), 10000);
+        node.set(SkillSetting.DURATION.node(), 10000);
         node.set("duration-increase", 0);
-        node.set(Setting.PERIOD.node(), 1000);
-        node.set(Setting.DAMAGE_TICK.node(), 2);
+        node.set(SkillSetting.PERIOD.node(), 1000);
+        node.set(SkillSetting.DAMAGE_TICK.node(), 2);
         node.set("tick-damage-increase", 0);
-        node.set(Setting.DAMAGE.node(), 5);
+        node.set(SkillSetting.DAMAGE.node(), 5);
         node.set("damage-increase", 0);
-        node.set(Setting.MAX_DISTANCE.node(), 15);
-        node.set(Setting.MAX_DISTANCE_INCREASE.node(), 0);
-        node.set(Setting.APPLY_TEXT.node(), "%hero% makes the ground under %target%s feet hot!");
+        node.set(SkillSetting.MAX_DISTANCE.node(), 15);
+        node.set(SkillSetting.MAX_DISTANCE_INCREASE.node(), 0);
+        node.set(SkillSetting.APPLY_TEXT.node(), "%hero% makes the ground under %target%s feet hot!");
         node.set("remove-text", "%hero% stops burning %target%s feet!");
         return node;
     }

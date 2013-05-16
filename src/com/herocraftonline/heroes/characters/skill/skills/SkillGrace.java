@@ -52,7 +52,7 @@ public class SkillGrace extends PassiveSkill {
     @Override
     public ConfigurationSection getDefaultConfig() {
         ConfigurationSection node = super.getDefaultConfig();
-        node.set(Setting.DURATION.node(), 300000);
+        node.set(SkillSetting.DURATION.node(), 300000);
         node.set("enemy-disabled-damage-text", "%hero% has pvp immunity for %duration%");
         node.set("you-disabled-damage-text", "You have pvp immunity for %duration%");
         node.set("on-death-text", "You have gained pvp immunity for %duration%");

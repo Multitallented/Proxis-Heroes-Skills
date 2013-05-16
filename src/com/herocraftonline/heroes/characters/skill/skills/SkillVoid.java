@@ -8,17 +8,17 @@ import com.herocraftonline.heroes.characters.effects.ExpirableEffect;
 import com.herocraftonline.heroes.characters.skill.ActiveSkill;
 import com.herocraftonline.heroes.characters.skill.Skill;
 import com.herocraftonline.heroes.characters.skill.SkillConfigManager;
-import com.herocraftonline.heroes.characters.skill.SkillType;
 import com.herocraftonline.heroes.characters.skill.SkillSetting;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityDamageEvent;
+import com.herocraftonline.heroes.characters.skill.SkillType;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
 public class SkillVoid extends ActiveSkill {
@@ -90,10 +90,10 @@ public class SkillVoid extends ActiveSkill {
     @Override
     public ConfigurationSection getDefaultConfig() {
         ConfigurationSection node = super.getDefaultConfig();
-        node.set(Setting.DURATION.node(), 5000);
+        node.set(SkillSetting.DURATION.node(), 5000);
         node.set("duration-increase", 0);
-        node.set(Setting.APPLY_TEXT.node(), "%hero% became intangible!");
-        node.set(Setting.EXPIRE_TEXT.node(), "%hero% became tangible again!");
+        node.set(SkillSetting.APPLY_TEXT.node(), "%hero% became intangible!");
+        node.set(SkillSetting.EXPIRE_TEXT.node(), "%hero% became tangible again!");
         return node;
     }
 

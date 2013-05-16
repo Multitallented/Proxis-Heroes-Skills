@@ -1,15 +1,14 @@
 package com.herocraftonline.heroes.characters.skill.skills;
 
 import com.herocraftonline.heroes.Heroes;
-import com.herocraftonline.heroes.api.events.WeaponDamageEvent;
 import com.herocraftonline.heroes.characters.Hero;
 import com.herocraftonline.heroes.characters.classes.HeroClass.ExperienceType;
 import com.herocraftonline.heroes.characters.effects.common.SilenceEffect;
 import com.herocraftonline.heroes.characters.skill.PassiveSkill;
 import com.herocraftonline.heroes.characters.skill.Skill;
 import com.herocraftonline.heroes.characters.skill.SkillConfigManager;
-import com.herocraftonline.heroes.characters.skill.SkillType;
 import com.herocraftonline.heroes.characters.skill.SkillSetting;
+import com.herocraftonline.heroes.characters.skill.SkillType;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -54,10 +53,10 @@ public class SkillVoidBlade extends PassiveSkill {
     @Override
     public ConfigurationSection getDefaultConfig() {
         ConfigurationSection node = super.getDefaultConfig();
-        node.set(Setting.CHANCE.node(), 0.2);
-        node.set(Setting.CHANCE_LEVEL.node(), 0.0);
-        node.set(Setting.COOLDOWN.node(), 500);
-        node.set(Setting.DURATION.node(), 2000);
+        node.set(SkillSetting.CHANCE.node(), 0.2);
+        node.set(SkillSetting.CHANCE_LEVEL.node(), 0.0);
+        node.set(SkillSetting.COOLDOWN.node(), 500);
+        node.set(SkillSetting.DURATION.node(), 2000);
         node.set("duration-increase", 0);
         node.set("exp-per-silence", 0);
         return node;

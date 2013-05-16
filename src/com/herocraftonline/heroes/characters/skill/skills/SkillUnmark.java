@@ -5,11 +5,11 @@ import com.herocraftonline.heroes.api.SkillResult;
 import com.herocraftonline.heroes.characters.Hero;
 import com.herocraftonline.heroes.characters.skill.ActiveSkill;
 import com.herocraftonline.heroes.characters.skill.SkillConfigManager;
+import com.herocraftonline.heroes.characters.skill.SkillSetting;
 import com.herocraftonline.heroes.characters.skill.SkillType;
 import com.herocraftonline.heroes.util.Messaging;
-import com.herocraftonline.heroes.characters.skill.SkillSetting;
-import org.bukkit.entity.Player;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
 
 public class SkillUnmark extends ActiveSkill {
 
@@ -74,7 +74,7 @@ public class SkillUnmark extends ActiveSkill {
     @Override
     public ConfigurationSection getDefaultConfig() {
         ConfigurationSection node = super.getDefaultConfig();
-        node.set(Setting.RADIUS.node(), 30);
+        node.set(SkillSetting.RADIUS.node(), 30);
         node.set("radius-increase", 0);
         return node;
     }

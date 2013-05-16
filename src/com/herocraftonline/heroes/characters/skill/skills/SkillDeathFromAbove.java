@@ -94,16 +94,16 @@ public class SkillDeathFromAbove extends ActiveSkill {
     @Override
     public ConfigurationSection getDefaultConfig() {
         ConfigurationSection node = super.getDefaultConfig();
-        node.set(Setting.DURATION.node(), 10000);
+        node.set(SkillSetting.DURATION.node(), 10000);
         node.set("duration-increase", 0);
-        node.set(Setting.RADIUS.node(), 5);
+        node.set(SkillSetting.RADIUS.node(), 5);
         node.set("radius-increase", 0);
         node.set("damage-multiplier", 1.0);
         node.set("damage-multi-increase", 0);
         node.set("safefall", "true");
         node.set("exp-per-player-hit", 0);
         node.set("exp-per-creature-hit", 0);
-        node.set(Setting.APPLY_TEXT.node(), "%hero% is ready to pounce!");
+        node.set(SkillSetting.APPLY_TEXT.node(), "%hero% is ready to pounce!");
         node.set("remove-text", "%hero% is not ready to pounce anymore!");
         return node;
     }

@@ -55,11 +55,11 @@ public class SkillBurningPresence extends ActiveSkill {
         node.set("off-text", "%hero% stops his %skill%!");
         node.set("tick-damage", 1);
         node.set("tick-damage-increase", 0);
-        node.set(Setting.PERIOD.node(), 5000);
-        node.set(Setting.RADIUS.node(), 10);
+        node.set(SkillSetting.PERIOD.node(), 5000);
+        node.set(SkillSetting.RADIUS.node(), 10);
         node.set("raidus-increase", 0);
-        node.set(Setting.MANA.node(), 1);
-        node.set(Setting.MANA_REDUCE.node(), 0.0);
+        node.set(SkillSetting.MANA.node(), 1);
+        node.set(SkillSetting.MANA_REDUCE.node(), 0.0);
         return node;
     }
     

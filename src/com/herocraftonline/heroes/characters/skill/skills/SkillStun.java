@@ -80,9 +80,9 @@ public class SkillStun extends TargettedSkill {
     @Override
     public ConfigurationSection getDefaultConfig() {
         ConfigurationSection node = super.getDefaultConfig();
-        node.set(Setting.DURATION.node(), 5000);
+        node.set(SkillSetting.DURATION.node(), 5000);
         node.set("duration-increase", 0);
-        node.set(Setting.DAMAGE.node(), 6);
+        node.set(SkillSetting.DAMAGE.node(), 6);
         node.set("damage-increase", 0);
         return node;
     }
