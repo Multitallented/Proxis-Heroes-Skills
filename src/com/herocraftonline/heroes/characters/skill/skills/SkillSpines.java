@@ -6,7 +6,7 @@ import com.herocraftonline.heroes.characters.skill.PassiveSkill;
 import com.herocraftonline.heroes.characters.skill.Skill;
 import com.herocraftonline.heroes.characters.skill.SkillConfigManager;
 import com.herocraftonline.heroes.characters.skill.SkillType;
-import com.herocraftonline.heroes.util.Setting;
+import com.herocraftonline.heroes.characters.skill.SkillSetting;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -28,11 +28,11 @@ public class SkillSpines extends PassiveSkill {
 
     @Override
     public String getDescription(Hero hero) {
-        double chance = (SkillConfigManager.getUseSetting(hero, this, Setting.CHANCE.node(), 0.1, false) +
-                (SkillConfigManager.getUseSetting(hero, this, Setting.CHANCE_LEVEL.node(), 0, false) * hero.getSkillLevel(this))) * 100;
+        double chance = (SkillConfigManager.getUseSetting(hero, this, SkillSetting.CHANCE.node(), 0.1, false) +
+                (SkillConfigManager.getUseSetting(hero, this, SkillSetting.CHANCE_LEVEL.node(), 0, false) * hero.getSkillLevel(this))) * 100;
         chance = chance > 0 ? chance : 0;
-        long cooldown = (long) (SkillConfigManager.getUseSetting(hero, this, Setting.COOLDOWN.node(), 500, false) -
-                (SkillConfigManager.getUseSetting(hero, this, Setting.COOLDOWN_REDUCE.node(), 0, false) * hero.getSkillLevel(this))) / 1000;
+        long cooldown = (long) (SkillConfigManager.getUseSetting(hero, this, SkillSetting.COOLDOWN.node(), 500, false) -
+                (SkillConfigManager.getUseSetting(hero, this, SkillSetting.COOLDOWN_REDUCE.node(), 0, false) * hero.getSkillLevel(this))) / 1000;
         cooldown = cooldown > 0 ? cooldown : 0;
         String description = getDescription().replace("$1", chance + "").replace("$2", cooldown + "");
         return description;
@@ -61,11 +61,11 @@ public class SkillSpines extends PassiveSkill {
             Hero hero = plugin.getCharacterManager().getHero(player);
             if (hero.hasEffect("Spines")) {
                 if (hero.getCooldown("Spines") == null || hero.getCooldown("Spines") <= System.currentTimeMillis()) {
-                    double chance = (SkillConfigManager.getUseSetting(hero, this.skill, Setting.CHANCE.node(), 0.1, false) +
-                            (SkillConfigManager.getUseSetting(hero, this.skill, Setting.CHANCE_LEVEL.node(), 0, false) * hero.getSkillLevel(skill)));
+                    double chance = (SkillConfigManager.getUseSetting(hero, this.skill, SkillSetting.CHANCE.node(), 0.1, false) +
+                            (SkillConfigManager.getUseSetting(hero, this.skill, SkillSetting.CHANCE_LEVEL.node(), 0, false) * hero.getSkillLevel(skill)));
                     chance = chance > 0 ? chance : 0;
-                    long cooldown = (long) (SkillConfigManager.getUseSetting(hero, this.skill, Setting.COOLDOWN.node(), 500, false) -
-                            (SkillConfigManager.getUseSetting(hero, this.skill, Setting.COOLDOWN_REDUCE.node(), 0, false) * hero.getSkillLevel(skill)));
+                    long cooldown = (long) (SkillConfigManager.getUseSetting(hero, this.skill, SkillSetting.COOLDOWN.node(), 500, false) -
+                            (SkillConfigManager.getUseSetting(hero, this.skill, SkillSetting.COOLDOWN_REDUCE.node(), 0, false) * hero.getSkillLevel(skill)));
                     cooldown = cooldown > 0 ? cooldown : 0;
                     hero.setCooldown("Spines", cooldown + System.currentTimeMillis());
                     if (Math.random() <= chance) {

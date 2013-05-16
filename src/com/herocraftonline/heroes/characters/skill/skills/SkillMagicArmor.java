@@ -6,7 +6,7 @@ import com.herocraftonline.heroes.characters.skill.PassiveSkill;
 import com.herocraftonline.heroes.characters.skill.Skill;
 import com.herocraftonline.heroes.characters.skill.SkillConfigManager;
 import com.herocraftonline.heroes.characters.skill.SkillType;
-import com.herocraftonline.heroes.util.Setting;
+import com.herocraftonline.heroes.characters.skill.SkillSetting;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -30,7 +30,7 @@ public class SkillMagicArmor extends PassiveSkill {
     @Override
     public String getDescription(Hero hero) {
         int level = hero.getSkillLevel(this);
-        double amount = (SkillConfigManager.getUseSetting(hero, this, Setting.AMOUNT.node(), 0.25, false) + 
+        double amount = (SkillConfigManager.getUseSetting(hero, this, SkillSetting.AMOUNT.node(), 0.25, false) + 
                 (SkillConfigManager.getUseSetting(hero, this, "amount-increase", 0.0, false) * level)) * 100;
         amount = amount > 0 ? amount : 0;
         String description = getDescription().replace("$1", amount + "");
@@ -63,7 +63,7 @@ public class SkillMagicArmor extends PassiveSkill {
             if (!hero.hasEffect("MagicArmor")) {
                 return;
             }
-            double amount = (SkillConfigManager.getUseSetting(hero, magicArmor, Setting.AMOUNT.node(), 0.25, false) + 
+            double amount = (SkillConfigManager.getUseSetting(hero, magicArmor, SkillSetting.AMOUNT.node(), 0.25, false) + 
                     (SkillConfigManager.getUseSetting(hero, magicArmor, "amount-increase", 0.0, false) * hero.getSkillLevel(magicArmor)));
             amount = amount > 0 ? amount : 0;
             event.setDamage((int) (event.getDamage() * (1 - amount)));

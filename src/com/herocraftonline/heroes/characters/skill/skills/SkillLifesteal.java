@@ -8,7 +8,7 @@ import com.herocraftonline.heroes.characters.skill.PassiveSkill;
 import com.herocraftonline.heroes.characters.skill.Skill;
 import com.herocraftonline.heroes.characters.skill.SkillConfigManager;
 import com.herocraftonline.heroes.characters.skill.SkillType;
-import com.herocraftonline.heroes.util.Setting;
+import com.herocraftonline.heroes.characters.skill.SkillSetting;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -31,8 +31,8 @@ public class SkillLifesteal extends PassiveSkill {
 
     @Override
     public String getDescription(Hero hero) {
-        long cooldown = (long) (SkillConfigManager.getUseSetting(hero, this, Setting.COOLDOWN.node(), 500, false) -
-                (SkillConfigManager.getUseSetting(hero, this, Setting.COOLDOWN_REDUCE.node(), 0.0, false) * hero.getSkillLevel(this))) / 1000;
+        long cooldown = (long) (SkillConfigManager.getUseSetting(hero, this, SkillSetting.COOLDOWN.node(), 500, false) -
+                (SkillConfigManager.getUseSetting(hero, this, SkillSetting.COOLDOWN_REDUCE.node(), 0.0, false) * hero.getSkillLevel(this))) / 1000;
         cooldown = cooldown > 0 ? cooldown : 0;
         int health = (int) (SkillConfigManager.getUseSetting(hero, this, "health-per-attack", 1, false) +
                 (SkillConfigManager.getUseSetting(hero, this, "health-increase", 0.0, false) * hero.getSkillLevel(this)));
@@ -71,8 +71,8 @@ public class SkillLifesteal extends PassiveSkill {
                         int health = (int) (SkillConfigManager.getUseSetting(hero, skill, "health-per-attack", 1, false) +
                                 (SkillConfigManager.getUseSetting(hero, skill, "health-increase", 0.0, false) * hero.getSkillLevel(skill)));
                         health = health > 0 ? health : 0;
-                        long cooldown = (long) (SkillConfigManager.getUseSetting(hero, skill, Setting.COOLDOWN.node(), 500, false) -
-                                (SkillConfigManager.getUseSetting(hero, skill, Setting.COOLDOWN_REDUCE.node(), 0.0, false) * hero.getSkillLevel(skill)));
+                        long cooldown = (long) (SkillConfigManager.getUseSetting(hero, skill, SkillSetting.COOLDOWN.node(), 500, false) -
+                                (SkillConfigManager.getUseSetting(hero, skill, SkillSetting.COOLDOWN_REDUCE.node(), 0.0, false) * hero.getSkillLevel(skill)));
                         cooldown = cooldown > 0 ? cooldown : 0;
                         hero.setCooldown("Lifesteal", cooldown + System.currentTimeMillis());
                         if (hero.getHealth() + health >= hero.getMaxHealth()) {
@@ -102,8 +102,8 @@ public class SkillLifesteal extends PassiveSkill {
                             int health = (int) (SkillConfigManager.getUseSetting(hero, skill, "health-per-attack", 1, false) +
                                     (SkillConfigManager.getUseSetting(hero, skill, "health-increase", 0.0, false) * hero.getSkillLevel(skill)));
                             health = health > 0 ? health : 0;
-                            long cooldown = (long) (SkillConfigManager.getUseSetting(hero, skill, Setting.COOLDOWN.node(), 500, false) -
-                                    (SkillConfigManager.getUseSetting(hero, skill, Setting.COOLDOWN_REDUCE.node(), 0.0, false) * hero.getSkillLevel(skill)));
+                            long cooldown = (long) (SkillConfigManager.getUseSetting(hero, skill, SkillSetting.COOLDOWN.node(), 500, false) -
+                                    (SkillConfigManager.getUseSetting(hero, skill, SkillSetting.COOLDOWN_REDUCE.node(), 0.0, false) * hero.getSkillLevel(skill)));
                             cooldown = cooldown > 0 ? cooldown : 0;
                             hero.setCooldown("Lifesteal", cooldown + System.currentTimeMillis());
                             if (hero.getHealth() + health >= hero.getMaxHealth()) {
