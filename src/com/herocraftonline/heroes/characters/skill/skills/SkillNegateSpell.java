@@ -121,7 +121,7 @@ public class SkillNegateSpell extends ActiveSkill {
     public class NegateDamageEffect extends ExpirableEffect {
         public NegateDamageEffect(Skill skill, long duration) {
             super(skill,"NegateSpell", duration);
-            //this.types.add(EffectType.UNTARGETABLE);
+            this.types.add(EffectType.UNTARGETABLE);
         }
     }
     
