@@ -102,7 +102,7 @@ public class SkillFirespin extends ActiveSkill {
         Messaging.send(player, "Duration: " + duration/20 + "s");
         final Material matOne = wTarget.getRelative(BlockFace.UP).getType();
         if (retrieveBlock(wTarget,0,0,2).getType() == Material.AIR) {
-            wTarget.getRelative(BlockFace.UP).setType(Material.FIRE);
+            setBlock(player, wTarget.getRelative(BlockFace.UP));
         }
 
         plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
