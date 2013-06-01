@@ -130,15 +130,11 @@ public class SkillNegateDamage extends ActiveSkill {
         
         @EventHandler(ignoreCancelled = true)
         public void onEntityDamage(EntityDamageEvent event) {
-            if (!event.getEntity().getClass().equals(Player.class)) {
+            if (!(event.getEntity() instanceof Player)) {
                 return;
             }
-            Player player;
-            try {
-                player = (Player) event.getEntity();
-            } catch (Exception e) {
-                return;
-            }
+            Player player = (Player) event.getEntity();
+            
             Hero hero = heroes.getCharacterManager().getHero(player);
             if (!hero.hasEffect("NegateDamage")) {
                 return;
