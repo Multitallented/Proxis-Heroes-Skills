@@ -8,12 +8,14 @@ import com.herocraftonline.heroes.characters.skill.SkillConfigManager;
 import com.herocraftonline.heroes.characters.skill.SkillType;
 import com.herocraftonline.heroes.util.Messaging;
 import com.herocraftonline.heroes.characters.skill.SkillSetting;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.event.block.BlockBreakEvent;
 
 public class SkillFirespin extends ActiveSkill {
     public final static int MAX_DISTANCE = 120;
@@ -79,14 +81,14 @@ public class SkillFirespin extends ActiveSkill {
     @Override
     public ConfigurationSection getDefaultConfig() {
         ConfigurationSection node = super.getDefaultConfig();
-        node.set(Setting.MAX_DISTANCE.node(), 30);
-        node.set(Setting.MAX_DISTANCE_INCREASE.node(), 0);
+        node.set(SkillSetting.MAX_DISTANCE.node(), 30);
+        node.set(SkillSetting.MAX_DISTANCE_INCREASE.node(), 0);
         return node;
     }
 
     @Override
     public SkillResult use(Hero hero, String[] args) {
-        Player player = hero.getPlayer();
+        final Player player = hero.getPlayer();
         final Block wTarget = player.getTargetBlock(null, (SkillConfigManager.getUseSetting(hero, this, SkillSetting.MAX_DISTANCE, 15, false) + 
                 (SkillConfigManager.getUseSetting(hero, this, SkillSetting.MAX_DISTANCE_INCREASE.node(), 0, false) * hero.getSkillLevel(this))));
         for (Player p : plugin.getServer().getOnlinePlayers()) {
@@ -108,7 +110,7 @@ public class SkillFirespin extends ActiveSkill {
         public void run() {
             final Material matTwo = wTarget.getRelative(BlockFace.EAST).getRelative(BlockFace.UP).getType();
             if (wTarget.getRelative(BlockFace.EAST).getRelative(BlockFace.UP).getType() == Material.AIR) {
-                wTarget.getRelative(BlockFace.EAST).getRelative(BlockFace.UP).setType(Material.FIRE);
+                setBlock(player, wTarget.getRelative(BlockFace.EAST).getRelative(BlockFace.UP));
             }
 
             plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
@@ -116,7 +118,7 @@ public class SkillFirespin extends ActiveSkill {
             public void run() {
                 final Material matSix = wTarget.getRelative(BlockFace.NORTH_EAST).getRelative(BlockFace.UP).getType();
                 if (wTarget.getRelative(BlockFace.NORTH_EAST).getRelative(BlockFace.UP).getType() == Material.AIR) {
-                    wTarget.getRelative(BlockFace.NORTH_EAST).getRelative(BlockFace.UP).setType(Material.FIRE);
+                    setBlock(player, wTarget.getRelative(BlockFace.NORTH_EAST).getRelative(BlockFace.UP));
                 }
 
                 plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
@@ -124,7 +126,7 @@ public class SkillFirespin extends ActiveSkill {
                 public void run() {
                     final Material matFour = wTarget.getRelative(BlockFace.NORTH).getRelative(BlockFace.UP).getType();
                     if (wTarget.getRelative(BlockFace.NORTH).getRelative(BlockFace.UP).getType() == Material.AIR) {
-                        wTarget.getRelative(BlockFace.NORTH).getRelative(BlockFace.UP).setType(Material.FIRE);
+                        setBlock(player, wTarget.getRelative(BlockFace.NORTH).getRelative(BlockFace.UP));
                     }
 
                     plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
@@ -132,7 +134,7 @@ public class SkillFirespin extends ActiveSkill {
                     public void run() {
                         final Material matSeven = wTarget.getRelative(BlockFace.NORTH_WEST).getRelative(BlockFace.UP).getType();
                         if (wTarget.getRelative(BlockFace.NORTH_WEST).getRelative(BlockFace.UP).getType() == Material.AIR) {
-                            wTarget.getRelative(BlockFace.NORTH_WEST).getRelative(BlockFace.UP).setType(Material.FIRE);
+                            setBlock(player, wTarget.getRelative(BlockFace.NORTH_WEST).getRelative(BlockFace.UP));
                         }
 
                         plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
@@ -140,7 +142,7 @@ public class SkillFirespin extends ActiveSkill {
                         public void run() {
                             final Material matThree = wTarget.getRelative(BlockFace.WEST).getRelative(BlockFace.UP).getType();
                             if (wTarget.getRelative(BlockFace.WEST).getRelative(BlockFace.UP).getType() == Material.AIR) {
-                                wTarget.getRelative(BlockFace.WEST).getRelative(BlockFace.UP).setType(Material.FIRE);
+                                setBlock(player, wTarget.getRelative(BlockFace.WEST).getRelative(BlockFace.UP));
                             }
 
                             plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
@@ -148,7 +150,7 @@ public class SkillFirespin extends ActiveSkill {
                             public void run() {
                                 final Material matNine = wTarget.getRelative(BlockFace.SOUTH_WEST).getRelative(BlockFace.UP).getType();
                                 if (wTarget.getRelative(BlockFace.SOUTH_WEST).getRelative(BlockFace.UP).getType() == Material.AIR) {
-                                    wTarget.getRelative(BlockFace.SOUTH_WEST).getRelative(BlockFace.UP).setType(Material.FIRE);
+                                    setBlock(player, wTarget.getRelative(BlockFace.SOUTH_WEST).getRelative(BlockFace.UP));
                                 }
 
                                 plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
@@ -156,7 +158,7 @@ public class SkillFirespin extends ActiveSkill {
                                 public void run() {
                                     final Material matFive = wTarget.getRelative(BlockFace.SOUTH).getRelative(BlockFace.UP).getType();
                                     if (wTarget.getRelative(BlockFace.SOUTH).getRelative(BlockFace.UP).getType() == Material.AIR) {
-                                        wTarget.getRelative(BlockFace.SOUTH).getRelative(BlockFace.UP).setType(Material.FIRE);
+                                        setBlock(player, wTarget.getRelative(BlockFace.SOUTH).getRelative(BlockFace.UP));
                                     }
 
                                     plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
@@ -164,7 +166,7 @@ public class SkillFirespin extends ActiveSkill {
                                     public void run() {
                                         final Material matEight = wTarget.getRelative(BlockFace.SOUTH_EAST).getRelative(BlockFace.UP).getType();
                                         if (wTarget.getRelative(BlockFace.SOUTH_EAST).getRelative(BlockFace.UP).getType() == Material.AIR) {
-                                            wTarget.getRelative(BlockFace.SOUTH_EAST).getRelative(BlockFace.UP).setType(Material.FIRE);
+                                            setBlock(player, wTarget.getRelative(BlockFace.SOUTH_EAST).getRelative(BlockFace.UP));
                                         }
 
                                         plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
@@ -209,7 +211,15 @@ public class SkillFirespin extends ActiveSkill {
         return SkillResult.NORMAL;
     }
     
-    
+    private boolean setBlock(Player player, Block block) {
+        BlockBreakEvent testEvent = new BlockBreakEvent(block, player);
+        Bukkit.getPluginManager().callEvent(testEvent);
+        if (testEvent.isCancelled()) {
+            return false;
+        }
+        block.setType(Material.FIRE);
+        return true;
+    }
     
     
     private Block retrieveBlock(Block refBlock, int relX, int relY, int relZ) {

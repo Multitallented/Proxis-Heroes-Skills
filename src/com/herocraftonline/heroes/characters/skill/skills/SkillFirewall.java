@@ -8,12 +8,15 @@ import com.herocraftonline.heroes.characters.skill.SkillConfigManager;
 import com.herocraftonline.heroes.characters.skill.SkillType;
 import com.herocraftonline.heroes.util.Messaging;
 import com.herocraftonline.heroes.characters.skill.SkillSetting;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockCanBuildEvent;
 
 public class SkillFirewall extends ActiveSkill {
     public final static int MAX_DISTANCE = 120;
@@ -81,8 +84,8 @@ public class SkillFirewall extends ActiveSkill {
     @Override
     public ConfigurationSection getDefaultConfig() {
         ConfigurationSection node = super.getDefaultConfig();
-        node.set(Setting.MAX_DISTANCE.node(), 25);
-        node.set(Setting.MAX_DISTANCE_INCREASE.node(), 0);
+        node.set(SkillSetting.MAX_DISTANCE.node(), 25);
+        node.set(SkillSetting.MAX_DISTANCE_INCREASE.node(), 0);
         node.set("max-duration", 10000);
         node.set("min-duration", 5000);
         node.set("max-length", 9);
@@ -129,7 +132,7 @@ public class SkillFirewall extends ActiveSkill {
             final Material matEight = retrieveBlock(wOneUp,0,-3,0).getType();
             final Material matNine = retrieveBlock(wOneUp,0,-4,0).getType();
             if (retrieveBlock(wTargetBlock,0,0,2).getType() == Material.AIR) {
-                setRelativeBlocks(wTargetBlock, BlockFace.UP, Material.FIRE, 0);
+                setRelativeBlocks(player, wTargetBlock, BlockFace.UP, Material.FIRE, 0);
                 int sideLength = Math.abs((int) (SkillConfigManager.getUseSetting(hero, this, "max-length", 9, false)/2));
                 if (!(sideLength > 0 && sideLength <= 6)) {
                     sideLength = 4;
@@ -138,13 +141,13 @@ public class SkillFirewall extends ActiveSkill {
                         retrieveBlock(wOneUp,0,2,1).getType() == Material.AIR &&
                         retrieveBlock(wOneUp,0,3,1).getType() == Material.AIR &&
                         retrieveBlock(wOneUp,0,4,1).getType() == Material.AIR) {
-                    setRelativeBlocks(wOneUp, BlockFace.EAST, Material.FIRE, (int) (Math.random()*sideLength));
+                    setRelativeBlocks(player, wOneUp, BlockFace.EAST, Material.FIRE, (int) (Math.random()*sideLength));
                 }
                 if (retrieveBlock(wOneUp,0,-1,1).getType() == Material.AIR &&
                         retrieveBlock(wOneUp,0,-2,1).getType() == Material.AIR &&
                         retrieveBlock(wOneUp,0,-3,1).getType() == Material.AIR &&
                         retrieveBlock(wOneUp,0,-4,1).getType() == Material.AIR) {
-                    setRelativeBlocks(wOneUp, BlockFace.WEST, Material.FIRE, (int) (Math.random()*sideLength));
+                    setRelativeBlocks(player, wOneUp, BlockFace.WEST, Material.FIRE, (int) (Math.random()*sideLength));
                 }
             }
             plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
@@ -175,12 +178,12 @@ public class SkillFirewall extends ActiveSkill {
                 final Material matNine = retrieveBlock(wOneUp,-4,0,0).getType();
 
                 if (retrieveBlock(wTargetBlock,0,0,2).getType() == Material.AIR) {
-                    setRelativeBlocks(wTargetBlock, BlockFace.UP, Material.FIRE, 0);
+                    setRelativeBlocks(player, wTargetBlock, BlockFace.UP, Material.FIRE, 0);
                     if (retrieveBlock(wOneUp,4,0,0).getType() == Material.AIR) {
-                        setRelativeBlocks(wOneUp, BlockFace.NORTH, Material.FIRE, (int) (Math.random()*4));
+                        setRelativeBlocks(player, wOneUp, BlockFace.NORTH, Material.FIRE, (int) (Math.random()*4));
                     }
                     if (retrieveBlock(wOneUp,-4,0,0).getType() == Material.AIR) {
-                        setRelativeBlocks(wOneUp, BlockFace.SOUTH, Material.FIRE, (int) (Math.random()*4));
+                        setRelativeBlocks(player, wOneUp, BlockFace.SOUTH, Material.FIRE, (int) (Math.random()*4));
                     }
                 }
                 plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
@@ -244,48 +247,51 @@ public class SkillFirewall extends ActiveSkill {
             return wDirection;
     }
     
-    public static void setRelativeBlocks(Block targetBlock, BlockFace blockFace,
+    public static void setRelativeBlocks(Player player, Block targetBlock, BlockFace blockFace,
             Material material, int num) {
         targetBlock = targetBlock.getRelative(blockFace);
-        targetBlock.setType(material);
-
+        BlockBreakEvent testEvent = new BlockBreakEvent(targetBlock, player);
+        Bukkit.getPluginManager().callEvent(testEvent);
+        if (!testEvent.isCancelled()) {
+            targetBlock.setType(material);
+        }
         if (num > 0) {
-                num--;
-                setRelativeBlocks(targetBlock, blockFace, material, num);
+            num--;
+            setRelativeBlocks(player, targetBlock, blockFace, material, num);
         }
     }
     
     private Block retrieveBlock(Block refBlock, int relX, int relY, int relZ) {
-        Block returnBlock = refBlock;
-            while (0<Math.abs(relX)) {
-                if (relX > 0) {
-                    returnBlock = returnBlock.getRelative(BlockFace.NORTH);
-                    relX--;
-                } else {
-                    returnBlock = returnBlock.getRelative(BlockFace.SOUTH);
-                    relX++;
-                }
+    Block returnBlock = refBlock;
+        while (0<Math.abs(relX)) {
+            if (relX > 0) {
+                returnBlock = returnBlock.getRelative(BlockFace.NORTH);
+                relX--;
+            } else {
+                returnBlock = returnBlock.getRelative(BlockFace.SOUTH);
+                relX++;
             }
-            while (0<Math.abs(relY)) {
-                if (relY > 0) {
-                    returnBlock = returnBlock.getRelative(BlockFace.EAST);
-                    relY--;
-                } else {
-                    returnBlock = returnBlock.getRelative(BlockFace.WEST);
-                    relY++;
-                }
-            }
-            while (0<Math.abs(relZ)) {
-                if (relZ > 0) {
-                    returnBlock = returnBlock.getRelative(BlockFace.UP);
-                    relZ--;
-                } else {
-                    returnBlock = returnBlock.getRelative(BlockFace.DOWN);
-                    relZ++;
-                }
-            }
-            return returnBlock;
         }
+        while (0<Math.abs(relY)) {
+            if (relY > 0) {
+                returnBlock = returnBlock.getRelative(BlockFace.EAST);
+                relY--;
+            } else {
+                returnBlock = returnBlock.getRelative(BlockFace.WEST);
+                relY++;
+            }
+        }
+        while (0<Math.abs(relZ)) {
+            if (relZ > 0) {
+                returnBlock = returnBlock.getRelative(BlockFace.UP);
+                relZ--;
+            } else {
+                returnBlock = returnBlock.getRelative(BlockFace.DOWN);
+                relZ++;
+            }
+        }
+        return returnBlock;
+    }
     
 
 }
