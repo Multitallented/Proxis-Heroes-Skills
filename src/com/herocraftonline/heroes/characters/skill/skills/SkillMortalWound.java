@@ -93,12 +93,12 @@ public class SkillMortalWound extends TargettedSkill {
     @Override
     public ConfigurationSection getDefaultConfig() {
         ConfigurationSection node = super.getDefaultConfig();
-        node.set(Setting.DURATION.node(), 10000);
+        node.set(SkillSetting.DURATION.node(), 10000);
         node.set("duration-increase", 0);
         node.set("miss-text", "%target%s heal was blocked!");
-        node.set(Setting.APPLY_TEXT.node(), "%target% has been cursed!");
-        node.set(Setting.EXPIRE_TEXT.node(), "%target% has recovered from the curse!");
-        node.set(Setting.DAMAGE.node(), 7);
+        node.set(SkillSetting.APPLY_TEXT.node(), "%target% has been cursed!");
+        node.set(SkillSetting.EXPIRE_TEXT.node(), "%target% has recovered from the curse!");
+        node.set(SkillSetting.DAMAGE.node(), 7);
         return node;
     }
 
@@ -153,7 +153,6 @@ public class SkillMortalWound extends TargettedSkill {
         public void applyToHero(Hero hero) {
             super.applyToHero(hero);
             Player player = hero.getPlayer();
-            hero.syncHealth();
             broadcast(player.getLocation(), applyText, player.getDisplayName());
         }
 

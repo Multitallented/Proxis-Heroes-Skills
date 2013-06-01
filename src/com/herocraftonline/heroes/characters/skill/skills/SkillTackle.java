@@ -84,11 +84,11 @@ public class SkillTackle extends TargettedSkill {
     @Override
     public ConfigurationSection getDefaultConfig() {
         ConfigurationSection node = super.getDefaultConfig();
-        node.set(Setting.RADIUS.node(), 3);
+        node.set(SkillSetting.RADIUS.node(), 3);
         node.set("radius-increase", 0.0);
-        node.set(Setting.DURATION.node(), 3000);
+        node.set(SkillSetting.DURATION.node(), 3000);
         node.set("duration-increase", 0);
-        node.set(Setting.DAMAGE.node(), 6);
+        node.set(SkillSetting.DAMAGE.node(), 6);
         node.set("damage-increase", 0.0);
         return node;
     }

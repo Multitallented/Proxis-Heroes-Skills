@@ -78,7 +78,7 @@ public class SkillSummonItem extends ActiveSkill {
         ConfigurationSection node = super.getDefaultConfig();
         node.set("item-id", 17);
         node.set("damage-value", 2);
-        node.set(Setting.AMOUNT.node(), 1);
+        node.set(SkillSetting.AMOUNT.node(), 1);
         node.set("amount-increase", 0);
         return node;
     }

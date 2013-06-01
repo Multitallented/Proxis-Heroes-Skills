@@ -75,8 +75,8 @@ public class SkillMultiply extends TargettedSkill {
     @Override
     public ConfigurationSection getDefaultConfig() {
         ConfigurationSection node = super.getDefaultConfig();
-        node.set(Setting.MAX_DISTANCE.node(), 15);
-        node.set(Setting.MAX_DISTANCE_INCREASE.node(), 0.0);
+        node.set(SkillSetting.MAX_DISTANCE.node(), 15);
+        node.set(SkillSetting.MAX_DISTANCE_INCREASE.node(), 0.0);
         return node;
     }
 

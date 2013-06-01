@@ -87,14 +87,14 @@ public class SkillHealBomb extends TargettedSkill {
     @Override
     public ConfigurationSection getDefaultConfig() {
         ConfigurationSection node = super.getDefaultConfig();
-        node.set(Setting.HEALTH.node(), 10);
+        node.set(SkillSetting.HEALTH.node(), 10);
         node.set("health-increase", 0);
-        node.set(Setting.DAMAGE.node(), 5);
+        node.set(SkillSetting.DAMAGE.node(), 5);
         node.set("damage-increase", 0);
-        node.set(Setting.RADIUS.node(), 6);
-        node.set(Setting.RADIUS_INCREASE.node(), 0);
-        node.set(Setting.MAX_DISTANCE.node(), 15);
-        node.set(Setting.MAX_DISTANCE_INCREASE.node(), 0);
+        node.set(SkillSetting.RADIUS.node(), 6);
+        node.set(SkillSetting.RADIUS_INCREASE.node(), 0);
+        node.set(SkillSetting.MAX_DISTANCE.node(), 15);
+        node.set(SkillSetting.MAX_DISTANCE_INCREASE.node(), 0);
         node.set("exp-per-damaged-enemy", 0);
         return node;
     }
@@ -131,9 +131,8 @@ public class SkillHealBomb extends TargettedSkill {
         double health = (SkillConfigManager.getUseSetting(hero, this, SkillSetting.HEALTH.node(), 10, false) +
                 (SkillConfigManager.getUseSetting(hero, this, "health-increase", 0.0, false) * hero.getSkillLevel(this)));
         health = health > 0 ? health : 0;
-        health = health + target.getHealth() > target.getMaxHealth() ? target.getMaxHealth() : health + target.getHealth();
-        target.setHealth((int) health);
-        target.syncHealth();
+        health = health + tPlayer.getHealth() > tPlayer.getMaxHealth() ? tPlayer.getMaxHealth() : health + tPlayer.getHealth();
+        tPlayer.setHealth((int) health);
         double exp = SkillConfigManager.getUseSetting(hero, this, "exp-per-damaged-enemy", 0, false);
         double totalExp = 0;
         for (Entity e : tPlayer.getNearbyEntities(radius, radius, radius)) {

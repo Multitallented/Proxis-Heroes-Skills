@@ -7,8 +7,8 @@ import com.herocraftonline.heroes.characters.effects.PeriodicExpirableEffect;
 import com.herocraftonline.heroes.characters.skill.ActiveSkill;
 import com.herocraftonline.heroes.characters.skill.Skill;
 import com.herocraftonline.heroes.characters.skill.SkillConfigManager;
-import com.herocraftonline.heroes.characters.skill.SkillType;
 import com.herocraftonline.heroes.characters.skill.SkillSetting;
+import com.herocraftonline.heroes.characters.skill.SkillType;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Monster;
@@ -32,15 +32,15 @@ public class SkillPandemic extends ActiveSkill {
     @Override
     public ConfigurationSection getDefaultConfig() {
         ConfigurationSection node = super.getDefaultConfig();
-        node.set(Setting.RADIUS.node(), 10);
+        node.set(SkillSetting.RADIUS.node(), 10);
         node.set("radius-increase", 0);
-        node.set(Setting.DAMAGE.node(), 16);
+        node.set(SkillSetting.DAMAGE.node(), 16);
         node.set("damage-increase", 0);
-        node.set(Setting.PERIOD.node(), 2000);
-        node.set(Setting.DURATION.node(), 20000);
+        node.set(SkillSetting.PERIOD.node(), 2000);
+        node.set(SkillSetting.DURATION.node(), 20000);
         node.set("duration-increase", 0);
-        node.set(Setting.APPLY_TEXT.node(), "%target% has caught %hero%s %skill%!");
-        node.set(Setting.EXPIRE_TEXT.node(), "%target% has recovered from %hero%s %skill%!");
+        node.set(SkillSetting.APPLY_TEXT.node(), "%target% has caught %hero%s %skill%!");
+        node.set(SkillSetting.EXPIRE_TEXT.node(), "%target% has recovered from %hero%s %skill%!");
         return node;
     }
     
@@ -160,7 +160,8 @@ public class SkillPandemic extends ActiveSkill {
         
         @Override
         public void tickHero(Hero hero) {
-            if (hero.getHealth() - damage > 1) {
+            if (hero.getPlayer().getHealth() - damage > 1) {
+                
                 damageEntity(hero.getPlayer(), caster, damage, DamageCause.MAGIC);
                 //hero.getPlayer().damage(damage, caster);
             }
@@ -169,7 +170,8 @@ public class SkillPandemic extends ActiveSkill {
         @Override
         public void tickMonster(com.herocraftonline.heroes.characters.Monster mnstr) {
             super.tick(mnstr);
-            if (mnstr.getHealth() - damage > 1) {
+            if (mnstr.getEntity().getHealth() - damage > 1) {
+                
                 damageEntity(mnstr.getEntity(), caster, damage, DamageCause.MAGIC);
             }
         }

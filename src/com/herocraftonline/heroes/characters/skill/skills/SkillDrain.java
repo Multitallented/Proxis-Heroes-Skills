@@ -46,7 +46,7 @@ public class SkillDrain extends PassiveSkill {
         ConfigurationSection node = super.getDefaultConfig();
         node.set("mana-drain-per-attack", 4);
         node.set("drain-increase", 0);
-        node.set(Setting.COOLDOWN.node(), 500);
+        node.set(SkillSetting.COOLDOWN.node(), 500);
         node.set("cooldown-decrease", 0);
         node.set("exp-per-drain", 0);
         return node;

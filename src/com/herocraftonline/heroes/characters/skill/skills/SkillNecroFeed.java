@@ -41,7 +41,7 @@ public class SkillNecroFeed extends PassiveSkill {
         ConfigurationSection node = super.getDefaultConfig();
         node.set("health-percent", 1);
         node.set("health-percent-increase", 0);
-        node.set(Setting.USE_TEXT.node(), "%hero% feeds on an enemies corpse");
+        node.set(SkillSetting.USE_TEXT.node(), "%hero% feeds on an enemies corpse");
         return node;
     }
     
@@ -85,12 +85,11 @@ public class SkillNecroFeed extends PassiveSkill {
                 (SkillConfigManager.getUseSetting(hero, skill, "health-percent-increase", 0.0, false) * hero.getSkillLevel(skill)));
             health = health > 0 ? health : 0;
             int amount = (int) health * e.getMaxHealth();
-            if (hero.getHealth() + amount > hero.getMaxHealth()) {
-                hero.setHealth(hero.getMaxHealth());
+            if (player.getHealth() + amount > player.getMaxHealth()) {
+                player.setHealth(player.getMaxHealth());
             } else {
-                hero.setHealth(hero.getHealth() + amount);
+                player.setHealth(player.getHealth() + amount);
             }
-            hero.syncHealth();
             broadcast(player.getLocation(),
                     SkillConfigManager.getUseSetting(hero, skill, SkillSetting.USE_TEXT, "%hero% feeds on an enemies corpse").replace("%hero%", player.getDisplayName()));
         }

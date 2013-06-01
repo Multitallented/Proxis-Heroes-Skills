@@ -46,8 +46,8 @@ public class SkillLifesteal extends PassiveSkill {
         ConfigurationSection node = super.getDefaultConfig();
         node.set("health-per-attack", 1);
         node.set("health-increase", 0);
-        node.set(Setting.COOLDOWN.node(), 500);
-        node.set(Setting.COOLDOWN_REDUCE.node(), 0);
+        node.set(SkillSetting.COOLDOWN.node(), 500);
+        node.set(SkillSetting.COOLDOWN_REDUCE.node(), 0);
         node.set("exp-per-heal", 0);
         return node;
     }
@@ -75,12 +75,11 @@ public class SkillLifesteal extends PassiveSkill {
                                 (SkillConfigManager.getUseSetting(hero, skill, SkillSetting.COOLDOWN_REDUCE.node(), 0.0, false) * hero.getSkillLevel(skill)));
                         cooldown = cooldown > 0 ? cooldown : 0;
                         hero.setCooldown("Lifesteal", cooldown + System.currentTimeMillis());
-                        if (hero.getHealth() + health >= hero.getMaxHealth()) {
-                            hero.setHealth(100);
+                        if (player.getHealth() + health >= player.getMaxHealth()) {
+                            player.setHealth(player.getMaxHealth());
                         } else {
-                            hero.setHealth(health + hero.getHealth());
+                            player.setHealth(health + player.getHealth());
                         }
-                        hero.syncHealth();
                         double exp = SkillConfigManager.getUseSetting(hero, skill, "exp-per-heal", 0, false);
                         if (exp > 0) {
                             if (hero.hasParty()) {
@@ -106,12 +105,11 @@ public class SkillLifesteal extends PassiveSkill {
                                     (SkillConfigManager.getUseSetting(hero, skill, SkillSetting.COOLDOWN_REDUCE.node(), 0.0, false) * hero.getSkillLevel(skill)));
                             cooldown = cooldown > 0 ? cooldown : 0;
                             hero.setCooldown("Lifesteal", cooldown + System.currentTimeMillis());
-                            if (hero.getHealth() + health >= hero.getMaxHealth()) {
-                                hero.setHealth(100);
+                            if (player.getHealth() + health >= player.getMaxHealth()) {
+                                player.setHealth(player.getMaxHealth());
                             } else {
-                                hero.setHealth(health + hero.getHealth());
+                                player.setHealth(health + player.getHealth());
                             }
-                            hero.syncHealth();
                             
                             double exp = SkillConfigManager.getUseSetting(hero, skill, "exp-per-heal", 0, false);
                             if (exp > 0) {

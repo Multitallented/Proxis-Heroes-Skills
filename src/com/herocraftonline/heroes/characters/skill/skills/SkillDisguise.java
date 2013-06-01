@@ -86,7 +86,7 @@ public class SkillDisguise extends ActiveSkill {
     @Override
     public ConfigurationSection getDefaultConfig() {
         ConfigurationSection node = super.getDefaultConfig();
-        node.set(Setting.DURATION.node(), 30000);
+        node.set(SkillSetting.DURATION.node(), 30000);
         node.set("duration-increase", 0);
         List<String> tempList = new ArrayList<String>();
         tempList.add("ZOMBIE");

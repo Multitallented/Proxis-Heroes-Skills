@@ -88,10 +88,10 @@ public class SkillEscape extends ActiveSkill {
     @Override
     public ConfigurationSection getDefaultConfig() {
         ConfigurationSection node = super.getDefaultConfig();
-        node.set(Setting.DURATION.node(), 1000);
+        node.set(SkillSetting.DURATION.node(), 1000);
         node.set("duration-increase", 0);
-        node.set(Setting.MAX_DISTANCE.node(), 6);
-        node.set(Setting.MAX_DISTANCE_INCREASE.node(), 0);
+        node.set(SkillSetting.MAX_DISTANCE.node(), 6);
+        node.set(SkillSetting.MAX_DISTANCE_INCREASE.node(), 0);
         return node;
     }
 

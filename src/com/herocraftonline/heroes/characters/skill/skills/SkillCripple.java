@@ -92,16 +92,16 @@ public class SkillCripple extends TargettedSkill {
     @Override
     public ConfigurationSection getDefaultConfig() {
         ConfigurationSection node = super.getDefaultConfig();
-        node.set(Setting.DURATION.node(), 10000);
+        node.set(SkillSetting.DURATION.node(), 10000);
         node.set("duration-increase", 0);
-        node.set(Setting.PERIOD.node(), 1000);
-        node.set(Setting.DAMAGE_TICK.node(), 2);
+        node.set(SkillSetting.PERIOD.node(), 1000);
+        node.set(SkillSetting.DAMAGE_TICK.node(), 2);
         node.set("tick-damage-increase", 0);
-        node.set(Setting.DAMAGE.node(), 5);
+        node.set(SkillSetting.DAMAGE.node(), 5);
         node.set("damage-incrase", 0);
-        node.set(Setting.MAX_DISTANCE.node(), 15);
-        node.set(Setting.MAX_DISTANCE_INCREASE.node(), 0);
-        node.set(Setting.APPLY_TEXT.node(), "%target% has been Crippled by %hero%!");
+        node.set(SkillSetting.MAX_DISTANCE.node(), 15);
+        node.set(SkillSetting.MAX_DISTANCE_INCREASE.node(), 0);
+        node.set(SkillSetting.APPLY_TEXT.node(), "%target% has been Crippled by %hero%!");
         node.set("remove-text", "%target% has recovered from %hero%s Crippling blow!");
         return node;
     }

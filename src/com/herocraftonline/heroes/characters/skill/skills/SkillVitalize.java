@@ -9,9 +9,9 @@ import com.herocraftonline.heroes.characters.effects.PeriodicHealEffect;
 import com.herocraftonline.heroes.characters.skill.ActiveSkill;
 import com.herocraftonline.heroes.characters.skill.Skill;
 import com.herocraftonline.heroes.characters.skill.SkillConfigManager;
+import com.herocraftonline.heroes.characters.skill.SkillSetting;
 import com.herocraftonline.heroes.characters.skill.SkillType;
 import com.herocraftonline.heroes.util.Messaging;
-import com.herocraftonline.heroes.characters.skill.SkillSetting;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
@@ -94,13 +94,13 @@ public class SkillVitalize extends ActiveSkill {
         ConfigurationSection node = super.getDefaultConfig();
         node.set("mana-tick", 4);
         node.set("mana-tick-increase", 0);
-        node.set(Setting.RADIUS.node(), 10);
+        node.set(SkillSetting.RADIUS.node(), 10);
         node.set("radius-increase",0);
-        node.set(Setting.DURATION.node(), 12000);
+        node.set(SkillSetting.DURATION.node(), 12000);
         node.set("duration-increase", 0);
-        node.set(Setting.HEALTH_TICK.node(), 2);
+        node.set(SkillSetting.HEALTH_TICK.node(), 2);
         node.set("health-tick-increase", 0);
-        node.set(Setting.PERIOD.node(), 3000);
+        node.set(SkillSetting.PERIOD.node(), 3000);
         return node;
     }
 

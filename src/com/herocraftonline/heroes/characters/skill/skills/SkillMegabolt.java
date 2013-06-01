@@ -81,9 +81,9 @@ public class SkillMegabolt extends ActiveSkill {
     @Override
     public ConfigurationSection getDefaultConfig() {
         ConfigurationSection node = super.getDefaultConfig();
-        node.set(Setting.RADIUS.node(), 30);
-        node.set(Setting.RADIUS_INCREASE.node(), 0);
-        node.set(Setting.DAMAGE.node(), 14);
+        node.set(SkillSetting.RADIUS.node(), 30);
+        node.set(SkillSetting.RADIUS_INCREASE.node(), 0);
+        node.set(SkillSetting.DAMAGE.node(), 14);
         node.set("damage-increase", 0);
         node.set("exp-per-target-struck", 0);
         return node;

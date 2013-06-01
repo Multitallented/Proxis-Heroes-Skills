@@ -86,11 +86,11 @@ public class SkillEqualize extends TargettedSkill {
         if (!(target instanceof Player)) {
             return SkillResult.INVALID_TARGET;
         }
-        Hero tHero = plugin.getCharacterManager().getHero((Player) target);
-        if (hero.getHealth() > tHero.getHealth()) {
-            plugin.getServer().getPluginManager().callEvent(new EntityRegainHealthEvent(target, (int) (hero.getHealth() - tHero.getHealth()), RegainReason.CUSTOM));
+        Player tPlayer = (Player) target;
+        if (player.getHealth() > tPlayer.getHealth()) {
+            plugin.getServer().getPluginManager().callEvent(new EntityRegainHealthEvent(target, (int) (player.getHealth() - tPlayer.getHealth()), RegainReason.CUSTOM));
         } else {
-            plugin.getServer().getPluginManager().callEvent(new EntityRegainHealthEvent(player, (int) (tHero.getHealth() - hero.getHealth()), RegainReason.CUSTOM));
+            plugin.getServer().getPluginManager().callEvent(new EntityRegainHealthEvent(player, (int) (tPlayer.getHealth() - player.getHealth()), RegainReason.CUSTOM));
         }
         
         broadcastExecuteText(hero, target);

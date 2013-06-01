@@ -41,10 +41,10 @@ public class SkillSpines extends PassiveSkill {
     @Override
     public ConfigurationSection getDefaultConfig() {
         ConfigurationSection node = super.getDefaultConfig();
-        node.set(Setting.CHANCE.node(), .1);
-        node.set(Setting.CHANCE_LEVEL.node(), 0);
-        node.set(Setting.COOLDOWN.node(), 500);
-        node.set(Setting.COOLDOWN_REDUCE.node(), 0);
+        node.set(SkillSetting.CHANCE.node(), .1);
+        node.set(SkillSetting.CHANCE_LEVEL.node(), 0);
+        node.set(SkillSetting.COOLDOWN.node(), 500);
+        node.set(SkillSetting.COOLDOWN_REDUCE.node(), 0);
         return node;
     }
     

@@ -41,7 +41,7 @@ public class SkillMagicArmor extends PassiveSkill {
     @Override
     public ConfigurationSection getDefaultConfig() {
         ConfigurationSection node = super.getDefaultConfig();
-        node.set(Setting.AMOUNT.node(), 0.25);
+        node.set(SkillSetting.AMOUNT.node(), 0.25);
         node.set("amount-increase", 0.0);
         return node;
     }

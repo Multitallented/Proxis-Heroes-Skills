@@ -3,12 +3,13 @@ package com.herocraftonline.heroes.characters.skill.skills;
 import com.herocraftonline.heroes.Heroes;
 import com.herocraftonline.heroes.api.SkillResult;
 import com.herocraftonline.heroes.characters.Hero;
+import com.herocraftonline.heroes.characters.effects.EffectType;
 import com.herocraftonline.heroes.characters.effects.ExpirableEffect;
 import com.herocraftonline.heroes.characters.skill.ActiveSkill;
 import com.herocraftonline.heroes.characters.skill.Skill;
 import com.herocraftonline.heroes.characters.skill.SkillConfigManager;
-import com.herocraftonline.heroes.characters.skill.SkillType;
 import com.herocraftonline.heroes.characters.skill.SkillSetting;
+import com.herocraftonline.heroes.characters.skill.SkillType;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -16,16 +17,17 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 
-public class SkillNegateDamage extends ActiveSkill {
+public class SkillNegateSpell extends ActiveSkill {
 
-    public SkillNegateDamage(Heroes plugin) {
-        super(plugin, "NegateDamage");
+    public SkillNegateSpell(Heroes plugin) {
+        super(plugin, "NegateSpell");
         setDescription("Gives you and your party within $1 blocks damage immunity for $2s");
-        setUsage("/skill negatedamage");
+        setUsage("/skill negatespell");
         setArgumentRange(0, 0);
-        setIdentifiers(new String[]{"skill negatedamage"});
-        Bukkit.getPluginManager().registerEvents(new NegateDamageListener(plugin), plugin);
+        setIdentifiers(new String[]{"skill negatespell"});
         setTypes(SkillType.BUFF, SkillType.SILENCABLE);
+        
+        Bukkit.getServer().getPluginManager().registerEvents(new SkillHeroListener(), plugin);
     }
 
     @Override
@@ -118,32 +120,24 @@ public class SkillNegateDamage extends ActiveSkill {
     
     public class NegateDamageEffect extends ExpirableEffect {
         public NegateDamageEffect(Skill skill, long duration) {
-            super(skill,"NegateDamage", duration);
+            super(skill,"NegateSpell", duration);
+            this.types.add(EffectType.UNTARGETABLE);
         }
     }
     
-    public class NegateDamageListener implements Listener {
-        private final Heroes heroes;
-        public NegateDamageListener(Heroes heroes) {
-            this.heroes = heroes;
-        }
-        
-        @EventHandler(ignoreCancelled = true)
+    public class SkillHeroListener implements Listener {
+        @EventHandler()
         public void onEntityDamage(EntityDamageEvent event) {
-            if (!event.getEntity().getClass().equals(Player.class)) {
+            if (event.isCancelled() || event.getCause() != EntityDamageEvent.DamageCause.MAGIC || !(event.getEntity() instanceof Player)) {
                 return;
             }
-            Player player;
-            try {
-                player = (Player) event.getEntity();
-            } catch (Exception e) {
-                return;
-            }
-            Hero hero = heroes.getCharacterManager().getHero(player);
-            if (!hero.hasEffect("NegateDamage")) {
+            Player player = (Player) event.getEntity();
+            Hero hero = plugin.getCharacterManager().getHero(player);
+            if (!hero.hasEffect("NegateSpell")) {
                 return;
             }
             event.setDamage(0);
+            event.setCancelled(true);
         }
     }
 }

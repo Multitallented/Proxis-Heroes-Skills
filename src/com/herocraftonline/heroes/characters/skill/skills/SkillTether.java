@@ -90,12 +90,12 @@ public class SkillTether extends ActiveSkill {
     @Override
     public ConfigurationSection getDefaultConfig() {
         ConfigurationSection node = super.getDefaultConfig();
-        node.set(Setting.DURATION.node(), 10000);
+        node.set(SkillSetting.DURATION.node(), 10000);
         node.set("duration-increase", 0);
         node.set("exp-per-creature-tethered", 0);
         node.set("exp-per-player-tethered", 0);
-        node.set(Setting.APPLY_TEXT.node(), "%target% was tethered!");
-        node.set(Setting.EXPIRE_TEXT.node(), "%target% got away!");
+        node.set(SkillSetting.APPLY_TEXT.node(), "%target% was tethered!");
+        node.set(SkillSetting.EXPIRE_TEXT.node(), "%target% got away!");
         return node;
     }
     

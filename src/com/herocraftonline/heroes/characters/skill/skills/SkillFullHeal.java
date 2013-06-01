@@ -86,11 +86,11 @@ public class SkillFullHeal extends ActiveSkill {
     @Override
     public ConfigurationSection getDefaultConfig() {
         ConfigurationSection node = super.getDefaultConfig();
-        node.set(Setting.DURATION.node(), 10000);
+        node.set(SkillSetting.DURATION.node(), 10000);
         node.set("duration-increase", 0);
-        node.set(Setting.PERIOD.node(), 1000);
-        node.set(Setting.APPLY_TEXT.node(), "%hero% begins healing!");
-        node.set(Setting.EXPIRE_TEXT.node(), "%hero% is completely healed!");
+        node.set(SkillSetting.PERIOD.node(), 1000);
+        node.set(SkillSetting.APPLY_TEXT.node(), "%hero% begins healing!");
+        node.set(SkillSetting.EXPIRE_TEXT.node(), "%hero% is completely healed!");
         return node;
     }
 
@@ -103,13 +103,14 @@ public class SkillFullHeal extends ActiveSkill {
 
     @Override
     public SkillResult use(Hero hero, String[] args) {
+        Player player = hero.getPlayer();
         long duration = (long) (SkillConfigManager.getUseSetting(hero, this, SkillSetting.DURATION.node(), 10000, false) +
                 (SkillConfigManager.getUseSetting(hero, this, "duration-increase", 0.0, false) * hero.getSkillLevel(this)));
         duration = duration > 0 ? duration : 0;
         long period = (long) (SkillConfigManager.getUseSetting(hero, this, SkillSetting.PERIOD.node(), 1000, false));
         double multiplier = duration / period;
-        int amount = (int) ((hero.getMaxHealth() - hero.getHealth()) / multiplier);
-        amount = amount * multiplier < hero.getMaxHealth() - hero.getHealth() ? amount + 1 : amount;
+        int amount = (int) ((player.getMaxHealth() - player.getHealth()) / multiplier);
+        amount = amount * multiplier < player.getMaxHealth() - player.getHealth() ? amount + 1 : amount;
         if (amount > 0) {
             FullHealEffect cEffect = new FullHealEffect(this, period, duration, amount, hero.getPlayer());
             hero.addEffect(cEffect);
@@ -144,8 +145,7 @@ public class SkillFullHeal extends ActiveSkill {
                 return;
             }
 
-            hero.setHealth(hero.getHealth() + hrhEvent.getAmount());
-            hero.syncHealth();
+            hero.getPlayer().setHealth(hero.getPlayer().getHealth() + hrhEvent.getAmount());
         }
         
         @Override

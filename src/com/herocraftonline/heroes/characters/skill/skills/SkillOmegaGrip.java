@@ -1,4 +1,4 @@
-package com.herocraftonline.dev.heroes.skill.skills;
+package com.herocraftonline.heroes.characters.skill.skills;
 
 import com.herocraftonline.heroes.Heroes;
 import com.herocraftonline.heroes.api.SkillResult;
@@ -125,22 +125,22 @@ public class SkillOmegaGrip extends TargettedSkill implements Listener {
     @Override
     public ConfigurationSection getDefaultConfig() {
         ConfigurationSection node = super.getDefaultConfig();
-        node.set(Setting.DAMAGE_TICK.node(), 1);
-        node.set(Setting.DAMAGE.node(), 0);
+        node.set(SkillSetting.DAMAGE_TICK.node(), 1);
+        node.set(SkillSetting.DAMAGE.node(), 0);
         node.set("damage-tick-increase", 0.0);
-        node.set(Setting.DAMAGE_INCREASE.node(), 0.0);
-        node.set(Setting.DURATION.node(), 10000);
-        node.set(Setting.DURATION_INCREASE.node(), 0);
-        node.set(Setting.PERIOD.node(), 1000);
+        node.set(SkillSetting.DAMAGE_INCREASE.node(), 0.0);
+        node.set(SkillSetting.DURATION.node(), 10000);
+        node.set(SkillSetting.DURATION_INCREASE.node(), 0);
+        node.set(SkillSetting.PERIOD.node(), 1000);
         node.set("period-increase", 0);
-        node.set(Setting.HEALTH_TICK.node(), 0);
+        node.set(SkillSetting.HEALTH_TICK.node(), 0);
         node.set("health-tick-increase", 0);
         node.set("mana-tick", 0);
         node.set("mana-tick-increase", 0);
-        node.set(Setting.MAX_DISTANCE.node(),15);
-        node.set(Setting.MAX_DISTANCE_INCREASE.node(), 0);
+        node.set(SkillSetting.MAX_DISTANCE.node(),15);
+        node.set(SkillSetting.MAX_DISTANCE_INCREASE.node(), 0);
         //node.set(Setting.APPLY_TEXT.node(), "%target% was gripped by %player%");
-        node.set(Setting.EXPIRE_TEXT.node(), "%player% released %target%");
+        node.set(SkillSetting.EXPIRE_TEXT.node(), "%player% released %target%");
         return node;
     }
 
@@ -243,8 +243,7 @@ public class SkillOmegaGrip extends TargettedSkill implements Listener {
             
             // Deduct health
             if (healthCost > 0) {
-                hero.setHealth(hero.getHealth() - healthCost);
-                hero.syncHealth();
+                player.setHealth(player.getHealth() - healthCost);
             }
 
             int staminaCost = SkillConfigManager.getUseSetting(hero, skill, SkillSetting.STAMINA, 0, true);

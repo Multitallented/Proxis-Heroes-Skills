@@ -94,13 +94,13 @@ public class SkillUnheal extends TargettedSkill {
     @Override
     public ConfigurationSection getDefaultConfig() {
         ConfigurationSection node = super.getDefaultConfig();
-        node.set(Setting.MAX_DISTANCE.node(), 15);
-        node.set(Setting.MAX_DISTANCE_INCREASE.node(), 0);
-        node.set(Setting.DURATION.node(), 10000);
+        node.set(SkillSetting.MAX_DISTANCE.node(), 15);
+        node.set(SkillSetting.MAX_DISTANCE_INCREASE.node(), 0);
+        node.set(SkillSetting.DURATION.node(), 10000);
         node.set("duration-reduce", 0);
         node.set("miss-text", "%target%s heal was inverted!");
-        node.set(Setting.APPLY_TEXT.node(), "%target% has been cursed!");
-        node.set(Setting.EXPIRE_TEXT.node(), "%target% has recovered from the curse!");
+        node.set(SkillSetting.APPLY_TEXT.node(), "%target% has been cursed!");
+        node.set(SkillSetting.EXPIRE_TEXT.node(), "%target% has recovered from the curse!");
         return node;
     }
 
