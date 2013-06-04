@@ -152,10 +152,10 @@ public class SkillDisguise extends ActiveSkill {
             super.applyToHero(hero);
             Player player = hero.getPlayer();
             if (player.isOp()) {
-                player.performCommand("disguise " + mobtype);
+                player.performCommand("btm mob " + mobtype);
             } else {
                 player.setOp(true);
-                player.performCommand("disguise " + mobtype);
+                player.performCommand("btm mob " + mobtype);
                 player.setOp(false);
             }
             //broadcast(player.getLocation(), applyText, player.getDisplayName());
@@ -166,10 +166,10 @@ public class SkillDisguise extends ActiveSkill {
             super.removeFromHero(hero);
             Player player = hero.getPlayer();
             if (player.isOp()) {
-                player.performCommand("undisguise");
+                player.performCommand("btm off");
             } else {
                 player.setOp(true);
-                player.performCommand("undisguise");
+                player.performCommand("btm off");
                 player.setOp(false);
             }
         }
