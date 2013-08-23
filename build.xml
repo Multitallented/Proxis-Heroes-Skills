@@ -1,0 +1,106 @@
+<project name="Proxis-Hero-Skills" default="build" basedir=".">
+    <description>
+        Heroes Skills Ant File Compiler
+    </description>
+    <!-- set global properties for this build -->
+    <property environment="env"/>
+    <property name="build.compiler" value="extJavac" />
+    <property name="dir.bin" value="temp" />
+    <property name="dir.dist" value="target" />
+	<property name="dir.prioritybuild" value="priority" />
+    <property name="dir.bin.skills" value="com/herocraftonline/heroes/characters/skill/skills" />
+    <property name="dir.dist.skills" value="." />
+    <property name="toolhandler" value="../../Kingdoms of Arden Tool Handler/workspace/target" />
+    <property name="dir.lib" value="../../Kingdoms of Arden Heroes Skills/workspace/lib" />
+
+    <path id="classpath">
+        <fileset dir="${toolhandler}" includes="**/*.jar" />
+        <fileset dir="${dir.lib}" includes="*.jar" />
+    	<fileset dir="${dir.prioritybuild}" />
+    </path>
+   
+    <taskdef resource="net/sf/antcontrib/antlib.xml" />
+	
+	<target name="build">
+	    <mkdir dir="${dir.dist}" /> <!-- Clean up Maven -->
+		<delete dir="${dir.dist}" />
+	    <mkdir dir="${dir.dist}" />
+        <mkdir dir="${dir.dist}/${dir.dist.skills}" />
+        <mkdir dir="${dir.bin}" />
+  	    <mkdir dir="${dir.bin}/${dir.dist.skills}" />
+		<mkdir dir="${dir.prioritybuild}" />
+		<antcall target="build-priority-skills" />
+		<antcall target="build-main-skills" />
+		<copy todir="${dir.dist}" >  
+		    <fileset dir="${dir.prioritybuild}" includes="**"/>  
+		</copy>
+		<antcall target="zip" />
+		<delete dir="${dir.bin}" />
+		<delete dir="${dir.prioritybuild}" />
+		<delete dir="${basedir}" includes="**/*.class" excludes="**/*.java **/*.xml **/*.jar .* /bin/**/*.class" />
+		<delete dir="${dir.dist}" includes="**/*.jar" excludes="**/*.zip" />
+	</target>
+	<target name="build-priority-skills">
+		<foreach target="compile-dirs-priority" param="dir.name">
+			<path>
+				<dirset dir="${basedir}" includes="${priorityskills}" />
+			</path>
+		</foreach>
+	</target>
+	<target name="build-main-skills">
+		<foreach target="compile-dirs" param="dir.name">
+			<path>
+				<dirset dir="${basedir}" includes="Skill*" excludes="${unsupportedSkills} ${priorityskills}"/>
+			</path>
+		</foreach>
+	</target>
+	<target name = "compile-dirs">
+		<basename file="${dir.name}" property="skillBuildDir" />
+		<mkdir dir="${dir.bin}/${skillBuildDir}" />
+		<javac srcdir="${dir.name}" debug = "on" destdir="${dir.bin}/${skillBuildDir}" classpathref="classpath" includeantruntime="true" target="1.7" source="1.7"/>
+		<antcall target="jar-skilldir" />
+	</target>
+	<target name="jar-skilldir">
+	    <foreach target="jar-files" param="files">
+	    	<fileset dir="${dir.bin}/${skillBuildDir}/${dir.bin.skills}" includes="**/Skill*.class" excludes="Skill*$*.class" />
+	    </foreach>
+	    <delete file="${dir.bin}/${dir.bin.skills}/skill.info" />
+		
+	</target>
+	<target name="jar-files">
+        <basename file="${files}" suffix=".class" property="basename" />
+        <echo file="${dir.bin}/${basename}/skill.info" message="main-class: net.kingdomsofarden.andrew2060.heroes.skills.${basename}" />
+        <jar jarfile="${dir.dist}/${dir.dist.skills}/${basename}.jar" basedir="${dir.bin}/${basename}" includes="${dir.bin.skills}/**/*.class skill.info">
+        	<manifest>
+	                <attribute name="Class-Path" value="../../Heroes.jar" />
+            </manifest>
+        </jar>
+    </target>
+	<target name = "compile-dirs-priority">
+		<basename file="${dir.name}" property="skillBuildDir" />
+		<mkdir dir="${dir.bin}/${skillBuildDir}" />
+		<javac srcdir="${dir.name}" debug = "on" destdir="${dir.bin}/${skillBuildDir}" classpathref="classpath" includeantruntime="true" target="1.7" source="1.7"/>
+		<antcall target="jar-skilldir-priority" />
+	</target>
+	<target name="jar-skilldir-priority">
+	    <foreach target="jar-files-priority" param="files">
+	    	<fileset dir="${dir.bin}/${skillBuildDir}/${dir.bin.skills}" includes="**/Skill*.class" excludes="Skill*$*.class" />
+	    </foreach>
+	    <delete file="${dir.bin}/${dir.bin.skills}/skill.info" />
+		
+	</target>
+	<target name="jar-files-priority">
+        <basename file="${files}" suffix=".class" property="basename" />
+        <echo file="${dir.bin}/${basename}/skill.info" message="main-class: net.kingdomsofarden.andrew2060.heroes.skills.${basename}" />
+        <jar jarfile="${dir.prioritybuild}/${dir.dist.skills}/${basename}.jar" basedir="${dir.bin}/${basename}" includes="${dir.bin.skills}/**/*.class skill.info">
+        	<manifest>
+	                <attribute name="Class-Path" value="../../Heroes.jar" />
+            </manifest>
+        </jar>
+    </target>
+	<target name="zip">
+		<zip destfile="${dir.dist}/Proxis-Heroes-Skills.zip">
+		    <fileset dir="${dir.dist}" includes="**/*.jar"/>
+		</zip>
+   </target>
+</project>
