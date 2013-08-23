@@ -7,11 +7,12 @@ import com.herocraftonline.heroes.characters.skill.ActiveSkill;
 import com.herocraftonline.heroes.characters.skill.SkillConfigManager;
 import com.herocraftonline.heroes.characters.skill.SkillType;
 import com.herocraftonline.heroes.characters.skill.SkillSetting;
+
+import org.bukkit.entity.MushroomCow;
 import org.bukkit.entity.Player;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.CreatureType;
 
 public class SkillMooshroom extends ActiveSkill {
     public SkillMooshroom(Heroes plugin) {
@@ -93,17 +94,14 @@ public class SkillMooshroom extends ActiveSkill {
         Block wTargetBlock = player.getTargetBlock(null, 20).getRelative(
                         BlockFace.UP);
         double rand = Math.random();
-        player.getWorld().spawnCreature(wTargetBlock.getLocation(),
-                        CreatureType.MUSHROOM_COW);
+        player.getWorld().spawn(wTargetBlock.getLocation(), MushroomCow.class);
         int count = 1;
         if (rand > (1 - chance2x - chance3x)) {
-            player.getWorld().spawnCreature(wTargetBlock.getLocation(),
-                        CreatureType.MUSHROOM_COW);
+            player.getWorld().spawn(wTargetBlock.getLocation(), MushroomCow.class);
             count++;
         }
         if (rand > (1 - chance3x)) {
-            player.getWorld().spawnCreature(wTargetBlock.getLocation(),
-                        CreatureType.MUSHROOM_COW);
+            player.getWorld().spawn(wTargetBlock.getLocation(), MushroomCow.class);
             count++;
         }
         broadcast(player.getLocation(), "" + count + "x Multiplier!");

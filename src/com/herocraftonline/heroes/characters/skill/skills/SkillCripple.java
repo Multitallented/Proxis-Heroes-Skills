@@ -121,7 +121,7 @@ public class SkillCripple extends TargettedSkill {
             if (hero.getParty() == null || !(hero.getParty().getMembers().contains(tHero))) {
                 if (damageCheck(player, tHero.getPlayer())) {
                     broadcastExecuteText(hero, le);
-                    int damage = (int) (SkillConfigManager.getUseSetting(hero, this, SkillSetting.DAMAGE.node(), 5, false) +
+                    double damage = (SkillConfigManager.getUseSetting(hero, this, SkillSetting.DAMAGE.node(), 5, false) +
                             (SkillConfigManager.getUseSetting(hero, this, "damage-increase", 0.0, false) * hero.getSkillLevel(this)));
                     damage = damage > 0 ? damage : 0;
                     damageEntity(tHero.getPlayer(), player, damage, DamageCause.ENTITY_ATTACK);
@@ -130,7 +130,7 @@ public class SkillCripple extends TargettedSkill {
                             (SkillConfigManager.getUseSetting(hero, this, "duration-increase", 0.0, false) * hero.getSkillLevel(this)));
                     duration = duration > 0 ? duration : 0;
                     long period = SkillConfigManager.getUseSetting(hero, this, SkillSetting.PERIOD.node(), 1000, false);
-                    int tickDamage = (int) (SkillConfigManager.getUseSetting(hero, this, SkillSetting.DAMAGE_TICK.node(), 2, false) +
+                    double tickDamage = (SkillConfigManager.getUseSetting(hero, this, SkillSetting.DAMAGE_TICK.node(), 2, false) +
                             (SkillConfigManager.getUseSetting(hero, this, "tick-damage-increase", 0.0, false) * hero.getSkillLevel(this)));
                     tickDamage = tickDamage > 0 ? tickDamage : 0;
                     CrippleEffect cEffect = new CrippleEffect(this, period, duration, tickDamage, player);
@@ -145,8 +145,8 @@ public class SkillCripple extends TargettedSkill {
     public class CrippleEffect extends PeriodicExpirableEffect {
         private Player caster;
         private Location prevLocation;
-        private final int damageTick;
-        public CrippleEffect(Skill skill, long period, long duration, int damageTick, Player caster) {
+        private final double damageTick;
+        public CrippleEffect(Skill skill, long period, long duration, double damageTick, Player caster) {
             super(skill, "Cripple", period, duration);
             this.caster=caster;
             this.damageTick = damageTick;

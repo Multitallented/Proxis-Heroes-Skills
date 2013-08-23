@@ -109,7 +109,7 @@ public class SkillFullHeal extends ActiveSkill {
         duration = duration > 0 ? duration : 0;
         long period = (long) (SkillConfigManager.getUseSetting(hero, this, SkillSetting.PERIOD.node(), 1000, false));
         double multiplier = duration / period;
-        int amount = (int) ((player.getMaxHealth() - player.getHealth()) / multiplier);
+        double amount = ((player.getMaxHealth() - player.getHealth()) / multiplier);
         amount = amount * multiplier < player.getMaxHealth() - player.getHealth() ? amount + 1 : amount;
         if (amount > 0) {
             FullHealEffect cEffect = new FullHealEffect(this, period, duration, amount, hero.getPlayer());
@@ -121,9 +121,9 @@ public class SkillFullHeal extends ActiveSkill {
     }
 
     public class FullHealEffect extends PeriodicHealEffect {
-        private final int amount;
+        private final double amount;
         
-        public FullHealEffect(Skill skill, long period, long duration, int amount, Player caster) {
+        public FullHealEffect(Skill skill, long period, long duration, double amount, Player caster) {
             super(skill, "FullHeal", period, duration, amount, caster);
             this.types.add(EffectType.HEAL);
             this.types.add(EffectType.BENEFICIAL);

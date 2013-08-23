@@ -11,10 +11,12 @@ import com.herocraftonline.heroes.characters.skill.Skill;
 import com.herocraftonline.heroes.characters.skill.SkillConfigManager;
 import com.herocraftonline.heroes.characters.skill.SkillType;
 import com.herocraftonline.heroes.characters.skill.SkillSetting;
-import net.minecraft.server.MobEffect;
+
+import net.minecraft.server.v1_6_R2.MobEffect;
+
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.craftbukkit.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_6_R2.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
@@ -120,7 +122,7 @@ public class SkillDespair extends ActiveSkill {
         duration = duration > 0 ? duration : 0;
         Player player = hero.getPlayer();
         Location location = player.getLocation();
-        int damage = SkillConfigManager.getUseSetting(hero, this, SkillSetting.DAMAGE.node(), 0, false);
+        double damage = SkillConfigManager.getUseSetting(hero, this, SkillSetting.DAMAGE.node(), 0, false);
         int exp = SkillConfigManager.getUseSetting(hero, this, "exp-per-blinded-player", 0, false);
         for (Entity e : player.getNearbyEntities(radius, radius, radius)) {
             if (e instanceof Player) {

@@ -76,7 +76,7 @@ public class SkillBurningPresence extends ActiveSkill {
             hero.removeEffect(hero.getEffect("BurningPresence"));
         } else {
             long period = SkillConfigManager.getUseSetting(hero, this, SkillSetting.PERIOD.node(), 5000, false);
-            int tickDamage = (int) (SkillConfigManager.getUseSetting(hero, this, "tick-damage", 1.0, false) +
+            double tickDamage = (SkillConfigManager.getUseSetting(hero, this, "tick-damage", 1.0, false) +
                 (SkillConfigManager.getUseSetting(hero, this, "tick-damage-increase", 0.0, false) * hero.getSkillLevel(this)));
             tickDamage = tickDamage > 0 ? tickDamage : 0;
             int range = (int) (SkillConfigManager.getUseSetting(hero, this, SkillSetting.RADIUS.node(), 1.0, false) +
@@ -92,12 +92,12 @@ public class SkillBurningPresence extends ActiveSkill {
     
     public class IcyAuraEffect extends PeriodicEffect {
 
-        private int tickDamage;
+        private double tickDamage;
         private int range;
         private int mana;
         private boolean firstTime = true;
 
-        public IcyAuraEffect(SkillBurningPresence skill, long period, int tickDamage, int range, int manaLoss) {
+        public IcyAuraEffect(SkillBurningPresence skill, long period, double tickDamage, int range, int manaLoss) {
             super(skill, "BurningPresence", period);
             this.tickDamage = tickDamage;
             this.range = range;

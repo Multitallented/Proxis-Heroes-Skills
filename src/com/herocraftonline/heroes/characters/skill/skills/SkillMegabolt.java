@@ -95,7 +95,7 @@ public class SkillMegabolt extends ActiveSkill {
         int radius = (int) (SkillConfigManager.getUseSetting(hero, this, SkillSetting.RADIUS.node(), 30, false) +
                 (SkillConfigManager.getUseSetting(hero, this, SkillSetting.RADIUS_INCREASE.node(), 0.0, false) * hero.getSkillLevel(this)));
         radius = radius > 0 ? radius : 0;
-        int damage = (int) (SkillConfigManager.getUseSetting(hero, this, SkillSetting.DAMAGE.node(), 14, false) +
+        double damage = (SkillConfigManager.getUseSetting(hero, this, SkillSetting.DAMAGE.node(), 14, false) +
                 (SkillConfigManager.getUseSetting(hero, this, "damage-increase", 0.0, false) * hero.getSkillLevel(this)));
         damage = damage > 0 ? damage : 0;
         double expTarget = SkillConfigManager.getUseSetting(hero, this, "exp-per-target-struck", 0, false);

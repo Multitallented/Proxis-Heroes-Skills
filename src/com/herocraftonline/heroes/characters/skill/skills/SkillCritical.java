@@ -64,7 +64,7 @@ public class SkillCritical extends PassiveSkill {
                         double damageMod = (SkillConfigManager.getUseSetting(hero, skill, "damage-multiplier", 0.2, false) +
                                 (SkillConfigManager.getUseSetting(hero, skill, "damage-multiplier-increase", 0.0, false) * hero.getSkillLevel(skill)));
                         damageMod = damageMod > 0 ? damageMod : 0;
-                        event.setDamage((int) (event.getDamage() * damageMod));
+                        event.setDamage((event.getDamage() * damageMod));
                     }
            	  	}
         	}

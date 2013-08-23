@@ -109,7 +109,7 @@ public class SkillPandemic extends ActiveSkill {
     @Override
     public SkillResult use(Hero hero, String[] args) {
         Player player = hero.getPlayer();
-        int damage = (int) (SkillConfigManager.getUseSetting(hero, this, SkillSetting.DAMAGE.node(), 16, false) +
+        double damage = (SkillConfigManager.getUseSetting(hero, this, SkillSetting.DAMAGE.node(), 16, false) +
                 (SkillConfigManager.getUseSetting(hero, this, "damage-increase", 0, false) * hero.getSkillLevel(this)));
         damage = damage > 0 ? damage : 0;
         int radius = (int) (SkillConfigManager.getUseSetting(hero, this, SkillSetting.RADIUS.node(), 10, false) +
@@ -135,9 +135,9 @@ public class SkillPandemic extends ActiveSkill {
     }
     
     public class PandemicEffect extends PeriodicExpirableEffect {
-        private final int damage;
+        private final double damage;
         private final Player caster;
-        public PandemicEffect(Skill skill, long duration, long period, int damage, Player caster) {
+        public PandemicEffect(Skill skill, long duration, long period, double damage, Player caster) {
             super(skill, "Pandemic", period, duration);
             int numberOfTicks = (int) (duration / period);
             this.damage = damage / numberOfTicks;

@@ -7,6 +7,7 @@ import com.herocraftonline.heroes.characters.skill.Skill;
 import com.herocraftonline.heroes.characters.skill.SkillConfigManager;
 import com.herocraftonline.heroes.characters.skill.SkillType;
 import com.herocraftonline.heroes.characters.skill.SkillSetting;
+
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -53,6 +54,7 @@ public class SkillSpines extends PassiveSkill {
         public SkillHeroListener(Skill skill) {
             this.skill = skill;
         }
+        @SuppressWarnings("deprecation")
         @EventHandler
         public void onEntityDamage(EntityDamageEvent event) {
             if (event.isCancelled() || event.getDamage() == 0 || event.getCause() != DamageCause.ENTITY_ATTACK || !(event.getEntity() instanceof Player))

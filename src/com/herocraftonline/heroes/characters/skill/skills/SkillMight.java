@@ -8,7 +8,6 @@ package com.herocraftonline.heroes.characters.skill.skills;
 import com.herocraftonline.heroes.Heroes;
 import com.herocraftonline.heroes.api.SkillResult;
 import com.herocraftonline.heroes.characters.Hero;
-import com.herocraftonline.heroes.characters.classes.HeroClass;
 import com.herocraftonline.heroes.characters.effects.ExpirableEffect;
 import com.herocraftonline.heroes.characters.skill.ActiveSkill;
 import com.herocraftonline.heroes.characters.skill.Skill;
@@ -98,7 +97,6 @@ public class SkillMight extends ActiveSkill {
     public SkillResult use(Hero hero, String[] args) {
         Player player = hero.getPlayer();
         int radius = SkillConfigManager.getUseSetting(hero, this, SkillSetting.RADIUS, 10, false);
-        int damage = SkillConfigManager.getUseSetting(hero, this, "give-damage", 10, false);
         long duration = SkillConfigManager.getUseSetting(hero, this, SkillSetting.DURATION, 10000, false);
         hero.addEffect(new MightEffect(this, duration, hero));
         if (hero.hasParty()) {
@@ -143,7 +141,7 @@ public class SkillMight extends ActiveSkill {
                 Hero hero = plugin.getCharacterManager().getHero(player);
 
                 if (hero.hasEffect("Might")) {
-                    int damage = SkillConfigManager.getUseSetting(((MightEffect) hero.getEffect("Might")).getCaster(), skill, "give-damage", 10, false);
+                    double damage = SkillConfigManager.getUseSetting(((MightEffect) hero.getEffect("Might")).getCaster(), skill, "give-damage", 10, false);
                     event.setDamage(event.getDamage() + damage);
                 }
             } else if (edby.getDamager() instanceof Projectile) {
@@ -152,7 +150,7 @@ public class SkillMight extends ActiveSkill {
                     Hero hero = plugin.getCharacterManager().getHero(player);
 
                     if (hero.hasEffect("Might")) {
-                        int damage = SkillConfigManager.getUseSetting(((MightEffect) hero.getEffect("Might")).getCaster(), skill, "give-damage", 10, false);
+                        double damage = SkillConfigManager.getUseSetting(((MightEffect) hero.getEffect("Might")).getCaster(), skill, "give-damage", 10, false);
                         event.setDamage(event.getDamage() + damage);
                     }
                 }

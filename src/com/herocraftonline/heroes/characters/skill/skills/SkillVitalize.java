@@ -120,7 +120,7 @@ public class SkillVitalize extends ActiveSkill {
         int manaTick = (int) (SkillConfigManager.getUseSetting(hero, this, "mana-tick", 4, false) +
                 (SkillConfigManager.getUseSetting(hero, this, "mana-tick-increase", 0.0, false) * hero.getSkillLevel(this)));
         manaTick = manaTick > 0 ? manaTick : 0;
-        int healthTick = (int) (SkillConfigManager.getUseSetting(hero, this, SkillSetting.HEALTH_TICK.node(), 2, false) +
+        double healthTick = (SkillConfigManager.getUseSetting(hero, this, SkillSetting.HEALTH_TICK.node(), 2, false) +
                 (SkillConfigManager.getUseSetting(hero, this, "health-tick-increase", 0.0, false) * hero.getSkillLevel(this)));
         healthTick = healthTick > 0 ? healthTick : 0;
         long period = SkillConfigManager.getUseSetting(hero, this, SkillSetting.PERIOD.node(), 3000, false);
@@ -150,10 +150,10 @@ public class SkillVitalize extends ActiveSkill {
     }
 
     public class WisdomEffect extends PeriodicHealEffect {
-        private final int amount;
+        private final double amount;
         private final int manaMultiplier;
 
-        public WisdomEffect(Skill skill, long period, long duration, int amount, Player applier, int manaMultiplier) {
+        public WisdomEffect(Skill skill, long period, long duration, double amount, Player applier, int manaMultiplier) {
             super(skill, "Vitalize", period, duration, amount, applier);
             this.manaMultiplier = manaMultiplier;
             this.amount=amount;

@@ -26,7 +26,7 @@ public class SkillCreepingPain extends TargettedSkill {
     private String applyText;
     private String expireText;
     private String missText;
-    public HashMap<Player, Integer> affectedPlayers = new HashMap<Player, Integer>();
+    public HashMap<Player, Double> affectedPlayers = new HashMap<Player, Double>();
 
     public SkillCreepingPain(Heroes plugin) {
         super(plugin, "CreepingPain");
@@ -150,7 +150,7 @@ public class SkillCreepingPain extends TargettedSkill {
         public void applyToHero(Hero hero) {
             super.applyToHero(hero);
             Player player = hero.getPlayer();
-            affectedPlayers.put(player, 0);
+            affectedPlayers.put(player, 0D);
             broadcast(player.getLocation(), applyText, player.getDisplayName());
         }
 
@@ -181,7 +181,7 @@ public class SkillCreepingPain extends TargettedSkill {
                 Hero hero = plugin.getCharacterManager().getHero((Player) event.getEntity());
                 Player player = hero.getPlayer();
                 if (hero.hasEffect("CreepingPain")) {
-                    int damage = event.getDamage();
+                    double damage = event.getDamage();
                     if (affectedPlayers.containsKey(player)) {
                         affectedPlayers.put(player, damage + affectedPlayers.get(player));
                     } else {

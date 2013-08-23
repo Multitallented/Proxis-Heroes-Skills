@@ -84,7 +84,7 @@ public class SkillNecroFeed extends PassiveSkill {
             double health = (double) (SkillConfigManager.getUseSetting(hero, skill, "health-percent", 0.5, false) +
                 (SkillConfigManager.getUseSetting(hero, skill, "health-percent-increase", 0.0, false) * hero.getSkillLevel(skill)));
             health = health > 0 ? health : 0;
-            int amount = (int) health * e.getMaxHealth();
+            double amount = health * e.getMaxHealth();
             if (player.getHealth() + amount > player.getMaxHealth()) {
                 player.setHealth(player.getMaxHealth());
             } else {

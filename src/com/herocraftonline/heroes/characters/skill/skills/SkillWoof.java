@@ -11,7 +11,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.Wolf;
 
 public class SkillWoof extends ActiveSkill {
@@ -94,21 +93,18 @@ public class SkillWoof extends ActiveSkill {
         Block wTargetBlock = player.getTargetBlock(null, 20).getRelative(
                         BlockFace.UP);
         double rand = Math.random();
-        Wolf w1 = (Wolf) player.getWorld().spawnCreature(wTargetBlock.getLocation(),
-                        CreatureType.WOLF);
+        Wolf w1 = (Wolf) player.getWorld().spawn(wTargetBlock.getLocation(),Wolf.class);
         w1.setOwner(player);
         w1.setTamed(true);
         int count = 1;
         if (rand > (1 - chance2x - chance3x)) {
-            Wolf w2 = (Wolf) player.getWorld().spawnCreature(wTargetBlock.getLocation(),
-                        CreatureType.WOLF);
+            Wolf w2 = (Wolf) player.getWorld().spawn(wTargetBlock.getLocation(),Wolf.class);
             w2.setOwner(player);
             w2.setTamed(true);
             count++;
         }
         if (rand > (1 - chance3x)) {
-            Wolf w3 = (Wolf) player.getWorld().spawnCreature(wTargetBlock.getLocation(),
-                        CreatureType.WOLF);
+            Wolf w3 = (Wolf) player.getWorld().spawn(wTargetBlock.getLocation(),Wolf.class);
             w3.setOwner(player);
             w3.setTamed(true);
             count++;

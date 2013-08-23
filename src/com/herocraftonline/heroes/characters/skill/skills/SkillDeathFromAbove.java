@@ -163,7 +163,7 @@ public class SkillDeathFromAbove extends ActiveSkill {
             int radius = (int) (SkillConfigManager.getUseSetting(hero, skill, SkillSetting.RADIUS.node(), 5, false) +
                     (SkillConfigManager.getUseSetting(hero, skill, "radius-increase", 0.0, false) * hero.getSkillLevel(skill)));
             radius = radius > 0 ? radius : 0;
-            int damage = event.getDamage();
+            double damage = event.getDamage();
             double damageMulti = (SkillConfigManager.getUseSetting(hero, skill, "damage-multiplier", 1.0, false) +
                     (SkillConfigManager.getUseSetting(hero, skill, "damage-multi-increase", 0.0, false) * hero.getSkillLevel(skill)));
             damageMulti = damageMulti > 0 ? damageMulti : 0;

@@ -105,7 +105,7 @@ public class SkillBoltstorm extends ActiveSkill
       Player player = hero.getPlayer();
       int range = SkillConfigManager.getUseSetting(hero, this.skill, SkillSetting.RADIUS, 7, false);
 
-      List targets = new ArrayList();
+      List<LivingEntity> targets = new ArrayList<LivingEntity>();
       for (Entity entity : player.getNearbyEntities(range, range, range)) {
         if (!(entity instanceof LivingEntity))
         {
@@ -124,8 +124,8 @@ public class SkillBoltstorm extends ActiveSkill
       if (targets.isEmpty()) {
         return;
       }
-      int damage = SkillConfigManager.getUseSetting(hero, this.skill, SkillSetting.DAMAGE, 4, false);
-      LivingEntity target = (LivingEntity)targets.get(Util.nextInt(targets.size()));
+      double damage = SkillConfigManager.getUseSetting(hero, this.skill, SkillSetting.DAMAGE, 4, false);
+      LivingEntity target = targets.get(Util.nextInt(targets.size()));
       target.getWorld().strikeLightningEffect(target.getLocation());
 
       SkillBoltstorm.this.addSpellTarget(target, hero);

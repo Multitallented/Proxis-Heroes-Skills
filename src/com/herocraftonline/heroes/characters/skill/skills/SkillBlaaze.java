@@ -7,13 +7,13 @@ import com.herocraftonline.heroes.characters.skill.ActiveSkill;
 import com.herocraftonline.heroes.characters.skill.SkillConfigManager;
 import com.herocraftonline.heroes.characters.skill.SkillType;
 import com.herocraftonline.heroes.characters.skill.SkillSetting;
-import org.bukkit.entity.Player;
 
+import org.bukkit.entity.Player;
 import org.bukkit.Effect;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.CreatureType;
+import org.bukkit.entity.Blaze;
 import org.bukkit.entity.LivingEntity;
 
 public class SkillBlaaze extends ActiveSkill {
@@ -96,8 +96,7 @@ public class SkillBlaaze extends ActiveSkill {
         Block wTargetBlock = player.getTargetBlock(null, 20).getRelative(
                         BlockFace.UP);
         double rand = Math.random();
-        LivingEntity le = player.getWorld().spawnCreature(wTargetBlock.getLocation(),
-                        CreatureType.BLAZE);
+        LivingEntity le = player.getWorld().spawn(wTargetBlock.getLocation(), Blaze.class);
         for (int i = 0; i < 9; i++) {
             le.getWorld().playEffect(le.getLocation(), Effect.SMOKE, i);
         }
@@ -109,13 +108,11 @@ public class SkillBlaaze extends ActiveSkill {
         }
         int count = 1;
         if (rand > (1 - chance2x - chance3x)) {
-            LivingEntity le1 = player.getWorld().spawnCreature(wTargetBlock.getLocation(),
-                        CreatureType.BLAZE);
+            player.getWorld().spawn(wTargetBlock.getLocation(), Blaze.class);
             count++;
         }
         if (rand > (1 - chance3x)) {
-            LivingEntity le1 = player.getWorld().spawnCreature(wTargetBlock.getLocation(),
-                        CreatureType.BLAZE);
+            player.getWorld().spawn(wTargetBlock.getLocation(), Blaze.class);
             count++;
         }
         broadcast(player.getLocation(), "" + count + "x Multiplier!");

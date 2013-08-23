@@ -117,10 +117,10 @@ public class SkillMultibolt extends ActiveSkill {
         }*/
         final Player targetPlayer = aTargetPlayer;
         broadcastExecuteText(hero);
-        int preDamage = (int) (SkillConfigManager.getUseSetting(hero, this, SkillSetting.DAMAGE.node(), 14, false) +
+        double preDamage = (SkillConfigManager.getUseSetting(hero, this, SkillSetting.DAMAGE.node(), 14, false) +
                 (SkillConfigManager.getUseSetting(hero, this, "damage-increase", 0.0, false) * hero.getSkillLevel(this)));
         preDamage = preDamage > 0 ? preDamage : 0;
-        final int damage = preDamage;
+        final double damage = preDamage;
         if (aTargetPlayer != null) {
             addSpellTarget(aTargetPlayer, hero);
             aTargetPlayer.getWorld().strikeLightningEffect(aTargetPlayer.getLocation());
