@@ -5,9 +5,8 @@
     <!-- set global properties for this build -->
     <property environment="env"/>
     <property name="build.compiler" value="extJavac" />
-    <property name="dir.bin" value="temp" />
+    <property name="dir.bin" value="bin" />
     <property name="dir.dist" value="target" />
-	<property name="dir.prioritybuild" value="priority" />
     <property name="dir.bin.skills" value="com/herocraftonline/heroes/characters/skill/skills" />
     <property name="dir.dist.skills" value="." />
     <property name="toolhandler" value="../../Kingdoms of Arden Tool Handler/workspace/target" />
@@ -16,13 +15,11 @@
     <path id="classpath">
         <fileset dir="${toolhandler}" includes="**/*.jar" />
         <fileset dir="${dir.lib}" includes="*.jar" />
-    	<fileset dir="${dir.prioritybuild}" />
     </path>
    
     <taskdef resource="net/sf/antcontrib/antlib.xml" />
 	
 	<target name="build">
-    	<delete file="libs/Heroes.jar"/>
         <mkdir dir="${dir.dist}" />
         <mkdir dir="${dir.dist}/${dir.dist.skills}" />
         <mkdir dir="${dir.bin}" />
