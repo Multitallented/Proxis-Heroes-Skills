@@ -160,6 +160,7 @@ public class SkillCreepingPain extends TargettedSkill {
 
             Player player = hero.getPlayer();
             if (affectedPlayers.containsKey(player)&& affectedPlayers.get(player) > 0) {
+                addSpellTarget(player,plugin.getCharacterManager().getHero(caster));
                 damageEntity(player, caster, affectedPlayers.get(player), DamageCause.MAGIC);
                 //player.damage(affectedPlayers.get(player), caster);
                 affectedPlayers.remove(player);

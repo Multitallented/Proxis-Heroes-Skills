@@ -105,6 +105,7 @@ public class SkillMegabolt extends ActiveSkill {
                 LivingEntity target = (LivingEntity) wMonster;
                 if (damageCheck(player, target) && target instanceof Player) {
                     target.getWorld().strikeLightningEffect(target.getLocation());
+                    addSpellTarget(target,hero);
                     damageEntity(target, player, damage, DamageCause.MAGIC); 
                     //target.damage(damage, player);
                     exp += expTarget;

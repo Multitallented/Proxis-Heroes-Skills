@@ -113,6 +113,7 @@ public class SkillStun extends TargettedSkill {
             tHero.addEffect(new StunEffect(this, duration));
         }
         if (damage > 0) {
+            addSpellTarget(tPlayer,hero);
             damageEntity(tPlayer, player, damage, DamageCause.MAGIC);
             //tPlayer.damage(damage, player);
         }

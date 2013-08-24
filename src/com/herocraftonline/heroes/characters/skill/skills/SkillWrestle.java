@@ -115,6 +115,7 @@ public class SkillWrestle extends ActiveSkill {
                 Hero tHero = plugin.getCharacterManager().getHero(p);
                 tHero.addEffect(cEffect);
                 if (damage > 0) {
+                    addSpellTarget(p,hero);
                     damageEntity(p, player, damage, DamageCause.MAGIC);
                     //p.damage(damage, player);
                 }

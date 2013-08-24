@@ -130,7 +130,8 @@ public class SkillBurningPresence extends ActiveSkill {
             for (Entity entity : player.getNearbyEntities(range, range, range)) {
                 if (entity instanceof LivingEntity) {
                     LivingEntity lEntity = (LivingEntity) entity;
-
+                    
+                    addSpellTarget(lEntity,hero);
                     damageEntity(lEntity, player, tickDamage, DamageCause.MAGIC);
                 }
             }

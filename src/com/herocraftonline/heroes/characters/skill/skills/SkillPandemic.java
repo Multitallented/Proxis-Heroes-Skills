@@ -123,6 +123,7 @@ public class SkillPandemic extends ActiveSkill {
         for (Entity e : player.getNearbyEntities(radius, radius, radius)) {
             if (e instanceof Monster) {
                 Monster m = (Monster) e;
+                addSpellTarget(m,hero);
                 damageEntity(m, player, damage, DamageCause.MAGIC);
                 //m.damage(damage, player);
             } else if (e instanceof Player) {
@@ -161,7 +162,7 @@ public class SkillPandemic extends ActiveSkill {
         @Override
         public void tickHero(Hero hero) {
             if (hero.getPlayer().getHealth() - damage > 1) {
-                
+                addSpellTarget(hero.getPlayer(), plugin.getCharacterManager().getHero(caster));
                 damageEntity(hero.getPlayer(), caster, damage, DamageCause.MAGIC);
                 //hero.getPlayer().damage(damage, caster);
             }
@@ -171,7 +172,7 @@ public class SkillPandemic extends ActiveSkill {
         public void tickMonster(com.herocraftonline.heroes.characters.Monster mnstr) {
             super.tick(mnstr);
             if (mnstr.getEntity().getHealth() - damage > 1) {
-                
+                addSpellTarget(mnstr.getEntity(), plugin.getCharacterManager().getHero(caster));
                 damageEntity(mnstr.getEntity(), caster, damage, DamageCause.MAGIC);
             }
         }

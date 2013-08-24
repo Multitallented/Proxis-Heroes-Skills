@@ -130,7 +130,7 @@ public class SkillIceAura extends ActiveSkill {
                     LivingEntity lEntity = (LivingEntity) entity;
 
                     // Check if the target is damagable
-                    //addSpellTarget(lEntity, hero);
+                    addSpellTarget(lEntity, hero);
                     damageEntity(lEntity, player, tickDamage, DamageCause.MAGIC);
                     //lEntity.damage(tickDamage, player);
                 }

@@ -117,6 +117,7 @@ public class SkillSlow extends TargettedSkill {
         double damage = (SkillConfigManager.getUseSetting(hero, this, SkillSetting.DAMAGE.node(), 0, false) +
                 (SkillConfigManager.getUseSetting(hero, this, "damage-increase", 0.0, false) * hero.getSkillLevel(this)));
         damage = damage > 0 ? damage : 0;
+        addSpellTarget(tPlayer,hero);
         damageEntity(tPlayer, player, damage, DamageCause.MAGIC);
         //tPlayer.damage(damage, player);
         long duration = (long) (SkillConfigManager.getUseSetting(hero, this, SkillSetting.DURATION.node(), 10000, false) +

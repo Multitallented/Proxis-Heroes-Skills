@@ -131,6 +131,7 @@ public class SkillDespair extends ActiveSkill {
                     Hero dHero = plugin.getCharacterManager().getHero(p);
                     dHero.addEffect(new DespairEffect(this, duration, player));
                     if (damage > 0) {
+                        addSpellTarget(p,hero);
                         damageEntity(p, player, damage, DamageCause.MAGIC);
                         //p.damage(damage, player);
                     }

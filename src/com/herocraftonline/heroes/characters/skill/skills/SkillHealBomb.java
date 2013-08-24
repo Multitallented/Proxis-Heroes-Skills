@@ -139,12 +139,14 @@ public class SkillHealBomb extends TargettedSkill {
             if (e instanceof LivingEntity) {
                 if (e instanceof Creature) {
                     Creature c = (Creature) e;
+                    addSpellTarget(c,hero);
                     damageEntity(c, player, damage, DamageCause.MAGIC);
                     //c.damage(damage, player);
                     totalExp += exp;
                 } else if (e instanceof Player) {
                     Player p = (Player) e;
                     if (hero.getParty() == null || !hero.getParty().getMembers().contains(plugin.getCharacterManager().getHero(p))) {
+                        addSpellTarget(p,hero);
                         damageEntity(p, player, damage, DamageCause.MAGIC);
                         //p.damage(damage, player);
                     }

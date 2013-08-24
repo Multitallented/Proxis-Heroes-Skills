@@ -124,6 +124,7 @@ public class SkillMultibolt extends ActiveSkill {
         if (aTargetPlayer != null) {
             addSpellTarget(aTargetPlayer, hero);
             aTargetPlayer.getWorld().strikeLightningEffect(aTargetPlayer.getLocation());
+            addSpellTarget(aTargetPlayer,hero);
             damageEntity(aTargetPlayer, player, damage, DamageCause.MAGIC);
             //aTargetPlayer.damage(damage, player);
         } else {
@@ -144,6 +145,7 @@ public class SkillMultibolt extends ActiveSkill {
                 public void run() {
                     addSpellTarget(targetPlayer, hero);
                     targetPlayer.getWorld().strikeLightningEffect(targetPlayer.getLocation());
+                    addSpellTarget(targetPlayer,hero);
                     damageEntity(targetPlayer, player, damage, DamageCause.MAGIC);
                     //player.getWorld().strikeLightning(targetPlayer.getLocation());
                     Messaging.send(player, "Twice Struck!");
@@ -154,6 +156,7 @@ public class SkillMultibolt extends ActiveSkill {
                             public void run() {
                                 addSpellTarget(targetPlayer, hero);
                                 targetPlayer.getWorld().strikeLightningEffect(targetPlayer.getLocation());
+                                addSpellTarget(targetPlayer,hero);
                                 damageEntity(targetPlayer, player, damage, DamageCause.MAGIC);
                                 Messaging.send(player, "Hat Trick!");
                                 if (Math.random() > finalChance && strikes > 3) {
@@ -163,6 +166,7 @@ public class SkillMultibolt extends ActiveSkill {
                                         public void run() {
                                             addSpellTarget(targetPlayer, hero);
                                             targetPlayer.getWorld().strikeLightningEffect(targetPlayer.getLocation());
+                                            addSpellTarget(targetPlayer,hero);
                                             damageEntity(targetPlayer, player, damage, DamageCause.MAGIC);
                                             Messaging.send(player, "Overkill!");
                                         }

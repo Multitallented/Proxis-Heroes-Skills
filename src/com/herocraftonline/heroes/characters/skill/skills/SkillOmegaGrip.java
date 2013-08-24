@@ -185,6 +185,7 @@ public class SkillOmegaGrip extends TargettedSkill implements Listener {
         int manaTick = (SkillConfigManager.getUseSetting(hero, this, "mana-tick", 0, false)
                 - SkillConfigManager.getUseSetting(hero, this, "mana-tick-increase", 0, false) * hero.getLevel());
         manaTick = manaTick < 0 ? 0 : manaTick;
+        addSpellTarget(tPlayer,hero);
         damageEntity(tPlayer, player, damage);
         
         hero.addEffect(new ChannelEffect(this, duration, getReagentCost(hero)));
@@ -344,6 +345,7 @@ public class SkillOmegaGrip extends TargettedSkill implements Listener {
                 hero.removeEffect(this);
                 return;
             }
+            addSpellTarget(hero.getPlayer(), caster);
             skill.damageEntity(hero.getPlayer(), caster.getPlayer(), damageTick + healTick);
             Bukkit.getPluginManager().callEvent(new EntityRegainHealthEvent(caster.getPlayer(), healTick, RegainReason.MAGIC));
             if (caster.getMana() + manaTick > caster.getMaxMana()) {

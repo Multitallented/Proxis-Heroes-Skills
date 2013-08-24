@@ -124,6 +124,7 @@ public class SkillCripple extends TargettedSkill {
                     double damage = (SkillConfigManager.getUseSetting(hero, this, SkillSetting.DAMAGE.node(), 5, false) +
                             (SkillConfigManager.getUseSetting(hero, this, "damage-increase", 0.0, false) * hero.getSkillLevel(this)));
                     damage = damage > 0 ? damage : 0;
+                    addSpellTarget(tHero.getPlayer(),plugin.getCharacterManager().getHero(player));
                     damageEntity(tHero.getPlayer(), player, damage, DamageCause.ENTITY_ATTACK);
                     //tHero.getPlayer().damage(damage, player);
                     long duration = (long) (SkillConfigManager.getUseSetting(hero, this, SkillSetting.DURATION.node(), 10000, false) +
@@ -160,6 +161,7 @@ public class SkillCripple extends TargettedSkill {
             if (prevLocation != null
                     && Math.abs(hero.getPlayer().getLocation().getX() - prevLocation.getX()) >= 1
                     && Math.abs(hero.getPlayer().getLocation().getZ() - prevLocation.getZ()) >= 1) {
+                addSpellTarget(hero.getPlayer(),plugin.getCharacterManager().getHero(caster));
                 damageEntity(hero.getPlayer(), caster, damageTick, DamageCause.ENTITY_ATTACK);
                 //hero.getPlayer().damage(damageTick, caster);
             }
@@ -182,6 +184,7 @@ public class SkillCripple extends TargettedSkill {
         @Override
         public void tickMonster(Monster mnstr) {
             super.tick(mnstr);
+            addSpellTarget(mnstr.getEntity(),plugin.getCharacterManager().getHero(caster));
             damageEntity(mnstr.getEntity(), caster, damageTick, DamageCause.ENTITY_ATTACK);
         }
     }

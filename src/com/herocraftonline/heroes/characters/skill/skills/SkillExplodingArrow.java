@@ -117,11 +117,13 @@ public class SkillExplodingArrow extends ActiveSkill
                         Player heroes = (Player)t_entity;
                         if ((heroes.equals(player)) || 
                                 (heroes.getLocation().distanceSquared(arrow.getLocation()) > radius)) continue;
+                        addSpellTarget(heroes,hero);
                         damageEntity(heroes, player, damage, EntityDamageEvent.DamageCause.ENTITY_EXPLOSION);
                     }
                     else if ((t_entity instanceof Creature)) {
                         Creature mob = (Creature)t_entity;
                         if (t_entity.getLocation().distanceSquared(arrow.getLocation()) <= radius) {
+                            addSpellTarget(mob,hero);
                             damageEntity(mob, player, damage, EntityDamageEvent.DamageCause.ENTITY_EXPLOSION);
                         }
                     }
@@ -170,11 +172,13 @@ public class SkillExplodingArrow extends ActiveSkill
                     if ((t_entity instanceof Player)) {
                         Player heroes = (Player)t_entity;
                         if (heroes.getLocation().distanceSquared(projectile.getLocation()) <= radius)
+                            addSpellTarget(heroes,hero);
                             SkillExplodingArrow.damageEntity(heroes, player, damage, EntityDamageEvent.DamageCause.ENTITY_EXPLOSION);
                     }
                     else if ((t_entity instanceof Creature)) {
                         Creature mob = (Creature)t_entity;
                         if (t_entity.getLocation().distanceSquared(projectile.getLocation()) <= radius) {
+                            addSpellTarget(mob,hero);
                             SkillExplodingArrow.damageEntity(mob, player, damage, EntityDamageEvent.DamageCause.ENTITY_EXPLOSION);
                         }
                     }

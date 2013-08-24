@@ -174,6 +174,7 @@ public class SkillDeathFromAbove extends ActiveSkill {
             for (Entity e : player.getNearbyEntities(radius,radius,radius)) {
                 if (e instanceof Player && !(e.equals(player))) {
                     Player p = (Player) e;
+                    addSpellTarget(p,plugin.getCharacterManager().getHero(player));
                     damageEntity(p, player, damage, DamageCause.MAGIC);
                     //p.damage(damage, player);
                     if (expPlayer > 0) {
@@ -181,6 +182,7 @@ public class SkillDeathFromAbove extends ActiveSkill {
                     }
                 } else if (e instanceof Creature) {
                     Creature c = (Creature) e;
+                    addSpellTarget(c,plugin.getCharacterManager().getHero(player));
                     damageEntity(c, player, damage, DamageCause.MAGIC);
                     //c.damage(damage, player);
                     if (expCreature > 0) {

@@ -290,9 +290,11 @@ public class SkillLaunch extends ActiveSkill
                     if (l4 > 0L)
                         localHero2.addEffect(new SilenceEffect(this.skill, l4));
                     if (j > 0)
+                        addSpellTarget(localLivingEntity,plugin.getCharacterManager().getHero(localPlayer1));
                         Skill.damageEntity(localLivingEntity, localPlayer1, j, EntityDamageEvent.DamageCause.MAGIC);
                 }
                 if (j > 0)
+                    addSpellTarget(localLivingEntity,plugin.getCharacterManager().getHero(localPlayer1));
                     Skill.damageEntity(localLivingEntity, localPlayer1, j, EntityDamageEvent.DamageCause.MAGIC);
             }
             Heroes.debug.stopTask("HeroesSkillListener");

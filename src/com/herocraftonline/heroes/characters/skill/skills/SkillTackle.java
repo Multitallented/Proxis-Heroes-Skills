@@ -119,6 +119,7 @@ public class SkillTackle extends TargettedSkill {
                         tHero.addEffect(new StunEffect(this, duration));
                     }
                     if (damage > 0) {
+                        addSpellTarget(tPlayer,hero);
                         damageEntity(tPlayer, player, damage, DamageCause.ENTITY_ATTACK);
                         //tPlayer.damage(damage, player);
                     }
@@ -126,6 +127,7 @@ public class SkillTackle extends TargettedSkill {
             } else if (e instanceof Creature) {
                 LivingEntity le = (LivingEntity) e;
                 if (damage > 0) {
+                    addSpellTarget(le,hero);
                     damageEntity(le, player, damage, DamageCause.ENTITY_ATTACK);
                     //le.damage(damage, player);
                 }
