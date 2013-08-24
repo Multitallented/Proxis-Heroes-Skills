@@ -91,185 +91,180 @@ public class SkillMultiply extends TargettedSkill {
         double rand = Math.random();
         int count = 1;
         if (target instanceof Zombie){
-            player.getWorld().spawnCreature(targetLocation,
-                        CreatureType.ZOMBIE);
+            player.getWorld().spawn(targetLocation,Zombie.class);
             if (rand > .7) {
-                player.getWorld().spawnCreature(targetLocation,
-                            CreatureType.ZOMBIE);
+                player.getWorld().spawn(targetLocation,Zombie.class);
                 count++;
             }
             if (rand > .9) {
-                player.getWorld().spawnCreature(targetLocation,
-                            CreatureType.ZOMBIE);
+                player.getWorld().spawn(targetLocation,Zombie.class);
                 count++;
             }
         } else if (target instanceof Skeleton) {
-            player.getWorld().spawnCreature(targetLocation,
-                        CreatureType.SKELETON);
+            player.getWorld().spawn(targetLocation,Zombie.class);
             if (rand > .7) {
-                player.getWorld().spawnCreature(targetLocation,
-                            CreatureType.SKELETON);
+                player.getWorld().spawn(targetLocation,Skeleton.class);
                 count++;
             }
             if (rand > .9) {
-                player.getWorld().spawnCreature(targetLocation,
-                            CreatureType.SKELETON);
+                player.getWorld().spawn(targetLocation,
+                            Skeleton.class);
                 count++;
             }
         } else if (target instanceof Spider) {
-            player.getWorld().spawnCreature(targetLocation,
-                        CreatureType.SPIDER);
+            player.getWorld().spawn(targetLocation,
+                        Spider.class);
             if (rand > .7) {
-                player.getWorld().spawnCreature(targetLocation,
-                            CreatureType.SPIDER);
+                player.getWorld().spawn(targetLocation,
+                            Spider.class);
                 count++;
             }
             if (rand > .9) {
-                player.getWorld().spawnCreature(targetLocation,
-                            CreatureType.SPIDER);
+                player.getWorld().spawn(targetLocation,
+                            Spider.class);
                 count++;
             }
         } else if (target instanceof Creeper) {
-            player.getWorld().spawnCreature(targetLocation,
-                        CreatureType.CREEPER);
+            player.getWorld().spawn(targetLocation,
+                        Creeper.class);
             if (rand > .7) {
-                player.getWorld().spawnCreature(targetLocation,
-                            CreatureType.CREEPER);
+                player.getWorld().spawn(targetLocation,
+                            Creeper.class);
                 count++;
             }
             if (rand > .9) {
-                player.getWorld().spawnCreature(targetLocation,
-                            CreatureType.CREEPER);
+                player.getWorld().spawn(targetLocation,
+                            Creeper.class);
                 count++;
             }
         } else if (target instanceof PigZombie) {
-            player.getWorld().spawnCreature(targetLocation,
-                        CreatureType.PIG_ZOMBIE);
+            player.getWorld().spawn(targetLocation,
+                        Zombie.class);
             if (rand > .7) {
-                player.getWorld().spawnCreature(targetLocation,
-                            CreatureType.PIG_ZOMBIE);
+                player.getWorld().spawn(targetLocation,
+                            Zombie.class);
                 count++;
             }
             if (rand > .9) {
-                player.getWorld().spawnCreature(targetLocation,
-                            CreatureType.PIG_ZOMBIE);
+                player.getWorld().spawn(targetLocation,
+                            Zombie.class);
                 count++;
             }
         } else if (target instanceof Slime) {
-            player.getWorld().spawnCreature(targetLocation,
-                        CreatureType.SLIME);
+            player.getWorld().spawn(targetLocation,
+                        Slime.class);
             if (rand > .7) {
-                player.getWorld().spawnCreature(targetLocation,
-                            CreatureType.SLIME);
+                player.getWorld().spawn(targetLocation,
+                            Slime.class);
                 count++;
             }
             if (rand > .9) {
-                player.getWorld().spawnCreature(targetLocation,
-                            CreatureType.SLIME);
+                player.getWorld().spawn(targetLocation,
+                            Slime.class);
                 count++;
             }
         } else if (target instanceof Pig) {
-            player.getWorld().spawnCreature(targetLocation,
-                        CreatureType.PIG);
+            player.getWorld().spawn(targetLocation,
+                        Pig.class);
             if (rand > .7) {
-                player.getWorld().spawnCreature(targetLocation,
-                            CreatureType.PIG);
+                player.getWorld().spawn(targetLocation,
+                            Pig.class);
                 count++;
             }
             if (rand > .9) {
-                player.getWorld().spawnCreature(targetLocation,
-                            CreatureType.PIG);
+                player.getWorld().spawn(targetLocation,
+                            Pig.class);
                 count++;
             }
         } else if (target instanceof Cow) {
-            player.getWorld().spawnCreature(targetLocation,
-                        CreatureType.COW);
+            player.getWorld().spawn(targetLocation,
+                        Cow.class);
             if (rand > .7) {
-                player.getWorld().spawnCreature(targetLocation,
-                            CreatureType.COW);
+                player.getWorld().spawn(targetLocation,
+                            Cow.class);
                 count++;
             }
             if (rand > .9) {
-                player.getWorld().spawnCreature(targetLocation,
-                            CreatureType.COW);
+                player.getWorld().spawn(targetLocation,
+                            Cow.class);
                 count++;
             }
         } else if (target instanceof Sheep) {
-            player.getWorld().spawnCreature(targetLocation,
-                        CreatureType.SHEEP);
+            player.getWorld().spawn(targetLocation,
+                        Sheep.class);
             if (rand > .7) {
-                player.getWorld().spawnCreature(targetLocation,
-                            CreatureType.SHEEP);
+                player.getWorld().spawn(targetLocation,
+                            Sheep.class);
                 count++;
             }
             if (rand > .9) {
-                player.getWorld().spawnCreature(targetLocation,
-                            CreatureType.SHEEP);
+                player.getWorld().spawn(targetLocation,
+                            Sheep.class);
                 count++;
             }
         } else if (target instanceof Chicken) {
-            player.getWorld().spawnCreature(targetLocation,
-                        CreatureType.CHICKEN);
+            player.getWorld().spawn(targetLocation,
+                        Chicken.class);
             if (rand > .7) {
-                player.getWorld().spawnCreature(targetLocation,
-                            CreatureType.CHICKEN);
+                player.getWorld().spawn(targetLocation,
+                            Chicken.class);
                 count++;
             }
             if (rand > .9) {
-                player.getWorld().spawnCreature(targetLocation,
-                            CreatureType.CHICKEN);
+                player.getWorld().spawn(targetLocation,
+                            Chicken.class);
                 count++;
             }
         /*} else if (target instanceof Player) {
-            player.getWorld().spawnCreature(targetLocation,
+            player.getWorld().spawn(targetLocation,
                         CreatureType.MONSTER);
             if (rand > .7) {
-                player.getWorld().spawnCreature(targetLocation,
+                player.getWorld().spawn(targetLocation,
                             CreatureType.MONSTER);
                 count++;
             }
             if (rand > .9) {
-                player.getWorld().spawnCreature(targetLocation,
+                player.getWorld().spawn(targetLocation,
                             CreatureType.MONSTER);
                 count++;
             }*/
         } else if (target instanceof Enderman) {
-            player.getWorld().spawnCreature(targetLocation,
-                        CreatureType.ENDERMAN);
+            player.getWorld().spawn(targetLocation,
+                        Enderman.class);
             if (rand > .7) {
-                player.getWorld().spawnCreature(targetLocation,
-                            CreatureType.ENDERMAN);
+                player.getWorld().spawn(targetLocation,
+                            Enderman.class);
                 count++;
             }
             if (rand > .9) {
-                player.getWorld().spawnCreature(targetLocation,
-                            CreatureType.ENDERMAN);
+                player.getWorld().spawn(targetLocation,
+                            Enderman.class);
                 count++;
             }
         } else if (target instanceof Silverfish) {
-            player.getWorld().spawnCreature(targetLocation,
-                        CreatureType.SILVERFISH);
+            player.getWorld().spawn(targetLocation,
+                        Silverfish.class);
             if (rand > .7) {
-                player.getWorld().spawnCreature(targetLocation,
-                            CreatureType.SILVERFISH);
+                player.getWorld().spawn(targetLocation,
+                            Silverfish.class);
                 count++;
             }
             if (rand > .9) {
-                player.getWorld().spawnCreature(targetLocation,
-                            CreatureType.SILVERFISH);
+                player.getWorld().spawn(targetLocation,
+                            Silverfish.class);
                 count++;
             }
         } else if (target instanceof CaveSpider) {
-            player.getWorld().spawnCreature(targetLocation,
-                        CreatureType.CAVE_SPIDER);
+            player.getWorld().spawn(targetLocation,
+                        CaveSpider.class);
             if (rand > .7) {
-                player.getWorld().spawnCreature(targetLocation,
-                            CreatureType.CAVE_SPIDER);
+                player.getWorld().spawn(targetLocation,
+                            CaveSpider.class);
                 count++;
             }
             if (rand > .9) {
-                player.getWorld().spawnCreature(targetLocation,
-                            CreatureType.CAVE_SPIDER);
+                player.getWorld().spawn(targetLocation,
+                            CaveSpider.class);
                 count++;
             }
         } else {

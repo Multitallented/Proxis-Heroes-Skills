@@ -35,7 +35,7 @@ public class SkillSlow extends TargettedSkill {
         long duration = (long) (SkillConfigManager.getUseSetting(hero, this, SkillSetting.DURATION.node(), 10000, false) +
                 (SkillConfigManager.getUseSetting(hero, this, "duration-increase", 0.0, false) * hero.getSkillLevel(this))) / 1000;
         duration = duration > 0 ? duration : 0;
-        int damage = (int) (SkillConfigManager.getUseSetting(hero, this, SkillSetting.DAMAGE.node(), 0, false) +
+        double damage = (SkillConfigManager.getUseSetting(hero, this, SkillSetting.DAMAGE.node(), 0, false) +
                 (SkillConfigManager.getUseSetting(hero, this, "damage-increase", 0.0, false) * hero.getSkillLevel(this)));
         damage = damage > 0 ? damage : 0;
         String description = getDescription().replace("$1", duration + "").replace("$2", damage + "");
@@ -114,9 +114,10 @@ public class SkillSlow extends TargettedSkill {
             return SkillResult.INVALID_TARGET_NO_MSG;
         }
         
-        int damage = (int) (SkillConfigManager.getUseSetting(hero, this, SkillSetting.DAMAGE.node(), 0, false) +
+        double damage = (SkillConfigManager.getUseSetting(hero, this, SkillSetting.DAMAGE.node(), 0, false) +
                 (SkillConfigManager.getUseSetting(hero, this, "damage-increase", 0.0, false) * hero.getSkillLevel(this)));
         damage = damage > 0 ? damage : 0;
+        addSpellTarget(tPlayer,hero);
         damageEntity(tPlayer, player, damage, DamageCause.MAGIC);
         //tPlayer.damage(damage, player);
         long duration = (long) (SkillConfigManager.getUseSetting(hero, this, SkillSetting.DURATION.node(), 10000, false) +

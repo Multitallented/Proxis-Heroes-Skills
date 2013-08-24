@@ -183,7 +183,7 @@ public class SkillMortalWound extends TargettedSkill {
         @EventHandler()
         public void onHeroRegainHealth(HeroRegainHealthEvent event) {
             if (event.getHero().hasEffect("MortalWound")) {
-                event.setAmount(0);
+                event.setAmount(0D);
                 event.setCancelled(true);
                 broadcast(event.getHero().getPlayer().getLocation(), missText, event.getHero().getPlayer().getDisplayName());
             }

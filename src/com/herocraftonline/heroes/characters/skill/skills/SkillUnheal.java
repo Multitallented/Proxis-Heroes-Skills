@@ -175,7 +175,7 @@ public class SkillUnheal extends TargettedSkill {
                 return;
             Hero hero = plugin.getCharacterManager().getHero((Player) event.getEntity());
             if (hero.hasEffect("Unheal")) {
-                int damage = event.getAmount();
+                double damage = event.getAmount();
                 event.setAmount(0);
                 event.setCancelled(true);
                 addSpellTarget(hero.getPlayer(),hero);

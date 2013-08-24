@@ -106,13 +106,14 @@ public class SkillStun extends TargettedSkill {
         long duration = (long) (SkillConfigManager.getUseSetting(hero, this, SkillSetting.DURATION.node(), 10000, false) +
                 (SkillConfigManager.getUseSetting(hero, this, "duration-increase", 0.0, false) * hero.getSkillLevel(this)));
         duration = duration > 0 ? duration : 0;
-        int damage = (int) (SkillConfigManager.getUseSetting(hero, this, SkillSetting.DAMAGE.node(), 10000, false) +
+        double damage = (SkillConfigManager.getUseSetting(hero, this, SkillSetting.DAMAGE.node(), 10000, false) +
                 (SkillConfigManager.getUseSetting(hero, this, "damage-increase", 0.0, false) * hero.getSkillLevel(this)));
         damage = damage > 0 ? damage : 0;
         if (duration > 0) {
             tHero.addEffect(new StunEffect(this, duration));
         }
         if (damage > 0) {
+            addSpellTarget(tPlayer,hero);
             damageEntity(tPlayer, player, damage, DamageCause.MAGIC);
             //tPlayer.damage(damage, player);
         }

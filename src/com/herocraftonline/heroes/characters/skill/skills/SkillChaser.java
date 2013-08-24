@@ -39,7 +39,7 @@ public class SkillChaser extends TargettedSkill {
         long duration = (long) (SkillConfigManager.getUseSetting(hero, this, SkillSetting.DURATION.node(), 10000, false) +
                 (SkillConfigManager.getUseSetting(hero, this, "duration-increase", 0.0, false) * hero.getSkillLevel(this))) / 1000;
         duration = duration > 0 ? duration : 0;
-        int tickDamage = (int) (SkillConfigManager.getUseSetting(hero, this, SkillSetting.DAMAGE_TICK.node(), 2, false) +
+        double tickDamage = (SkillConfigManager.getUseSetting(hero, this, SkillSetting.DAMAGE_TICK.node(), 2, false) +
                 (SkillConfigManager.getUseSetting(hero, this, "duration-increase", 0.0, false) * hero.getSkillLevel(this)));
         tickDamage = tickDamage > 0 ? tickDamage : 0;
         int maxDistance = (int) (SkillConfigManager.getUseSetting(hero, this, SkillSetting.MAX_DISTANCE.node(), 15, false) +
@@ -121,16 +121,17 @@ public class SkillChaser extends TargettedSkill {
             if (hero.getParty() == null || !(hero.getParty().getMembers().contains(tHero))) {
                 if (damageCheck(player, tHero.getPlayer())) {
                     broadcastExecuteText(hero, le);
-                    int damage = (int) (SkillConfigManager.getUseSetting(hero, this, SkillSetting.DAMAGE.node(), 5, false) +
+                    double damage = (SkillConfigManager.getUseSetting(hero, this, SkillSetting.DAMAGE.node(), 5, false) +
                             (SkillConfigManager.getUseSetting(hero, this, "damage-increase", 0.0, false) * hero.getSkillLevel(this)));
                     damage = damage > 0 ? damage : 0;
+                    addSpellTarget(tHero.getPlayer(),plugin.getCharacterManager().getHero(player));
                     damageEntity(tHero.getPlayer(), player, damage, DamageCause.ENTITY_ATTACK);
                     //tHero.getPlayer().damage(damage, player);
                     long duration = (long) (SkillConfigManager.getUseSetting(hero, this, SkillSetting.DURATION.node(), 10000, false) +
                             (SkillConfigManager.getUseSetting(hero, this, "duration-increase", 0.0, false) * hero.getSkillLevel(this)));
                     duration = duration > 0 ? duration : 0;
                     long period = SkillConfigManager.getUseSetting(hero, this, SkillSetting.PERIOD.node(), 1000, false);
-                    int tickDamage = (int) (SkillConfigManager.getUseSetting(hero, this, SkillSetting.DAMAGE_TICK.node(), 2, false) +
+                    double tickDamage =  (SkillConfigManager.getUseSetting(hero, this, SkillSetting.DAMAGE_TICK.node(), 2, false) +
                             (SkillConfigManager.getUseSetting(hero, this, "duration-increase", 0.0, false) * hero.getSkillLevel(this)));
                     tickDamage = tickDamage > 0 ? tickDamage : 0;
                     CrippleEffect cEffect = new CrippleEffect(this, period, duration, tickDamage, player);
@@ -145,8 +146,8 @@ public class SkillChaser extends TargettedSkill {
     public class CrippleEffect extends PeriodicExpirableEffect {
         private Player caster;
         private Location prevLocation;
-        private final int damageTick;
-        public CrippleEffect(Skill skill, long period, long duration, int damageTick, Player caster) {
+        private final double damageTick;
+        public CrippleEffect(Skill skill, long period, long duration, double damageTick, Player caster) {
             super(skill, "Chaser", period, duration);
             this.caster=caster;
             this.damageTick = damageTick;
@@ -161,6 +162,7 @@ public class SkillChaser extends TargettedSkill {
                     && Math.abs(hero.getPlayer().getLocation().getX() - prevLocation.getX()) < 1
                     && Math.abs(hero.getPlayer().getLocation().getZ() - prevLocation.getZ()) < 1) {
                 //hero.getPlayer().damage(this.damageTick, caster);
+                addSpellTarget(hero.getPlayer(),plugin.getCharacterManager().getHero(caster));
                 damageEntity(hero.getPlayer(), caster, damageTick, DamageCause.ENTITY_ATTACK);
             }
             prevLocation = hero.getPlayer().getLocation();
@@ -181,6 +183,7 @@ public class SkillChaser extends TargettedSkill {
 
         @Override
         public void tickMonster(Monster mnstr) {
+            addSpellTarget(mnstr.getEntity(),plugin.getCharacterManager().getHero(caster));
             damageEntity(mnstr.getEntity(), caster, damageTick, DamageCause.ENTITY_ATTACK);
         }
     }

@@ -9,10 +9,12 @@ import com.herocraftonline.heroes.characters.skill.SkillConfigManager;
 import com.herocraftonline.heroes.characters.skill.SkillType;
 import com.herocraftonline.heroes.util.Messaging;
 import com.herocraftonline.heroes.characters.skill.SkillSetting;
+
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import org.bukkit.configuration.ConfigurationSection;
 
 public class SkillArrowblast extends ActiveSkill {
@@ -140,6 +142,7 @@ public class SkillArrowblast extends ActiveSkill {
         final Skill skill = this;
         Messaging.send(player, "Casting $1 at a rate of $2 per second", preTotalArrows, rate);
         shootingPlayers.put(hero, plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
+            @SuppressWarnings("deprecation")
             @Override
             public void run() {
                 player.shootArrow();

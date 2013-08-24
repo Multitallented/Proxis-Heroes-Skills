@@ -137,11 +137,12 @@ public class SkillReflect extends ActiveSkill implements Listener {
                 + (SkillConfigManager.getUseSetting(hero, this, "percent-reflected-increase", 0, false) * hero.getSkillLevel(this))) / 100;
         percent = percent < 0 ? 0 : percent;
         percent = percent > 1 ? 1 : percent;
-        damageEntity(dPlayer, player, (int) (event.getDamage() * percent));
+        addSpellTarget(dPlayer, hero);
+        damageEntity(dPlayer, player, (event.getDamage() * percent));
         if (event.getDamage() * percent >= event.getDamage()) {
             event.setCancelled(true);
         } else {
-            event.setDamage((int) (event.getDamage() * (1 - percent)));
+            event.setDamage((event.getDamage() * (1 - percent)));
         }
     }
 }

@@ -125,7 +125,7 @@ public class SkillHealBomb extends TargettedSkill {
         int radius = (int) (SkillConfigManager.getUseSetting(hero, this, SkillSetting.RADIUS.node(), 6, false) +
                 (SkillConfigManager.getUseSetting(hero, this, SkillSetting.RADIUS_INCREASE.node(), 0.0, false) * hero.getSkillLevel(this)));
         radius = radius > 0 ? radius : 0;
-        int damage = (int) (SkillConfigManager.getUseSetting(hero, this, SkillSetting.DAMAGE.node(), 5, false) +
+        double damage = (SkillConfigManager.getUseSetting(hero, this, SkillSetting.DAMAGE.node(), 5, false) +
                 (SkillConfigManager.getUseSetting(hero, this, "damage-increase", 0.0, false) * hero.getSkillLevel(this)));
         damage = damage > 0 ? damage : 0;
         double health = (SkillConfigManager.getUseSetting(hero, this, SkillSetting.HEALTH.node(), 10, false) +
@@ -139,12 +139,14 @@ public class SkillHealBomb extends TargettedSkill {
             if (e instanceof LivingEntity) {
                 if (e instanceof Creature) {
                     Creature c = (Creature) e;
+                    addSpellTarget(c,hero);
                     damageEntity(c, player, damage, DamageCause.MAGIC);
                     //c.damage(damage, player);
                     totalExp += exp;
                 } else if (e instanceof Player) {
                     Player p = (Player) e;
                     if (hero.getParty() == null || !hero.getParty().getMembers().contains(plugin.getCharacterManager().getHero(p))) {
+                        addSpellTarget(p,hero);
                         damageEntity(p, player, damage, DamageCause.MAGIC);
                         //p.damage(damage, player);
                     }

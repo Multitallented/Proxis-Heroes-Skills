@@ -105,7 +105,7 @@ public class SkillWrestle extends ActiveSkill {
                 (SkillConfigManager.getUseSetting(hero, this, "duration-increase", 0.0, false) * hero.getSkillLevel(this)));
         duration = duration > 0 ? duration : 0;
         StunEffect cEffect = new StunEffect(this, duration);
-        int damage = (int) (SkillConfigManager.getUseSetting(hero, this, SkillSetting.DAMAGE.node(), 0, false) +
+        double damage = (SkillConfigManager.getUseSetting(hero, this, SkillSetting.DAMAGE.node(), 0, false) +
                 (SkillConfigManager.getUseSetting(hero, this, "damage-increase", 0.0, false) * hero.getSkillLevel(this)));
         damage = damage > 0 ? damage : 0;
         
@@ -115,6 +115,7 @@ public class SkillWrestle extends ActiveSkill {
                 Hero tHero = plugin.getCharacterManager().getHero(p);
                 tHero.addEffect(cEffect);
                 if (damage > 0) {
+                    addSpellTarget(p,hero);
                     damageEntity(p, player, damage, DamageCause.MAGIC);
                     //p.damage(damage, player);
                 }

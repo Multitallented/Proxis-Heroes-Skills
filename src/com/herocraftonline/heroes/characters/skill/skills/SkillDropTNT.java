@@ -106,7 +106,8 @@ public class SkillDropTNT extends ActiveSkill implements Listener {
                 try {
                     LivingEntity le = (LivingEntity) e;
                     Hero hero = plugin.getCharacterManager().getHero((Player) explosions.get(event.getEntity()));
-                    damageEntity(le, hero.getPlayer(), SkillConfigManager.getUseSetting(hero, this, SkillSetting.DAMAGE, 10, false));
+                    addSpellTarget(le,hero);
+                    damageEntity(le, hero.getPlayer(), SkillConfigManager.getUseSetting(hero, this, SkillSetting.DAMAGE, 10D, false));
                 } catch (Exception ex) {
                 }
             }

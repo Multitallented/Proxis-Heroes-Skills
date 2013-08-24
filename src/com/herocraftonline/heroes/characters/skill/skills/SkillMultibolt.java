@@ -117,13 +117,14 @@ public class SkillMultibolt extends ActiveSkill {
         }*/
         final Player targetPlayer = aTargetPlayer;
         broadcastExecuteText(hero);
-        int preDamage = (int) (SkillConfigManager.getUseSetting(hero, this, SkillSetting.DAMAGE.node(), 14, false) +
+        double preDamage = (SkillConfigManager.getUseSetting(hero, this, SkillSetting.DAMAGE.node(), 14, false) +
                 (SkillConfigManager.getUseSetting(hero, this, "damage-increase", 0.0, false) * hero.getSkillLevel(this)));
         preDamage = preDamage > 0 ? preDamage : 0;
-        final int damage = preDamage;
+        final double damage = preDamage;
         if (aTargetPlayer != null) {
             addSpellTarget(aTargetPlayer, hero);
             aTargetPlayer.getWorld().strikeLightningEffect(aTargetPlayer.getLocation());
+            addSpellTarget(aTargetPlayer,hero);
             damageEntity(aTargetPlayer, player, damage, DamageCause.MAGIC);
             //aTargetPlayer.damage(damage, player);
         } else {
@@ -144,6 +145,7 @@ public class SkillMultibolt extends ActiveSkill {
                 public void run() {
                     addSpellTarget(targetPlayer, hero);
                     targetPlayer.getWorld().strikeLightningEffect(targetPlayer.getLocation());
+                    addSpellTarget(targetPlayer,hero);
                     damageEntity(targetPlayer, player, damage, DamageCause.MAGIC);
                     //player.getWorld().strikeLightning(targetPlayer.getLocation());
                     Messaging.send(player, "Twice Struck!");
@@ -154,6 +156,7 @@ public class SkillMultibolt extends ActiveSkill {
                             public void run() {
                                 addSpellTarget(targetPlayer, hero);
                                 targetPlayer.getWorld().strikeLightningEffect(targetPlayer.getLocation());
+                                addSpellTarget(targetPlayer,hero);
                                 damageEntity(targetPlayer, player, damage, DamageCause.MAGIC);
                                 Messaging.send(player, "Hat Trick!");
                                 if (Math.random() > finalChance && strikes > 3) {
@@ -163,6 +166,7 @@ public class SkillMultibolt extends ActiveSkill {
                                         public void run() {
                                             addSpellTarget(targetPlayer, hero);
                                             targetPlayer.getWorld().strikeLightningEffect(targetPlayer.getLocation());
+                                            addSpellTarget(targetPlayer,hero);
                                             damageEntity(targetPlayer, player, damage, DamageCause.MAGIC);
                                             Messaging.send(player, "Overkill!");
                                         }

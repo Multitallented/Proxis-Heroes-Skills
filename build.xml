@@ -1,0 +1,58 @@
+<project name="Proxis-Hero-Skills" default="build" basedir=".">
+    <description>
+        Heroes Skills Ant File Compiler
+    </description>
+    <!-- set global properties for this build -->
+    <property environment="env"/>
+    <property name="build.compiler" value="extJavac" />
+    <property name="dir.bin" value="bin" />
+    <property name="dir.dist" value="target" />
+    <property name="dir.bin.skills" value="com/herocraftonline/heroes/characters/skill/skills" />
+    <property name="dir.dist.skills" value="." />
+    <property name="toolhandler" value="../../Kingdoms of Arden Tool Handler/workspace/target" />
+    <property name="dir.lib" value="../../Kingdoms of Arden Heroes Skills/workspace/lib" />
+
+    <path id="classpath">
+        <fileset dir="${toolhandler}" includes="**/*.jar" />
+        <fileset dir="${dir.lib}" includes="*.jar" />
+    </path>
+   
+    <taskdef resource="net/sf/antcontrib/antlib.xml" />
+	
+	<target name="build">
+        <mkdir dir="${dir.dist}" />
+        <mkdir dir="${dir.dist}/${dir.dist.skills}" />
+        <mkdir dir="${dir.bin}" />
+        <mkdir dir="${dir.bin}/${dir.dist.skills}" />
+        <javac srcdir="src" debug="on" destdir="bin" classpathref="classpath" includeantruntime="false"/>
+        <antcall target="jar-skills" />
+    	<delete dir="${dir.bin}" includes="**/*.class" excludes="**/*.jar" />
+    	<antcall target="zip" />
+    </target>
+
+    <target name="jar-skills">
+        <foreach target="jar-skill" param="files">
+            <fileset dir="${dir.bin}/${dir.bin.skills}" includes="Skill*.class" excludes="Skill*$*.class" />
+        </foreach>
+        <delete file="${dir.bin}/skill.info" />
+    </target>
+
+    <target name="jar-skill">
+        <basename file="${files}" suffix=".class" property="basename" />
+        <echo message="${basename}" />
+        <echo file="${dir.bin}/skill.info" message="main-class: com.herocraftonline.heroes.characters.skill.skills.${basename}" />
+        <jar jarfile="${dir.dist}/${dir.dist.skills}/${basename}.jar" basedir="${dir.bin}" includes="${dir.bin.skills}/${basename}*.class skill.info">
+            <manifest>
+                <attribute name="Class-Path" value="../../Heroes.jar" />
+            </manifest>
+        </jar>
+    </target>
+	
+	<target name="zip">
+		<zip destfile="${dir.dist}/Proxis-Heroes-Skills.zip">
+			<fileset dir="${dir.dist}" includes="*.jar"/>
+		    <fileset dir="${dir.dist}" includes="${dir.dist.skills}/**/*.jar"/>
+		</zip>
+		<delete dir="${dir.dist}/${ant.project.name}"/>
+	</target>
+</project>

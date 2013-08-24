@@ -7,13 +7,14 @@ import com.herocraftonline.heroes.characters.skill.ActiveSkill;
 import com.herocraftonline.heroes.characters.skill.SkillConfigManager;
 import com.herocraftonline.heroes.characters.skill.SkillType;
 import com.herocraftonline.heroes.characters.skill.SkillSetting;
+
 import org.bukkit.entity.Player;
 import org.bukkit.Effect;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Skeleton;
 
 public class SkillSkele extends ActiveSkill {
     public SkillSkele(Heroes plugin) {
@@ -95,19 +96,19 @@ public class SkillSkele extends ActiveSkill {
         Block wTargetBlock = player.getTargetBlock(null, 20).getRelative(
                         BlockFace.UP);
         double rand = Math.random();
-        LivingEntity le = player.getWorld().spawnCreature(wTargetBlock.getLocation(),
-                        CreatureType.SKELETON);
+        LivingEntity le = player.getWorld().spawn(wTargetBlock.getLocation(),
+                        Skeleton.class);
         le.getWorld().playEffect(le.getLocation(), Effect.SMOKE, 3);
         int count = 1;
         if (rand > (1 - chance2x - chance3x)) {
-            LivingEntity le1 = player.getWorld().spawnCreature(wTargetBlock.getLocation(),
-                        CreatureType.SKELETON);
+            LivingEntity le1 = player.getWorld().spawn(wTargetBlock.getLocation(),
+                        Skeleton.class);
             le1.getWorld().playEffect(le1.getLocation(), Effect.SMOKE, 3);
             count++;
         }
         if (rand > (1 - chance3x)) {
-            LivingEntity le1 = player.getWorld().spawnCreature(wTargetBlock.getLocation(),
-                        CreatureType.SKELETON);
+            LivingEntity le1 = player.getWorld().spawn(wTargetBlock.getLocation(),
+                        Skeleton.class);
             le1.getWorld().playEffect(le1.getLocation(), Effect.SMOKE, 3);
             count++;
         }

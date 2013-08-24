@@ -163,7 +163,7 @@ public class SkillDeathFromAbove extends ActiveSkill {
             int radius = (int) (SkillConfigManager.getUseSetting(hero, skill, SkillSetting.RADIUS.node(), 5, false) +
                     (SkillConfigManager.getUseSetting(hero, skill, "radius-increase", 0.0, false) * hero.getSkillLevel(skill)));
             radius = radius > 0 ? radius : 0;
-            int damage = event.getDamage();
+            double damage = event.getDamage();
             double damageMulti = (SkillConfigManager.getUseSetting(hero, skill, "damage-multiplier", 1.0, false) +
                     (SkillConfigManager.getUseSetting(hero, skill, "damage-multi-increase", 0.0, false) * hero.getSkillLevel(skill)));
             damageMulti = damageMulti > 0 ? damageMulti : 0;
@@ -174,6 +174,7 @@ public class SkillDeathFromAbove extends ActiveSkill {
             for (Entity e : player.getNearbyEntities(radius,radius,radius)) {
                 if (e instanceof Player && !(e.equals(player))) {
                     Player p = (Player) e;
+                    addSpellTarget(p,plugin.getCharacterManager().getHero(player));
                     damageEntity(p, player, damage, DamageCause.MAGIC);
                     //p.damage(damage, player);
                     if (expPlayer > 0) {
@@ -181,6 +182,7 @@ public class SkillDeathFromAbove extends ActiveSkill {
                     }
                 } else if (e instanceof Creature) {
                     Creature c = (Creature) e;
+                    addSpellTarget(c,plugin.getCharacterManager().getHero(player));
                     damageEntity(c, player, damage, DamageCause.MAGIC);
                     //c.damage(damage, player);
                     if (expCreature > 0) {

@@ -7,7 +7,6 @@ import com.herocraftonline.heroes.characters.Hero;
 import com.herocraftonline.heroes.characters.Monster;
 import com.herocraftonline.heroes.characters.effects.EffectType;
 import com.herocraftonline.heroes.characters.effects.PeriodicExpirableEffect;
-import com.herocraftonline.heroes.characters.effects.common.DisarmEffect;
 import com.herocraftonline.heroes.characters.effects.common.StunEffect;
 import com.herocraftonline.heroes.characters.skill.Skill;
 import com.herocraftonline.heroes.characters.skill.SkillConfigManager;
@@ -15,8 +14,10 @@ import com.herocraftonline.heroes.characters.skill.SkillType;
 import com.herocraftonline.heroes.characters.skill.TargettedSkill;
 import com.herocraftonline.heroes.util.Messaging;
 import com.herocraftonline.heroes.characters.skill.SkillSetting;
+
 import java.util.HashMap;
 import java.util.logging.Level;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -165,7 +166,7 @@ public class SkillOmegaGrip extends TargettedSkill implements Listener {
             player.sendMessage(ChatColor.GRAY + "You can't damage that target");
             return SkillResult.INVALID_TARGET_NO_MSG;
         }
-        int damage = (SkillConfigManager.getUseSetting(hero, this, SkillSetting.DAMAGE.node(), 0, false)
+        double damage = (SkillConfigManager.getUseSetting(hero, this, SkillSetting.DAMAGE.node(), 0, false)
                 - SkillConfigManager.getUseSetting(hero, this, SkillSetting.DAMAGE_INCREASE.node(), 0, false) * hero.getLevel());
         damage = damage < 0 ? 0 : damage;
         int damageTick = (SkillConfigManager.getUseSetting(hero, this, SkillSetting.DAMAGE_TICK.node(), 0, false)
@@ -184,6 +185,7 @@ public class SkillOmegaGrip extends TargettedSkill implements Listener {
         int manaTick = (SkillConfigManager.getUseSetting(hero, this, "mana-tick", 0, false)
                 - SkillConfigManager.getUseSetting(hero, this, "mana-tick-increase", 0, false) * hero.getLevel());
         manaTick = manaTick < 0 ? 0 : manaTick;
+        addSpellTarget(tPlayer,hero);
         damageEntity(tPlayer, player, damage);
         
         hero.addEffect(new ChannelEffect(this, duration, getReagentCost(hero)));
@@ -209,6 +211,7 @@ public class SkillOmegaGrip extends TargettedSkill implements Listener {
             loc = hero.getPlayer().getLocation();
         }
         
+        @SuppressWarnings("deprecation")
         @Override
         public void removeFromHero(Hero hero) {
             super.removeFromHero(hero);
@@ -233,7 +236,7 @@ public class SkillOmegaGrip extends TargettedSkill implements Listener {
             manaCost -= (int) manaReduce;
             // Deduct mana
             hero.setMana(hero.getMana() - manaCost);
-            if (hero.isVerbose() && manaCost > 0 && !hero.hasSpoutcraft()) {
+            if (hero.isVerbose() && manaCost > 0) {
                 Messaging.send(hero.getPlayer(), ChatColor.BLUE + "MANA " + Messaging.createManaBar(hero.getMana(), hero.getMaxMana()));
             }
 
@@ -285,13 +288,13 @@ public class SkillOmegaGrip extends TargettedSkill implements Listener {
     }
     
     public class GripEffect extends PeriodicExpirableEffect {
-        private final int damageTick;
-        private final int healTick;
+        private final double damageTick;
+        private final double healTick;
         private final int manaTick;
         private final Hero caster;
         private final long aDuration;
 
-        public GripEffect(Skill skill, long duration, long period, int damageTick, int healTick, int manaTick, Hero caster) {
+        public GripEffect(Skill skill, long duration, long period, double damageTick, double healTick, int manaTick, Hero caster) {
             super(skill, "OmegaGrip", period, duration);
             this.damageTick = damageTick;
             this.aDuration = duration;
@@ -342,6 +345,7 @@ public class SkillOmegaGrip extends TargettedSkill implements Listener {
                 hero.removeEffect(this);
                 return;
             }
+            addSpellTarget(hero.getPlayer(), caster);
             skill.damageEntity(hero.getPlayer(), caster.getPlayer(), damageTick + healTick);
             Bukkit.getPluginManager().callEvent(new EntityRegainHealthEvent(caster.getPlayer(), healTick, RegainReason.MAGIC));
             if (caster.getMana() + manaTick > caster.getMaxMana()) {
