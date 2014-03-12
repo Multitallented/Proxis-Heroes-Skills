@@ -1,11 +1,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>net.kingdomsofarden.andrew2060</groupId>
-	<artifactId>HeroesSkills</artifactId>
+	<groupId>com.null.notAnArtifact</groupId>
+	<artifactId>NO</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>KingdomsOfArden-HeroesSkills</name>
-	<description>Skills for mc.kingdomsofarden.net</description>
+	<name>Proxis-HeroesSkills</name>
 
     <repositories>
 		<repository>
@@ -17,7 +16,6 @@
 			<url>http://ci.kingdomsofarden.net/nexus/content/groups/public/</url>
 		</repository>
 	</repositories>
-	<url>www.kingdomsofarden.net</url>
 	<build>
 		<plugins>
 			<plugin>
@@ -49,4 +47,5 @@
 			<version>1.7.2-R0.4-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
+	<description>Updated multitallented Heroes skills</description>
 </project>

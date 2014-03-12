@@ -60,7 +60,7 @@ public class SkillNecroFeed extends PassiveSkill {
             if (edby.getDamager().getClass().equals(Player.class)) {
                 player = (Player) edby.getDamager();
             } else if (edby.getDamager() instanceof Projectile) {
-                Entity e = ((Projectile) edby.getDamager()).getShooter();
+                Entity e = (Entity) ((Projectile) edby.getDamager()).getShooter();
                 if (!(e instanceof Player)) {
                     return;
                 }

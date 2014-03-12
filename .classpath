@@ -1,25 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="src" path="/Heroes"/>
-	<classpathentry kind="lib" path="C:/Users/Andrew/.m2/repository/org/bukkit/Bukkit/1.6.2-R0.1/bukkit-1.6.2-R0.1.jar">
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7">
 		<attributes>
 			<attribute name="maven.pomderived" value="true"/>
-			<attribute name="maven.groupId" value="org.bukkit"/>
-			<attribute name="maven.artifactId" value="bukkit"/>
-			<attribute name="maven.version" value="1.6.2-R0.1"/>
-			<attribute name="maven.scope" value="compile"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/Andrew/.m2/repository/org/spigotmc/spigot/1.6.2-R0.1-SNAPSHOT/spigot-1.6.2-R0.1-SNAPSHOT.jar">
+	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
 		<attributes>
 			<attribute name="maven.pomderived" value="true"/>
-			<attribute name="maven.groupId" value="org.spigotmc"/>
-			<attribute name="maven.artifactId" value="spigot"/>
-			<attribute name="maven.version" value="1.6.2-R0.1-SNAPSHOT"/>
-			<attribute name="maven.scope" value="compile"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="output" path="bin"/>
+	<classpathentry kind="output" path="target/classes"/>
 </classpath>

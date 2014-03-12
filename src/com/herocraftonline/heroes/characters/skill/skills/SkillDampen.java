@@ -76,7 +76,7 @@ public class SkillDampen extends PassiveSkill {
                     Hero tHero = plugin.getCharacterManager().getHero((Player) event.getEntity());
                     Entity damager = edBy.getDamager();
                     if (edBy.getCause() == DamageCause.PROJECTILE) {
-                        damager = ((Projectile)damager).getShooter();
+                        damager = (Entity) ((Projectile)damager).getShooter();
                     }
                     if (!(damager instanceof Player)) {
                         return;
