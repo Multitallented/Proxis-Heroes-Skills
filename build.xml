@@ -1,32 +1,51 @@
-<project name="Proxis-Hero-Skills" default="build" basedir=".">
-    <description>
-        Heroes Skills Ant File Compiler
-    </description>
-    <!-- set global properties for this build -->
+<project name="K1ll3z-Heroes-Skills" default="build" basedir="." xmlns:artifact="antlib:org.apache.maven.artifact.ant">
     <property environment="env"/>
     <property name="build.compiler" value="extJavac" />
-    <property name="dir.bin" value="bin" />
-    <property name="dir.dist" value="target" />
-    <property name="dir.bin.skills" value="com/herocraftonline/heroes/characters/skill/skills" />
-    <property name="dir.dist.skills" value="." />
-    <property name="toolhandler" value="../../Kingdoms of Arden Tool Handler/workspace/target" />
-    <property name="dir.lib" value="../../Kingdoms of Arden Heroes Skills/workspace/lib" />
-
-    <path id="classpath">
-        <fileset dir="${toolhandler}" includes="**/*.jar" />
-        <fileset dir="${dir.lib}" includes="*.jar" />
-    </path>
-   
-    <taskdef resource="net/sf/antcontrib/antlib.xml" />
 	
-	<target name="build">
-        <mkdir dir="${dir.dist}" />
+    <property name="dir.bin" value="bin" />
+    <property name="dir.dist" value="build" />
+    <property name="dir.bin.skills" value="com/herocraftonline/heroes/characters/skill/skills" />
+    <property name="dir.dist.skills" value="${ant.project.name}/skills" />
+	<property name="dir.maven.dependencies" value ="maven" />
+
+	<!--Classpath used by javac compiler-->
+    <path id="classpath">
+    	<fileset dir="${dir.maven.dependencies}" includes="**/*.jar" />
+    </path>
+	
+	<!--Define ant plugins used by this build-->
+	<path id="maven-ant-tasks.classpath" path="ant/maven-ant-tasks-2.1.3.jar" />
+    <typedef resource="org/apache/maven/artifact/ant/antlib.xml"
+		       uri="antlib:org.apache.maven.artifact.ant"
+		       classpathref="maven-ant-tasks.classpath" />
+    <taskdef resource="net/sf/antcontrib/antlib.xml">
+        <classpath>
+            <pathelement location="ant/ant-contrib-1.0b3.jar"/>
+        </classpath>
+    </taskdef>
+    <target name="build">
+    	<!--Create Maven Dependencies Storage Folder-->
+		<mkdir dir="${dir.maven.dependencies}" />
+		
+		<!--Populate Maven Dependencies -->
+		<artifact:pom id="skillPom" file="pom.xml" />
+		<artifact:dependencies filesetId="mavenDependencies" pomRefId="skillPom" />
+		<copy todir="${dir.maven.dependencies}">
+		  	<fileset refid="mavenDependencies" />
+		  	<mapper classpathref="maven-ant-tasks.classpath"
+		          classname="org.apache.maven.artifact.ant.VersionMapper"
+		          from="${dependency.versions}" to="flatten" />
+		</copy>
+    	<!--Make directories required for the build-->
+    	<mkdir dir="${dir.dist}" />
         <mkdir dir="${dir.dist}/${dir.dist.skills}" />
         <mkdir dir="${dir.bin}" />
         <mkdir dir="${dir.bin}/${dir.dist.skills}" />
+    	
         <javac srcdir="src" debug="on" destdir="bin" classpathref="classpath" includeantruntime="false"/>
         <antcall target="jar-skills" />
-    	<delete dir="${dir.bin}" includes="**/*.class" excludes="**/*.jar" />
+        <delete dir="${dir.bin}" includes="**/*.class" excludes="**/*.jar" />
+    	<delete dir="${dir.maven.dependencies}" />
     	<antcall target="zip" />
     </target>
 
@@ -40,7 +59,7 @@
     <target name="jar-skill">
         <basename file="${files}" suffix=".class" property="basename" />
         <echo message="${basename}" />
-        <echo file="${dir.bin}/skill.info" message="main-class: com.herocraftonline.heroes.characters.skill.skills.${basename}" />
+        <echo file="${dir.bin}/skill.info" message="main-class: dev.k1ll3z.Heroes.skills.${basename}" />
         <jar jarfile="${dir.dist}/${dir.dist.skills}/${basename}.jar" basedir="${dir.bin}" includes="${dir.bin.skills}/${basename}*.class skill.info">
             <manifest>
                 <attribute name="Class-Path" value="../../Heroes.jar" />
@@ -50,7 +69,6 @@
 	
 	<target name="zip">
 		<zip destfile="${dir.dist}/Proxis-Heroes-Skills.zip">
-			<fileset dir="${dir.dist}" includes="*.jar"/>
 		    <fileset dir="${dir.dist}" includes="${dir.dist.skills}/**/*.jar"/>
 		</zip>
 		<delete dir="${dir.dist}/${ant.project.name}"/>
