@@ -1,4 +1,4 @@
-<project name="K1ll3z-Heroes-Skills" default="build" basedir="." xmlns:artifact="antlib:org.apache.maven.artifact.ant">
+<project name="Proxis-Heroes-Skills" default="build" basedir="." xmlns:artifact="antlib:org.apache.maven.artifact.ant">
     <property environment="env"/>
     <property name="build.compiler" value="extJavac" />
 	
@@ -59,7 +59,7 @@
     <target name="jar-skill">
         <basename file="${files}" suffix=".class" property="basename" />
         <echo message="${basename}" />
-        <echo file="${dir.bin}/skill.info" message="main-class: dev.k1ll3z.Heroes.skills.${basename}" />
+        <echo file="${dir.bin}/skill.info" message="main-class: com.herocraftonline.heroes.characters.skill.skills.${basename}" />
         <jar jarfile="${dir.dist}/${dir.dist.skills}/${basename}.jar" basedir="${dir.bin}" includes="${dir.bin.skills}/${basename}*.class skill.info">
             <manifest>
                 <attribute name="Class-Path" value="../../Heroes.jar" />
