@@ -81,24 +81,20 @@ public class SkillExplodingArrow extends ActiveSkill
 
         @EventHandler
         public void onProjectileHit(ProjectileHitEvent projectile) {
-            Heroes.debug.startTask("HeroesSkillListener");
 
             if (!(projectile.getEntity() instanceof Arrow)) {
-                Heroes.debug.stopTask("HeroesSkillListener");
                 return;
             }
 
             Arrow arrow = (Arrow)projectile.getEntity();
 
             if (!(arrow.getShooter() instanceof Player)) {
-                Heroes.debug.stopTask("HeroesSkillListener");
                 return;
             }
 
             Player player = (Player)arrow.getShooter();
             Hero hero = SkillExplodingArrow.this.plugin.getCharacterManager().getHero(player);
             if (!hero.hasEffect("ExplodingArrowBuff")) {
-                Heroes.debug.stopTask("HeroesSkillListener");
                 return;
             }
 
@@ -134,27 +130,22 @@ public class SkillExplodingArrow extends ActiveSkill
 
             arrow.getWorld().createExplosion(arrow.getLocation(), blockdamage);
 
-            Heroes.debug.stopTask("HeroesSkillListener");
         }
 
         @EventHandler
         public void onEntityDamage(EntityDamageEvent event) {
-            Heroes.debug.startTask("HeroesSkillListener");
             if ((event.isCancelled()) || (!(event instanceof EntityDamageByEntityEvent))) {
-                Heroes.debug.stopTask("HeroesSkillListener");
                 return;
             }
 
             Entity projectile = ((EntityDamageByEntityEvent)event).getDamager();
             if ((!(projectile instanceof Arrow)) || (!(((Projectile)projectile).getShooter() instanceof Player))) {
-                Heroes.debug.stopTask("HeroesSkillListener");
                 return;
             }
 
             Player player = (Player)((Projectile)projectile).getShooter();
             Hero hero = SkillExplodingArrow.this.plugin.getCharacterManager().getHero(player);
             if (!hero.hasEffect("ExplodingArrowBuff")) {
-                Heroes.debug.stopTask("HeroesSkillListener");
                 return;
             }
 
@@ -189,7 +180,6 @@ public class SkillExplodingArrow extends ActiveSkill
 
             projectile.getWorld().createExplosion(projectile.getLocation(), blockdamage);
 
-            Heroes.debug.stopTask("HeroesSkillListener");
         }
 
         @EventHandler(priority=EventPriority.MONITOR)

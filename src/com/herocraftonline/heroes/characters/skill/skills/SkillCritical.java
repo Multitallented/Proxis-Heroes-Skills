@@ -54,7 +54,7 @@ public class SkillCritical extends PassiveSkill {
         
         @EventHandler
         public void onEntityDamage(WeaponDamageEvent event) {
-        	if(!(event.isCancelled())&&(event.getDamager() instanceof Hero)){
+        	if (!(event.isCancelled())&&(event.getDamager() instanceof Hero)){
         		Hero hero = (Hero) event.getDamager();
            	  	if (hero.hasEffect("Critical")) {
                     double chance = (SkillConfigManager.getUseSetting(hero, skill, SkillSetting.CHANCE.node(), 0.2, false) +

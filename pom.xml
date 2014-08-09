@@ -12,8 +12,8 @@
 			<url>http://repo.md-5.net/content/groups/public/</url>
 		</repository>
 		<repository>
-			<id>koa-repo</id>
-			<url>http://ci.kingdomsofarden.net/nexus/content/groups/public/</url>
+			<id>heroes-repo</id>
+			<url>http://nexus.theyeticave.net/content/groups/public/</url>
 		</repository>
 	</repositories>
 	<build>
@@ -33,18 +33,24 @@
 		<dependency>
 			<groupId>org.spigotmc</groupId>
 			<artifactId>spigot-api</artifactId>
-			<version>1.7.2-R0.4-SNAPSHOT</version>
+			<version>1.7.10-R0.1-SNAPSHOT</version>
 			<type>jar</type>
 		</dependency>
 		<dependency>
 			<groupId>com.herocraftonline.heroes</groupId>
 			<artifactId>Heroes</artifactId>
-			<version>1.5.5</version>
+			<version>1.5.5.4-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.dthielke.herochat</groupId>
+                    <artifactId>HeroChat</artifactId>
+                </exclusion>
+            </exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.spigotmc</groupId>
 			<artifactId>spigot</artifactId>
-			<version>1.7.2-R0.4-SNAPSHOT</version>
+			<version>1.7.10-R0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 	<description>Updated multitallented Heroes skills</description>
