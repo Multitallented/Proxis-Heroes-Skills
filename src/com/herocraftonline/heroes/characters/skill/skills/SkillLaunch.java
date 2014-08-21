@@ -213,10 +213,8 @@ public class SkillLaunch extends ActiveSkill
         @EventHandler
         public void onEntityDamage(EntityDamageEvent paramEntityDamageEvent)
         {
-            Heroes.debug.startTask("HeroesSkillListener");
             if ((!paramEntityDamageEvent.getCause().equals(EntityDamageEvent.DamageCause.FALL)) || (!(paramEntityDamageEvent.getEntity() instanceof Player)) || (!chargingPlayers.containsKey((Player) paramEntityDamageEvent.getEntity())))
             {
-                Heroes.debug.stopTask("HeroesSkillListener");
                 return;
             }
             Player localPlayer1 = (Player)paramEntityDamageEvent.getEntity();
@@ -297,7 +295,6 @@ public class SkillLaunch extends ActiveSkill
                     addSpellTarget(localLivingEntity,plugin.getCharacterManager().getHero(localPlayer1));
                     Skill.damageEntity(localLivingEntity, localPlayer1, j, EntityDamageEvent.DamageCause.MAGIC);
             }
-            Heroes.debug.stopTask("HeroesSkillListener");
         }
     }
 }
