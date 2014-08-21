@@ -151,7 +151,7 @@ public class SkillVoid extends ActiveSkill {
                     EntityDamageByEntityEvent edby = (EntityDamageByEntityEvent) event;
                     Entity damager = edby.getDamager(); 
                     if (event.getCause() == DamageCause.PROJECTILE) {
-                        damager = ((Projectile)damager).getShooter();
+                        damager = (Entity) ((Projectile)damager).getShooter();
                     }
                     if (!(damager instanceof Player)) {
                         return;

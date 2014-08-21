@@ -382,7 +382,7 @@ public class SkillOmegaGrip extends TargettedSkill implements Listener {
         EntityDamageByEntityEvent edbye = (EntityDamageByEntityEvent) event;
         Entity damager = edbye.getDamager();
         if (edbye.getCause() == EntityDamageEvent.DamageCause.PROJECTILE) {
-            damager = ((Projectile)damager).getShooter();
+            damager = (Entity) ((Projectile)damager).getShooter();
         }
         if (!(damager instanceof Player)) {
             return;
